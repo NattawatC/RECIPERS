@@ -33,7 +33,6 @@ class Ui_Form(object):
         self.logo_recipe = QLabel(Form)
         self.logo_recipe.setObjectName(u"logo_recipe")
         self.logo_recipe.setGeometry(QRect(36, 22, 199, 43))
-        self.logo_recipe.setStyleSheet(u"background-image: url(:/newPrefix/Recipe_page_assets/logo_recipe.png);")
         self.logo_recipe.setPixmap(QPixmap(u"img/Recipe_page_assets/logo_recipe.png"))
         self.bg_recipes_page = QLabel(Form)
         self.bg_recipes_page.setObjectName(u"bg_recipes_page")
@@ -41,7 +40,6 @@ class Ui_Form(object):
         font = QFont()
         font.setFamilies([u"Chillax"])
         self.bg_recipes_page.setFont(font)
-        self.bg_recipes_page.setStyleSheet(u"background-image: url(:/newPrefix/bg_recipe.png);")
         self.bg_recipes_page.setPixmap(QPixmap(u"img/Recipe_page_assets/bg_recipe.png"))
         self.bg_recipes_page.setScaledContents(False)
         self.nav_recipe = QLabel(Form)
@@ -63,8 +61,7 @@ class Ui_Form(object):
         self.nav_recipe_logo = QLabel(Form)
         self.nav_recipe_logo.setObjectName(u"nav_recipe_logo")
         self.nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        self.nav_recipe_logo.setStyleSheet(u"background-image: url(:/newPrefix/Desktop/Recipe_page_assets/recipe-book.png);\n"
-"background-color: transparent;")
+        self.nav_recipe_logo.setStyleSheet(u"background-color: transparent;")
         self.nav_recipe_logo.setPixmap(QPixmap(u"img/Recipe_page_assets/recipe-book.png"))
         self.nav_recipe_logo.setScaledContents(True)
         self.nav_create = QLabel(Form)
@@ -78,8 +75,7 @@ class Ui_Form(object):
         self.nav_bake_logo = QLabel(Form)
         self.nav_bake_logo.setObjectName(u"nav_bake_logo")
         self.nav_bake_logo.setGeometry(QRect(58, 207, 35, 35))
-        self.nav_bake_logo.setStyleSheet(u"background-image: url(:/newPrefix/Recipe_page_assets/bake.png);\n"
-"background-color: transparent;")
+        self.nav_bake_logo.setStyleSheet(u"background-color: transparent;")
         self.nav_bake_logo.setPixmap(QPixmap(u"img/Recipe_page_assets/bake.png"))
         self.nav_bake_logo.setScaledContents(True)
         self.nav_favorite = QLabel(Form)
@@ -93,8 +89,7 @@ class Ui_Form(object):
         self.nav_fav_logo = QLabel(Form)
         self.nav_fav_logo.setObjectName(u"nav_fav_logo")
         self.nav_fav_logo.setGeometry(QRect(54, 273, 40, 40))
-        self.nav_fav_logo.setStyleSheet(u"background-image: url(:/newPrefix/favorite.png);\n"
-"background-color: transparent;")
+        self.nav_fav_logo.setStyleSheet(u"background-color: transparent;")
         self.nav_fav_logo.setPixmap(QPixmap(u"img/Recipe_page_assets/favorite.png"))
         self.nav_fav_logo.setScaledContents(True)
         self.search = QLineEdit(Form)
@@ -112,8 +107,7 @@ class Ui_Form(object):
         self.search_logo = QLabel(Form)
         self.search_logo.setObjectName(u"search_logo")
         self.search_logo.setGeometry(QRect(336, 25, 35, 35))
-        self.search_logo.setStyleSheet(u"background-image: url(:/newPrefix/loupe.png);\n"
-"background-color: transparent;")
+        self.search_logo.setStyleSheet(u"background-color: transparent;")
         self.search_logo.setPixmap(QPixmap(u"img/Recipe_page_assets/loupe.png"))
         self.search_logo.setScaledContents(True)
         self.welcome_to = QLabel(Form)
@@ -167,8 +161,7 @@ class Ui_Form(object):
         self.create_logo = QLabel(self.create_widget)
         self.create_logo.setObjectName(u"create_logo")
         self.create_logo.setGeometry(QRect(26, 23, 37, 37))
-        self.create_logo.setStyleSheet(u"background-image: url(:/newPrefix/grill.png);\n"
-"background-color: transparent;\n"
+        self.create_logo.setStyleSheet(u"background-color: transparent;\n"
 "border: none")
         self.create_logo.setPixmap(QPixmap(u"img/Recipe_page_assets/grill.png"))
         self.create_logo.setScaledContents(True)
@@ -201,9 +194,7 @@ class Ui_Form(object):
         self.create_logo_2 = QLabel(self.saved_widget)
         self.create_logo_2.setObjectName(u"create_logo_2")
         self.create_logo_2.setGeometry(QRect(26, 23, 37, 37))
-        self.create_logo_2.setStyleSheet(u"background-image: url(:/newPrefix/Recipe_page_assets/favorite2.png);\n"
-"background-color: transparent;\n"
-"border: none")
+        self.create_logo_2.setStyleSheet(u"background-color: transparent;\n" "border: none")
         self.create_logo_2.setPixmap(QPixmap(u"img/Recipe_page_assets/favorite2.png"))
         self.create_logo_2.setScaledContents(True)
         self.bg_recipes_page.raise_()
@@ -223,7 +214,7 @@ class Ui_Form(object):
         self.create_widget.raise_()
         self.saved_widget.raise_()
 
-        # self.retranslateUi(Form)
+        self.retranslateUi(Form)
         self.createCard(Form)
 
         QMetaObject.connectSlotsByName(Form)
@@ -240,7 +231,6 @@ class Ui_Form(object):
         self.card_img = QLabel(self.card_widget)
         self.card_img.setObjectName(u"card_img")
         self.card_img.setGeometry(QRect(16, 13, 168, 168))
-        self.card_img.setStyleSheet(u"background-image: url(:/newPrefix/BBQ.png);")
         self.card_img.setPixmap(QPixmap(u"img/Recipe_page_assets/BBQ.png"))
         self.card_img.setScaledContents(True)
         self.card_info_widget = QWidget(self.card_widget)

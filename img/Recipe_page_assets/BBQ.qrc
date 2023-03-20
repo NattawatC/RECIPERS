@@ -1,5 +1,0 @@
-<RCC>
-  <qresource prefix="newPrefix">
-    <file>BBQ.png</file>
-  </qresource>
-</RCC>
