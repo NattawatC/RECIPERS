@@ -1,0 +1,281 @@
+/* 
+    Application stylesheet
+*/
+
+/* Widget */
+QWidget {
+    background-color: #F6F6F6;
+}
+
+QWidget#brown_widget {
+    background-color: #D8B797;
+    border-radius: 20px;
+}
+
+QWidget#brown_item {
+    background: #D8B797;
+}
+
+/* Frame */
+QFrame#tab_frame {
+    background-color: #4A321C;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 0px;
+}
+
+QFrame#dark_brown_border_frame {
+    background-color: transparent;
+    border: 5px solid #4A321C;
+    border-radius: 20px;
+}
+
+QFrame#brown_border_frame {
+    background-color: transparent;
+    border: 5px solid #754926;
+    border-radius: 20px;
+}
+
+QFrame#brown_frame {
+    background-color: #D8B797;
+    border-radius: 20px;
+}
+
+QFrame#upper_curve_frame {
+    background: #D8B797;
+    border-radius: 20px 20px 0px 0px;
+}
+
+/* Line */
+QFrame#white_line {
+    border: 3px solid rgba(249, 245, 240, 0.5);
+}
+
+QWidget#brown_line {
+    background-color: #D8B797;
+}
+
+QWidget#dark_brown_line {
+    background-color: #4A321C;
+}
+
+/* Label */
+QLabel#default_label {
+    color: #343454;
+    background:transparent;
+}
+
+QLabel#white_label {
+    background-color: transparent;
+    color: #F9F5F0
+}
+
+QLabel#brown_label {
+    color: #754926;
+}
+
+/* LineEdit */
+QLineEdit#logIn_bar {
+    padding-left: 30px;
+    /* padding-right: 30px; */
+    color: #343454;
+    background: #F6F6F6;
+    border: 1px solid #343454;
+}
+
+/* QLineEdit#search_bar {
+    padding-left: 30px;
+    padding-right: 30px;
+    color: #4A321C;
+    background: #F9F5F0;
+    border: 5px solid #754926;
+    border-radius: 20px;
+} */
+
+QLineEdit#input_bar {
+    padding-left: 30px;
+    padding-right: 30px;
+    color: #4A321C;
+    background: #F9F5F0;
+    border-radius: 20px;
+}
+
+/* PushButton */
+QPushButton#default_button {
+    color: #F9F5F0;
+    background: #4A321C;
+    border-radius: 20px;
+}
+
+QPushButton#default_button:hover {
+    background-color: #754926;
+    border-radius: 20px;
+    color: #F9F5F0;
+}
+
+QPushButton#click_button {
+    color: #4A321C;
+    background: #D8B797;
+    border-radius: 20px;
+}
+
+QPushButton#click_button:checked {
+    background-color: #754926;
+    border-radius: 20px;
+    color: #F9F5F0;
+}
+
+/* RadioButton */
+QRadioButton#default_radio {
+    color: #4A321C;
+    background:transparent;
+}
+
+QRadioButton#default_radio::indicator {
+    background: #F9F5F0;
+    width: 30px;
+    height: 30px;
+    border: 5px solid #754926;
+    border-radius: 20px;
+}
+
+QRadioButton#default_radio::indicator:checked {
+    background-color:  #754926;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+}
+
+/* CheckBox */
+QCheckBox#default_checkbox {
+    background: transparent;
+    color: #4A321C;
+}
+
+QCheckBox#default_checkbox::indicator {
+    width: 50px;
+    height: 50px;
+    background: #F9F5F0;
+    border: 5px solid #754926;
+    border-radius: 20px;
+}
+
+QCheckBox#default_checkbox::indicator:checked {
+    image: url(src/asset/Image/checkmark.png);
+}
+
+/* Scroll Area */
+QScrollArea#default_scrollArea {
+    background-color: transparent;
+    color: #4A321C;
+}
+
+QWidget#default_scrollAreaContents {
+    background-color: transparent;
+    color: #4A321C;
+}
+
+/* 
+    Log In Page
+*/
+
+QPushButton#logIn_button {
+    background-color: #D9A32B;
+    border: none;
+}
+
+QPushButton#logIn_button:hover {
+    background-color: #DEB14D;
+}
+
+/* 
+    User Tab
+*/
+
+/* User */
+QPushButton#user_button {
+    background-color: #4A321C;
+    color: #D8B797;
+    text-align:right;
+    border: none;
+    padding-top: 10px;
+}
+
+QPushButton#user_base_page:hover {
+    color: #F9F5F0;
+}
+
+/* Home */
+QPushButton#home_button {
+   background: transparent;
+    image: url(src/asset/Image/home);
+}
+
+QPushButton#home_button:hover {
+    image: url(src/asset/Image/home_hover);
+}
+
+/* Audit Log */
+QPushButton#log_button {
+    background: transparent;
+    image: url(src/asset/Image/log);
+}
+
+QPushButton#log_button:hover {
+    image: url(src/asset/Image/log_hover);
+}
+
+/* Receipt */
+QPushButton#receipt_button {
+   background: transparent;
+    image: url(src/asset/Image/receipt);
+}
+
+QPushButton#receipt_button:hover {
+    image: url(src/asset/Image/receipt_hover);
+}
+
+/* Menu */
+QPushButton#menu_button {
+   background: transparent;
+    image: url(src/asset/Image/menu);
+}
+
+QPushButton#menu_button:hover {
+    image: url(src/asset/Image/menu_hover);
+}
+
+/* Account */
+QPushButton#account_button {
+   background: transparent;
+    image: url(src/asset/Image/user);
+}
+
+QPushButton#account_button:hover {
+    image: url(src/asset/Image/user_hover);
+}
+
+/* 
+    List Item
+*/
+QPushButton#brown_list_button, #white_list_button {
+    color: #4A321C;
+    background: transparent;
+    text-align:left;
+}
+
+QPushButton#brown_list_button:hover {
+    color: #F9F5F0;
+}
+
+QPushButton#white_list_button:hover {
+    color: #D8B797;
+}
+
+QPushButton#brown_list_button:pressed {
+    color: #754926;
+}
+
+QPushButton#white_list_button:pressed {
+    color: #754926;
+}
