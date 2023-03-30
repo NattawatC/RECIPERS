@@ -256,6 +256,6 @@ class RecipeCard(QWidget):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = RecipeCard()
+    window = LoginView()
     window.show()
     sys.exit(app.exec())
