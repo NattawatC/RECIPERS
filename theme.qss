@@ -7,24 +7,30 @@ QWidget {
     background-color: #F6F6F6;
 }
 
-QWidget#brown_widget {
+/* QWidget#brown_widget {
     background-color: #D8B797;
     border-radius: 20px;
 }
 
 QWidget#brown_item {
     background: #D8B797;
-}
+} */
 
 /* Frame */
-QFrame#tab_frame {
-    background-color: #4A321C;
-    padding-left: 30px;
-    padding-right: 30px;
-    border: 0px;
+QFrame#frame {
+    background-color: #343454;
+    /* border: none; */
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
-QFrame#dark_brown_border_frame {
+QFrame#total_frame{
+    background-color: #F6F6F6;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+/* QFrame#dark_brown_border_frame {
     background-color: transparent;
     border: 5px solid #4A321C;
     border-radius: 20px;
@@ -44,10 +50,10 @@ QFrame#brown_frame {
 QFrame#upper_curve_frame {
     background: #D8B797;
     border-radius: 20px 20px 0px 0px;
-}
+} */
 
 /* Line */
-QFrame#white_line {
+/* QFrame#white_line {
     border: 3px solid rgba(249, 245, 240, 0.5);
 }
 
@@ -57,7 +63,7 @@ QWidget#brown_line {
 
 QWidget#dark_brown_line {
     background-color: #4A321C;
-}
+} */
 
 /* Label */
 QLabel#default_label {
@@ -65,13 +71,29 @@ QLabel#default_label {
     background:transparent;
 }
 
-QLabel#white_label {
+/* QLabel#white_label {
     background-color: transparent;
     color: #F9F5F0
+} */
+
+QLabel#yellow_label {
+    color: #D9A32B;
+    background:transparent;
 }
 
-QLabel#brown_label {
-    color: #754926;
+QLabel#create_bg{
+    background-color: #D9A32B;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+QLabel#textbox{
+    color: #343454;
+    background-color:transparent;
+}
+
+QLabel#arrow{
+    background-color:transparent;
 }
 
 /* LineEdit */
@@ -94,20 +116,21 @@ QLineEdit#logIn_bar {
 
 QLineEdit#input_bar {
     padding-left: 30px;
-    padding-right: 30px;
-    color: #4A321C;
-    background: #F9F5F0;
-    border-radius: 20px;
+    /* padding-right: 30px; */
+    color: #343454;
+    background: #F6F6F6;
+    border: 1px solid #343454;
+    border-radius: 25px;
 }
 
 /* PushButton */
-QPushButton#default_button {
+/* QPushButton#default_button {
     color: #F9F5F0;
     background: #4A321C;
     border-radius: 20px;
-}
+} */
 
-QPushButton#default_button:hover {
+/* QPushButton#default_button:hover {
     background-color: #754926;
     border-radius: 20px;
     color: #F9F5F0;
@@ -123,10 +146,31 @@ QPushButton#click_button:checked {
     background-color: #754926;
     border-radius: 20px;
     color: #F9F5F0;
+} */
+
+QPushButton#detail_btn{
+    background-color: #D9A32B;
+    border: none;
+    border-radius: 5px;
+    padding-right: 14px;
+}
+
+QPushButton#detail_btn::hover{
+    background-color: #DEB14D;
+}
+
+QPushButton#nav_button {
+    background-color: transparent;
+    color: #F6F6F6;
+}
+
+QPushButton#nav_button:hover {
+    color: #D9A32B;
+    font-weight: bold;
 }
 
 /* RadioButton */
-QRadioButton#default_radio {
+/* QRadioButton#default_radio {
     color: #4A321C;
     background:transparent;
 }
@@ -144,10 +188,10 @@ QRadioButton#default_radio::indicator:checked {
 	height: 30px;
 	width: 30px;
 	border-radius: 20px;
-}
+} */
 
 /* CheckBox */
-QCheckBox#default_checkbox {
+/* QCheckBox#default_checkbox {
     background: transparent;
     color: #4A321C;
 }
@@ -162,10 +206,10 @@ QCheckBox#default_checkbox::indicator {
 
 QCheckBox#default_checkbox::indicator:checked {
     image: url(src/asset/Image/checkmark.png);
-}
+} */
 
 /* Scroll Area */
-QScrollArea#default_scrollArea {
+/* QScrollArea#default_scrollArea {
     background-color: transparent;
     color: #4A321C;
 }
@@ -173,7 +217,7 @@ QScrollArea#default_scrollArea {
 QWidget#default_scrollAreaContents {
     background-color: transparent;
     color: #4A321C;
-}
+} */
 
 /* 
     Log In Page
@@ -193,13 +237,13 @@ QPushButton#logIn_button:hover {
 */
 
 /* User */
-QPushButton#user_button {
+/* QPushButton#user_button {
     background-color: #4A321C;
     color: #D8B797;
     text-align:right;
     border: none;
     padding-top: 10px;
-}
+} */
 
 QPushButton#user_base_page:hover {
     color: #F9F5F0;
