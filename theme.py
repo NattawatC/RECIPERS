@@ -13,8 +13,14 @@ class Theme:
     CHILLAX_REGULAR_20 = QFont("Chillax")
     CHILLAX_REGULAR_20.setPixelSize(20)
 
+    CHILLAX_REGULAR_24 = QFont("Chillax")
+    CHILLAX_REGULAR_24.setPixelSize(24)
+
     CHILLAX_REGULAR_36 = QFont("Chillax")
     CHILLAX_REGULAR_36.setPixelSize(36)
+    
+    CHILLAX_REGULAR_40 = QFont("Chillax")
+    CHILLAX_REGULAR_40.setPixelSize(40)
 
     CHILLAX_BOLD_20 = QFont("Chillax")
     CHILLAX_BOLD_20.setPixelSize(20)
