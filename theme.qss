@@ -21,22 +21,32 @@ QFrame#total_frame{
     border-radius: 10px;
 }
 
-QFrame#total_frame::hover{
+/* QFrame#total_frame::hover{
     background-color: #F6F6F6;
     border: 1px solid #D9A32B;
+    border-radius: 10px;
+} */
+
+QFrame#detail_frame{
+    background-color: #F6F6F6;
+    border: 1px solid #000000;
     border-radius: 10px;
 }
 
 
 /* Line */
-/* QFrame#white_line {
+QFrame#white_line {
     border: 3px solid rgba(249, 245, 240, 0.5);
+}
+
+QWidget#brown_line {
+    background-color: #D8B797;
 }
 
 /* Label */
 QLabel#default_label {
     color: #343454;
-    background:transparent;
+    background-color:transparent;
 }
 
 QLabel#yellow_label {
@@ -50,10 +60,10 @@ QLabel#create_bg{
     padding: 10px;
 }
 
-QLabel#textbox{
+/* QLabel#textbox{
     color: #343454;
     background-color:transparent;
-}
+} */
 
 QLabel#arrow{
     background-color:transparent;
@@ -75,6 +85,17 @@ QLineEdit#input_bar {
     background: #F6F6F6;
     border: 1px solid #343454;
     border-radius: 25px;
+}
+
+/* Scroll Area */
+QScrollArea#default_scrollArea {
+    background-color: red;
+    color: #4A321C;
+}
+
+QWidget#default_scrollAreaContents {
+    background-color: transparent;
+    color: #4A321C;
 }
 
 /* PushButton */
