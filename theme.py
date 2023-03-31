@@ -26,6 +26,10 @@ class Theme:
     CHILLAX_BOLD_20.setPixelSize(20)
     CHILLAX_BOLD_20.setBold(True)
 
+    CHILLAX_BOLD_36 = QFont("Chillax")
+    CHILLAX_BOLD_36.setPixelSize(36)
+    CHILLAX_BOLD_36.setBold(True)
+
     CHILLAX_SEMI_BOLD_32 = QFont("Chillax")
     CHILLAX_SEMI_BOLD_32.setPixelSize(32)
     CHILLAX_SEMI_BOLD_32.setBold(True)
