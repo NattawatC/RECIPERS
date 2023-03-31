@@ -148,14 +148,14 @@ QPushButton#click_button:checked {
     color: #F9F5F0;
 } */
 
-QPushButton#detail_btn{
+QPushButton#card_detail_btn{
     background-color: #D9A32B;
     border: none;
     border-radius: 5px;
     padding-right: 14px;
 }
 
-QPushButton#detail_btn::hover{
+QPushButton#card_detail_btn::hover{
     background-color: #DEB14D;
 }
 
