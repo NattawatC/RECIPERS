@@ -67,6 +67,15 @@ class LoginView(QWidget):
         
         self.setStyleSheet(Theme.get_stylesheet())
 
+    def get_username(self) -> str:
+        return self.lineEdit_username.text()
+    
+    def get_password(self) -> str:
+        return self.lineEdit_password.text()
+    
+    def set_login_button_listener(self, function) -> None:
+        self.login_button.clicked.connect(function)
+
 
 """
 Recipe page
@@ -188,10 +197,27 @@ class RecipeView(QWidget):
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
+        """Add Card"""
+        # self.recipe_card = RecipeCard(self)
+        # self.recipe_card.setObjectName("recipe_card")
+        # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
+
         self.setStyleSheet(Theme.get_stylesheet())
 
-        # self.card = CardWidget()
-        # self.card.setParent(self)
+    def search_recipe(self):
+        pass
+
+    def create_recipe(self):
+        pass
+
+    def save_recipe(self):
+        pass
+
+    def show_recipe(self):
+        pass
+
+    def show_favorite(self):
+        pass
 
 
 """
@@ -205,57 +231,61 @@ class RecipeCard(QWidget):
         QWidget.__init__(self, parent)
         self.setFixedSize(402, 194)
 
-        card_img = QLabel(self)
+        card_frame = QFrame(self)
+        card_frame.setObjectName("total_frame")
+        card_frame.setFixedSize(402, 194)
+
+        card_img = QLabel(card_frame)
         card_img.setObjectName("card_img")
         card_img.setGeometry(QRect(16, 13, 168, 168))
         card_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
 
-        card_name = QLabel("Pork BBQ Stick", self)
+        card_name = QLabel("Pork BBQ Stick", card_frame)
         card_name.setObjectName("textbox")
         card_name.setGeometry(QRect(204, 21, 146, 28))
         card_name.setFont(Theme.CHILLAX_REGULAR_20)
 
-        card_prep_time = QLabel("Prep. Time:", self)
+        card_prep_time = QLabel("Prep. Time:", card_frame)
         card_prep_time.setObjectName("textbox")
         card_prep_time.setGeometry(QRect(204, 64, 141, 22))
         card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_prep_time_num = QLabel("30 mins", self)
+        card_prep_time_num = QLabel("30 mins", card_frame)
         card_prep_time_num.setObjectName("textbox")
         card_prep_time_num.setGeometry(QRect(293, 64, 141, 22))
         card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
         
-        card_cooking_time = QLabel("Cooking Time:", self)
+        card_cooking_time = QLabel("Cooking Time:", card_frame)
         card_cooking_time.setObjectName("textbox")
         card_cooking_time.setGeometry(QRect(204, 96, 141, 22))
         card_cooking_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_cooking_time_num = QLabel("30 mins", self)
+        card_cooking_time_num = QLabel("30 mins", card_frame)
         card_cooking_time_num.setObjectName("textbox")
         card_cooking_time_num.setGeometry(QRect(317, 96, 141, 22))
         card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
 
-        cal_time = QLabel("125 Kcal", self)
+        cal_time = QLabel("125 Kcal", card_frame)
         cal_time.setObjectName("textbox")
         cal_time.setGeometry(QRect(204, 155, 141, 22))
         cal_time.setFont(Theme.CHILLAX_REGULAR_20)
 
-        detail_btn = QPushButton("Detail", self)
-        detail_btn.setObjectName("detail_btn")
-        detail_btn.setGeometry(QRect(316, 153, 74, 22))
-        detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
+        card_detail_btn = QPushButton("Detail", card_frame)
+        card_detail_btn.setObjectName("card_detail_btn")
+        card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
+        card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
 
-        arrow = QLabel(self)
+        arrow = QLabel(card_frame)
         arrow.setObjectName("arrow")
         arrow.setGeometry(QRect(372, 158, 13, 13))
         arrow.setPixmap(QPixmap("src/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
 
         self.setStyleSheet(Theme.get_stylesheet())
-
+        
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = LoginView()
+    window = RecipeCard()
     window.show()
     sys.exit(app.exec())
