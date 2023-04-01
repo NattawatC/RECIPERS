@@ -67,6 +67,15 @@ class LoginView(QWidget):
         
         self.setStyleSheet(Theme.get_stylesheet())
 
+    def get_username(self) -> str:
+        return self.lineEdit_username.text()
+    
+    def get_password(self) -> str:
+        return self.lineEdit_password.text()
+    
+    def set_login_button_listener(self, function) -> None:
+        self.login_button.clicked.connect(function)
+
 
 """
 Recipe page
@@ -159,12 +168,12 @@ class RecipeView(QWidget):
         create_logo.setScaledContents(True)
 
         create_num = QLabel("120", total_c_frame)
-        create_num.setObjectName("textbox")
+        create_num.setObjectName("default_label")
         create_num.setFont(Theme.CHILLAX_REGULAR_24)
         create_num.setGeometry(QRect(92, 17, 60, 20))
 
         create_label = QLabel("Total Created", total_c_frame)
-        create_label.setObjectName("textbox")
+        create_label.setObjectName("default_label")
         create_label.setFont(Theme.CHILLAX_REGULAR_20)
         create_label.setGeometry(QRect(92, 49, 130, 15))
 
@@ -179,19 +188,36 @@ class RecipeView(QWidget):
         save_logo.setScaledContents(True)
 
         save_num = QLabel("120", total_s_frame)
-        save_num.setObjectName("textbox")
+        save_num.setObjectName("default_label")
         save_num.setFont(Theme.CHILLAX_REGULAR_24)
         save_num.setGeometry(QRect(92, 17, 60, 20))
 
         save_label = QLabel("Total Saved", total_s_frame)
-        save_label.setObjectName("textbox")
+        save_label.setObjectName("default_label")
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
+        """Add Card"""
+        # self.recipe_card = RecipeCard(self)
+        # self.recipe_card.setObjectName("recipe_card")
+        # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
+
         self.setStyleSheet(Theme.get_stylesheet())
 
-        # self.card = CardWidget()
-        # self.card.setParent(self)
+    def search_recipe(self):
+        pass
+
+    def create_recipe(self):
+        pass
+
+    def save_recipe(self):
+        pass
+
+    def show_recipe(self):
+        pass
+
+    def show_favorite(self):
+        pass
 
 
 """
@@ -199,53 +225,56 @@ Recipe Card
 """
 
 
-# class RecipeCard(QWidget):
 class RecipeCard(QWidget):
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(402, 194)
 
-        card_img = QLabel(self)
+        card_frame = QFrame(self)
+        card_frame.setObjectName("total_frame")
+        card_frame.setFixedSize(402, 194)
+
+        card_img = QLabel(card_frame)
         card_img.setObjectName("card_img")
         card_img.setGeometry(QRect(16, 13, 168, 168))
         card_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
 
-        card_name = QLabel("Pork BBQ Stick", self)
-        card_name.setObjectName("textbox")
+        card_name = QLabel("Pork BBQ Stick", card_frame)
+        card_name.setObjectName("default_label")
         card_name.setGeometry(QRect(204, 21, 146, 28))
         card_name.setFont(Theme.CHILLAX_REGULAR_20)
 
-        card_prep_time = QLabel("Prep. Time:", self)
-        card_prep_time.setObjectName("textbox")
+        card_prep_time = QLabel("Prep. Time:", card_frame)
+        card_prep_time.setObjectName("default_label")
         card_prep_time.setGeometry(QRect(204, 64, 141, 22))
         card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_prep_time_num = QLabel("30 mins", self)
-        card_prep_time_num.setObjectName("textbox")
+        card_prep_time_num = QLabel("30 mins", card_frame)
+        card_prep_time_num.setObjectName("default_label")
         card_prep_time_num.setGeometry(QRect(293, 64, 141, 22))
         card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
         
-        card_cooking_time = QLabel("Cooking Time:", self)
-        card_cooking_time.setObjectName("textbox")
+        card_cooking_time = QLabel("Cooking Time:", card_frame)
+        card_cooking_time.setObjectName("default_label")
         card_cooking_time.setGeometry(QRect(204, 96, 141, 22))
         card_cooking_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_cooking_time_num = QLabel("30 mins", self)
-        card_cooking_time_num.setObjectName("textbox")
+        card_cooking_time_num = QLabel("30 mins", card_frame)
+        card_cooking_time_num.setObjectName("default_label")
         card_cooking_time_num.setGeometry(QRect(317, 96, 141, 22))
         card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
 
-        cal_time = QLabel("125 Kcal", self)
-        cal_time.setObjectName("textbox")
+        cal_time = QLabel("125 Kcal", card_frame)
+        cal_time.setObjectName("default_label")
         cal_time.setGeometry(QRect(204, 155, 141, 22))
         cal_time.setFont(Theme.CHILLAX_REGULAR_20)
 
-        detail_btn = QPushButton("Detail", self)
-        detail_btn.setObjectName("detail_btn")
-        detail_btn.setGeometry(QRect(316, 153, 74, 22))
-        detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
+        card_detail_btn = QPushButton("Detail", card_frame)
+        card_detail_btn.setObjectName("card_detail_btn")
+        card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
+        card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
 
-        arrow = QLabel(self)
+        arrow = QLabel(card_frame)
         arrow.setObjectName("arrow")
         arrow.setGeometry(QRect(372, 158, 13, 13))
         arrow.setPixmap(QPixmap("src/asset/img/right_arrow.png"))
@@ -253,9 +282,150 @@ class RecipeCard(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
+
+"""
+Detail Recipe Page
+"""
+
+
+class DetailView(QWidget):
+    def __init__(self, parent: QWidget = None):
+        QWidget.__init__(self, parent)
+        self.setFixedSize(1280, 720)
+
+        bg_recipe_img = QLabel(self)
+        bg_recipe_img.setObjectName("default_label")
+        bg_recipe_img.setGeometry(QRect(0, -352, 1617, 1073))
+        bg_recipe_img.setPixmap(QPixmap("src/asset/img/bg_recipe.png"))
+
+        nav_bar = QFrame(self)
+        nav_bar.setObjectName("frame")
+        nav_bar.setGeometry(QRect(0, 0, 271, 720))
+
+        nav_bar = QFrame(self)
+        nav_bar.setObjectName("frame")
+        nav_bar.setGeometry(QRect(0, 0, 271, 720))
+
+        label_logo = QLabel(nav_bar)
+        label_logo.setObjectName("default_label")
+        label_logo.setGeometry(QRect(36, 22, 199, 43))
+        label_logo.setPixmap(QPixmap("src/asset/img/logo_recipe.png"))
+        label_logo.setScaledContents(True)
+
+        nav_recipe_logo = QLabel(nav_bar)
+        nav_recipe_logo.setObjectName("default_label")
+        nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
+        nav_recipe_logo.setPixmap(QPixmap("src/asset/img/nav_recipe.png"))
+        nav_recipe_logo.setScaledContents(True)
+
+        nav_recipe = QPushButton("Recipes", nav_bar)
+        nav_recipe.setObjectName("nav_button")
+        nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
+        nav_recipe.setGeometry(QRect(123, 147, 91, 21))
+
+        nav_create_logo = QLabel(nav_bar)
+        nav_create_logo.setObjectName("default_label")
+        nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
+        nav_create_logo.setPixmap(QPixmap("src/asset/img/nav_create.png"))
+        nav_create_logo.setScaledContents(True)
+
+        nav_create = QPushButton("Create", nav_bar)
+        nav_create.setObjectName("nav_button")
+        nav_create.setFont(Theme.CHILLAX_REGULAR_24)
+        nav_create.setGeometry(QRect(123, 214, 91, 21))
+
+        nav_favorite_logo = QLabel(nav_bar)
+        nav_favorite_logo.setObjectName("default_label")
+        nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
+        nav_favorite_logo.setPixmap(QPixmap("src/asset/img/nav_favorite.png"))
+        nav_favorite_logo.setScaledContents(True)
+
+        nav_favorite = QPushButton("Favorite", nav_bar)
+        nav_favorite.setObjectName("nav_button")
+        nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
+        nav_favorite.setGeometry(QRect(123, 283, 101, 21))
+
+        detail_frame = QFrame(self)
+        detail_frame.setObjectName("detail_frame")
+        detail_frame.setGeometry(QRect(336, 86, 880, 548))
+
+        detail_img = QLabel(detail_frame)
+        detail_img.setObjectName("detail_img")
+        detail_img.setGeometry(QRect(19, 18, 168, 167))
+        detail_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
+
+        detail_name = QLabel("Pork BBQ Stick", detail_frame)
+        detail_name.setObjectName("default_label")
+        detail_name.setGeometry(QRect(212, 13, 300, 50))
+        detail_name.setFont(Theme.CHILLAX_BOLD_36)
+
+        detail_cal = QLabel("Calories:", detail_frame)
+        detail_cal.setObjectName("default_label")
+        detail_cal.setGeometry(QRect(212, 67, 127, 34))
+        detail_cal.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detial_cal_num = QLabel("125 Kcal", detail_frame)
+        detial_cal_num.setObjectName("default_label")
+        detial_cal_num.setGeometry(QRect(315, 67, 127, 34))
+        detial_cal_num.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detail_prep_time = QLabel("Prep Time:", detail_frame)
+        detail_prep_time.setObjectName("default_label")
+        detail_prep_time.setGeometry(QRect(212, 112, 127, 34))
+        detail_prep_time.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detail_prep_time_num = QLabel("30 mins", detail_frame)
+        detail_prep_time_num.setObjectName("default_label")
+        detail_prep_time_num.setGeometry(QRect(337, 112, 127, 34))
+        detail_prep_time_num.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detail_cooking_time = QLabel("Cooking time:", detail_frame)
+        detail_cooking_time.setObjectName("default_label")
+        detail_cooking_time.setGeometry(QRect(212, 157, 164, 34))
+        detail_cooking_time.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detail_cooking_time_num = QLabel("30 mins", detail_frame)
+        detail_cooking_time_num.setObjectName("default_label")
+        detail_cooking_time_num.setGeometry(QRect(380, 157, 127, 34))
+        detail_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_24)
+
+        detail_ingredients = QLabel("Ingredients", detail_frame)
+        detail_ingredients.setObjectName("default_label")
+        detail_ingredients.setGeometry(QRect(45, 205, 111, 28))
+        detail_ingredients.setFont(Theme.CHILLAX_REGULAR_20)
+
+        detail_directions = QLabel("Directions", detail_frame)
+        detail_directions.setObjectName("default_label")
+        detail_directions.setGeometry(QRect(461, 205, 100, 28))
+        detail_directions.setFont(Theme.CHILLAX_REGULAR_20)
+
+        # self.order_scrollArea = QScrollArea(detail_frame)
+        # self.order_scrollArea.setObjectName("default_scrollArea")
+        # self.order_scrollArea.setGeometry(QRect(25, 40, 650, 580))
+        # self.order_scrollArea.setWidgetResizable(True)
+        # self.order_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.order_scrollArea.setHorizontalScrollBarPolicy(
+        #     Qt.ScrollBarAlwaysOff)
+        
+        # self.order_scrollAreaContents = QWidget(self.order_scrollArea)
+        # self.order_scrollAreaContents.setObjectName(
+        #     "default_scrollAreaContents")
+        # self.order_scrollAreaContents.setGeometry(QRect(0, 0, 648, 578))
+
+        # self.vBox = QVBoxLayout()
+        # self.vBox.setAlignment(Qt.AlignTop)
+        # self.order_scrollAreaContents.setLayout(self.vBox)
+        # self.order_scrollArea.setWidget(self.order_scrollAreaContents)
+        
+        # line = QFrame(detail_frame)
+        # line.setObjectName("brown_line")
+        # line.setGeometry(QRect(25, 634, 650, 5))
+
+        self.setStyleSheet(Theme.get_stylesheet())
+
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = RecipeCard()
+    window = DetailView()
     window.show()
     sys.exit(app.exec())
