@@ -15,7 +15,7 @@ class Scrollbar(QMainWindow):
         self.scroll = QScrollArea()             
         self.widget = QWidget()                
         self.vbox = QVBoxLayout()          
-
+        #change content inside here
         for i in range(1,50):
             object = QLabel("TextLabel")
             self.vbox.addWidget(object)
@@ -31,6 +31,7 @@ class Scrollbar(QMainWindow):
 
         self.setGeometry(100, 100, 500, 500)
         self.setWindowTitle('Scroll Area Demonstration')
+        
         
     
 if __name__ == '__main__':
