@@ -26,7 +26,7 @@ class CardWidget(QWidget):
                 card_img = QLabel(self)
                 card_img.setObjectName(u"card_img")
                 card_img.setGeometry(QRect(16, 13, 168, 168))
-                card_img.setPixmap(QPixmap(u"img/Recipe_page_assets/BBQ.png"))
+                card_img.setPixmap(QPixmap(u"src/asset/img/Recipe_page_assets/BBQ.png"))
 
                 card_info_widget = QWidget(self)
                 card_info_widget.setParent(self)
