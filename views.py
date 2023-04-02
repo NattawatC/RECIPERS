@@ -389,37 +389,70 @@ class DetailView(QWidget):
         detail_cooking_time_num.setGeometry(QRect(380, 157, 127, 34))
         detail_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_24)
 
+        # Ingredients Scroll Area #
+
         detail_ingredients = QLabel("Ingredients", detail_frame)
         detail_ingredients.setObjectName("default_label")
         detail_ingredients.setGeometry(QRect(45, 205, 111, 28))
         detail_ingredients.setFont(Theme.CHILLAX_REGULAR_20)
+
+        self.ingredients_scrollArea = QScrollArea(detail_frame)
+        self.ingredients_scrollArea.setObjectName("default_scrollArea")
+        self.ingredients_scrollArea.setGeometry(QRect(45, 235, 378, 301))
+        self.ingredients_scrollArea.setWidgetResizable(True)
+        self.ingredients_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.ingredients_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        
+        self.ingredients_scrollAreaContents = QWidget(self.ingredients_scrollArea)
+        self.ingredients_scrollAreaContents.setObjectName(
+            "default_scrollAreaContents")
+        self.ingredients_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
+
+        self.vBox = QVBoxLayout()
+        self.vBox.setAlignment(Qt.AlignTop)
+        self.ingredients_scrollAreaContents.setLayout(self.vBox)
+        self.ingredients_scrollArea.setWidget(self.ingredients_scrollAreaContents)
+
+        for i in range(1,50):
+            detail_ingredients = QLabel("Ingredients")
+            detail_ingredients.setFont(Theme.CHILLAX_REGULAR_14)
+            detail_ingredients.setObjectName("default_label")
+            self.vBox.addWidget(detail_ingredients)
+
+        self.ingredients_scrollAreaContents.setLayout(self.vBox)
+
+
+        # Directions Scroll Area #
 
         detail_directions = QLabel("Directions", detail_frame)
         detail_directions.setObjectName("default_label")
         detail_directions.setGeometry(QRect(461, 205, 100, 28))
         detail_directions.setFont(Theme.CHILLAX_REGULAR_20)
 
-        # self.order_scrollArea = QScrollArea(detail_frame)
-        # self.order_scrollArea.setObjectName("default_scrollArea")
-        # self.order_scrollArea.setGeometry(QRect(25, 40, 650, 580))
-        # self.order_scrollArea.setWidgetResizable(True)
-        # self.order_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        # self.order_scrollArea.setHorizontalScrollBarPolicy(
-        #     Qt.ScrollBarAlwaysOff)
+        self.directions_scrollArea = QScrollArea(detail_frame)
+        self.directions_scrollArea.setObjectName("default_scrollArea")
+        self.directions_scrollArea.setGeometry(QRect(461, 235, 378, 301))
+        self.directions_scrollArea.setWidgetResizable(True)
+        self.directions_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.directions_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         
-        # self.order_scrollAreaContents = QWidget(self.order_scrollArea)
-        # self.order_scrollAreaContents.setObjectName(
-        #     "default_scrollAreaContents")
-        # self.order_scrollAreaContents.setGeometry(QRect(0, 0, 648, 578))
+        self.directions_scrollAreaContents = QWidget(self.directions_scrollArea)
+        self.directions_scrollAreaContents.setObjectName(
+            "default_scrollAreaContents")
+        self.directions_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
 
-        # self.vBox = QVBoxLayout()
-        # self.vBox.setAlignment(Qt.AlignTop)
-        # self.order_scrollAreaContents.setLayout(self.vBox)
-        # self.order_scrollArea.setWidget(self.order_scrollAreaContents)
-        
-        # line = QFrame(detail_frame)
-        # line.setObjectName("brown_line")
-        # line.setGeometry(QRect(25, 634, 650, 5))
+        self.vBox = QVBoxLayout()
+        self.vBox.setAlignment(Qt.AlignTop)
+        self.directions_scrollAreaContents.setLayout(self.vBox)
+        self.directions_scrollArea.setWidget(self.directions_scrollAreaContents)
+
+        for i in range(1,50):
+            detail_directions = QLabel("Directions")
+            detail_directions.setFont(Theme.CHILLAX_REGULAR_14)
+            detail_directions.setObjectName("default_label")
+            self.vBox.addWidget(detail_directions)
+
+        self.directions_scrollAreaContents.setLayout(self.vBox)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
