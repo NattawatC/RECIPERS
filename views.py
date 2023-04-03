@@ -426,6 +426,6 @@ class DetailView(QWidget):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = DetailView()
+    window = RecipeCard()
     window.show()
     sys.exit(app.exec())
