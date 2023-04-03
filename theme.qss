@@ -33,6 +33,12 @@ QFrame#detail_frame{
     border-radius: 10px;
 }
 
+QFrame#create_frame{
+    background-color: #F6F6F6;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
 
 /* Line */
 QFrame#white_line {
@@ -85,6 +91,25 @@ QLineEdit#input_bar {
     background: #F6F6F6;
     border: 1px solid #343454;
     border-radius: 25px;
+}
+
+QLineEdit#create_bar{
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #343454;
+    background: #F6F6F6;
+    border: 1px solid #343454;
+    border-radius: 7px;
+}
+
+/* Text Edit */
+QTextEdit{
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #343454;
+    background-color: #F6F6F6;
+    border: 1px solid #343454;
+    border-radius: 10px;
 }
 
 /* Scroll Area */
