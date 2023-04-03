@@ -302,7 +302,6 @@ class DetailView(QWidget):
         nav_bar.setObjectName("frame")
         nav_bar.setGeometry(QRect(0, 0, 271, 720))
 
-
         label_logo = QLabel(nav_bar)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(36, 22, 199, 43))
@@ -453,7 +452,13 @@ class DetailView(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-class favorite(QWidget):
+
+"""
+Favorite Page
+"""
+
+
+class FavoriteView(QWidget):
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -513,7 +518,7 @@ class favorite(QWidget):
         
         total_s_frame = QFrame(self)
         total_s_frame.setObjectName("total_frame")
-        total_s_frame.setGeometry(QRect(341, 100, 234, 81))
+        total_s_frame.setGeometry(QRect(341, 83, 234, 81))
 
         save_logo = QLabel(total_s_frame)
         save_logo.setObjectName("create_bg")
@@ -531,15 +536,11 @@ class favorite(QWidget):
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
         
-        
-    
         self.setStyleSheet(Theme.get_stylesheet())
-
-
 
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = favorite()
+    window = FavoriteView()
     window.show()
     sys.exit(app.exec())
