@@ -37,18 +37,21 @@ class Theme:
     CHILLAX_SEMI_BOLD_32.setPixelSize(32)
     CHILLAX_SEMI_BOLD_32.setBold(True)
 
-    CHILLAX_BOLD_80 = QFont("Chillax")
-    CHILLAX_BOLD_80.setPixelSize(80)
-    CHILLAX_BOLD_80.setBold(True)
-
-
-    CHILLAX_BOLD_70 = QFont("Chillax")
-    CHILLAX_BOLD_70.setPixelSize(70)
-    CHILLAX_BOLD_70.setBold(True)
+    CHILLAX_BOLD_40 = QFont("Chillax")
+    CHILLAX_BOLD_40.setPixelSize(40)
+    CHILLAX_BOLD_40.setBold(True)
 
     CHILLAX_BOLD_65 = QFont("Chillax")
     CHILLAX_BOLD_65.setPixelSize(65)
     CHILLAX_BOLD_65.setBold(True)
+
+    CHILLAX_BOLD_80 = QFont("Chillax")
+    CHILLAX_BOLD_80.setPixelSize(80)
+    CHILLAX_BOLD_80.setBold(True)
+
+    CHILLAX_BOLD_70 = QFont("Chillax")
+    CHILLAX_BOLD_70.setPixelSize(70)
+    CHILLAX_BOLD_70.setBold(True)
 
 
     @staticmethod
