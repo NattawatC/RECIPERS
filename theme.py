@@ -7,6 +7,9 @@ class Theme:
     __THEME_PATH = os.path.join(__ROOT_DIR, "theme.qss")
 
     # Font
+    CHILLAX_REGULAR_14 = QFont("Chillax")
+    CHILLAX_REGULAR_14.setPixelSize(14)
+
     CHILLAX_REGULAR_16 = QFont("Chillax")
     CHILLAX_REGULAR_16.setPixelSize(16)
 
