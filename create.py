@@ -141,6 +141,8 @@ class CreateView(QWidget):
         self.create_ing_input.setPlaceholderText("What do you need...")
         self.create_ing_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_ing_input.setGeometry(QRect(290, 56, 244, 354))
+        self.create_ing_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.create_ing_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         create_dir = QLabel("Directions", create_frame)
         create_dir.setObjectName("default_label")
@@ -152,6 +154,8 @@ class CreateView(QWidget):
         self.create_dir_input.setPlaceholderText("How do you make it...")
         self.create_dir_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_dir_input.setGeometry(QRect(564, 56, 278, 354))
+        self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
