@@ -12,6 +12,7 @@ Log In page
 
 
 class LoginView(QWidget):
+    switch_to_recipe = Signal()
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -62,6 +63,7 @@ class LoginView(QWidget):
 
         self.login_button = QPushButton("Ready", self)
         self.login_button.setObjectName("logIn_button")
+        self.login_button.clicked.connect(self.switch_to_recipe)
         self.login_button.setFont(Theme.CHILLAX_REGULAR_20)
         self.login_button.setGeometry(QRect(59, 557, 520, 50))
         
@@ -459,6 +461,8 @@ Favorite Page
 
 
 class FavoriteView(QWidget):
+    switch_to_recipe = Signal()
+    
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -485,6 +489,7 @@ class FavoriteView(QWidget):
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
+        nav_recipe.clicked.connect(self.switch_to_recipe)
         nav_recipe.setObjectName("nav_button")
         nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
         nav_recipe.setGeometry(QRect(123, 147, 91, 21))
@@ -541,6 +546,21 @@ class FavoriteView(QWidget):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = FavoriteView()
+    
+    login_page = LoginView()
+    recipe_page = RecipeView()
+    
+    
+    login_page.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
+    
+    
+    stacked_widget = QStackedWidget()
+    stacked_widget.addWidget(login_page)
+    stacked_widget.addWidget(recipe_page)
+    
+    hbox = QHBoxLayout()
+    hbox.addWidget(stacked_widget)
+    window = LoginView()
+    window.setLayout(hbox)
     window.show()
     sys.exit(app.exec())
