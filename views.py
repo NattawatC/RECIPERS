@@ -13,6 +13,7 @@ Log In page
 
 class LoginView(QWidget):
     switch_to_recipe = Signal()
+    
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -85,6 +86,7 @@ Recipe page
 
 
 class RecipeView(QWidget):
+    switch_to_favorite = Signal()
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -144,6 +146,7 @@ class RecipeView(QWidget):
 
         nav_favorite = QPushButton("Favorite", nav_bar)
         nav_favorite.setObjectName("nav_button")
+        nav_favorite.clicked.connect(self.switch_to_favorite)
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
 
@@ -461,7 +464,7 @@ Favorite Page
 
 
 class FavoriteView(QWidget):
-    switch_to_recipe = Signal()
+    
     
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
@@ -489,7 +492,6 @@ class FavoriteView(QWidget):
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
-        nav_recipe.clicked.connect(self.switch_to_recipe)
         nav_recipe.setObjectName("nav_button")
         nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
         nav_recipe.setGeometry(QRect(123, 147, 91, 21))
@@ -547,20 +549,22 @@ if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
     
-    login_page = LoginView()
-    recipe_page = RecipeView()
-    
-    
-    login_page.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
-    
+    login = LoginView()
+    recipe = RecipeView()
+    fav = FavoriteView()
     
     stacked_widget = QStackedWidget()
-    stacked_widget.addWidget(login_page)
-    stacked_widget.addWidget(recipe_page)
+    stacked_widget.addWidget(login)
+    stacked_widget.addWidget(recipe)
+    stacked_widget.addWidget(fav)
     
-    hbox = QHBoxLayout()
-    hbox.addWidget(stacked_widget)
-    window = LoginView()
-    window.setLayout(hbox)
+    login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
+    recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
+    
+    window = QWidget()
+    window.setLayout(QVBoxLayout())
+    window.layout().addWidget(stacked_widget)
+    
+    # window = LoginView()
     window.show()
     sys.exit(app.exec())
