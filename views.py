@@ -12,6 +12,8 @@ Log In page
 
 
 class LoginView(QWidget):
+    switch_to_recipe = Signal()
+    
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -62,6 +64,7 @@ class LoginView(QWidget):
 
         self.login_button = QPushButton("Ready", self)
         self.login_button.setObjectName("logIn_button")
+        self.login_button.clicked.connect(self.switch_to_recipe)
         self.login_button.setFont(Theme.CHILLAX_REGULAR_20)
         self.login_button.setGeometry(QRect(59, 557, 520, 50))
         
@@ -83,6 +86,7 @@ Recipe page
 
 
 class RecipeView(QWidget):
+    switch_to_favorite = Signal()
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -142,6 +146,7 @@ class RecipeView(QWidget):
 
         nav_favorite = QPushButton("Favorite", nav_bar)
         nav_favorite.setObjectName("nav_button")
+        nav_favorite.clicked.connect(self.switch_to_favorite)
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
 
@@ -459,6 +464,8 @@ Favorite Page
 
 
 class FavoriteView(QWidget):
+    
+    
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -701,6 +708,23 @@ class CreateView(QWidget):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    window = FavoriteView()
+    
+    login = LoginView()
+    recipe = RecipeView()
+    fav = FavoriteView()
+    
+    stacked_widget = QStackedWidget()
+    stacked_widget.addWidget(login)
+    stacked_widget.addWidget(recipe)
+    stacked_widget.addWidget(fav)
+    
+    login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
+    recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
+    
+    window = QWidget()
+    window.setLayout(QVBoxLayout())
+    window.layout().addWidget(stacked_widget)
+    
+    # window = LoginView()
     window.show()
     sys.exit(app.exec())
