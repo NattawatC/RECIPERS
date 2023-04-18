@@ -2,9 +2,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from theme import Theme
-from card_widget import CardWidget
-
+from static.theme import Theme
 
 """
 Log In page
@@ -13,7 +11,7 @@ Log In page
 
 class LoginView(QWidget):
     switch_to_recipe = Signal()
-    
+
     def __init__(self, parent: QWidget = None):
         QWidget.__init__(self, parent)
         self.setFixedSize(1280, 720)
@@ -21,7 +19,7 @@ class LoginView(QWidget):
         label_logo = QLabel(self)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(23, 19, 181, 41))
-        label_logo.setPixmap(QPixmap("src/asset/img/logo.png"))
+        label_logo.setPixmap(QPixmap("../static/asset/img/logo.png"))
         label_logo.setScaledContents(True)
 
         text_lable1 = QLabel("First thing, first!", self)
@@ -54,7 +52,7 @@ class LoginView(QWidget):
 
         pic_login = QLabel(self)
         pic_login.setGeometry(QRect(642, 0, 649, 720))
-        pic_login.setPixmap(QPixmap("src/asset/img/login_pic.png"))
+        pic_login.setPixmap(QPixmap("../static/asset/img/login_pic.png"))
         pic_login.setScaledContents(True)
 
         text_label2 = QLabel("Let's create your Masterpiece!", self)
@@ -94,7 +92,7 @@ class RecipeView(QWidget):
         bg_recipe_img = QLabel(self)
         bg_recipe_img.setObjectName("default_label")
         bg_recipe_img.setGeometry(QRect(0, -352, 1617, 1073))
-        bg_recipe_img.setPixmap(QPixmap("src/asset/img/bg_recipe.png"))
+        bg_recipe_img.setPixmap(QPixmap("../static/asset/img/bg_recipe.png"))
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
@@ -113,13 +111,13 @@ class RecipeView(QWidget):
         label_logo = QLabel(nav_bar)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(36, 22, 199, 43))
-        label_logo.setPixmap(QPixmap("src/asset/img/logo_recipe.png"))
+        label_logo.setPixmap(QPixmap("../static/asset/img/logo_recipe.png"))
         label_logo.setScaledContents(True)
 
         nav_recipe_logo = QLabel(nav_bar)
         nav_recipe_logo.setObjectName("default_label")
         nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        nav_recipe_logo.setPixmap(QPixmap("src/asset/img/nav_recipe.png"))
+        nav_recipe_logo.setPixmap(QPixmap("../static/asset/img/nav_recipe.png"))
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
@@ -130,7 +128,7 @@ class RecipeView(QWidget):
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
         nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
-        nav_create_logo.setPixmap(QPixmap("src/asset/img/nav_create.png"))
+        nav_create_logo.setPixmap(QPixmap("../static/asset/img/nav_create.png"))
         nav_create_logo.setScaledContents(True)
 
         nav_create = QPushButton("Create", nav_bar)
@@ -141,7 +139,7 @@ class RecipeView(QWidget):
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
         nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
-        nav_favorite_logo.setPixmap(QPixmap("src/asset/img/nav_favorite.png"))
+        nav_favorite_logo.setPixmap(QPixmap("../static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
         nav_favorite = QPushButton("Favorite", nav_bar)
@@ -153,7 +151,7 @@ class RecipeView(QWidget):
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")
         search_logo.setGeometry(QRect(336, 25, 35, 35))
-        search_logo.setPixmap(QPixmap("src/asset/img/search.png"))
+        search_logo.setPixmap(QPixmap("../static/asset/img/search.png"))
         search_logo.setScaledContents(True)
 
         self.seaerch_bar = QLineEdit(self)
@@ -169,7 +167,7 @@ class RecipeView(QWidget):
         create_logo = QLabel(total_c_frame)
         create_logo.setObjectName("create_bg")
         create_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        create_logo.setPixmap(QPixmap("src/asset/img/create.png"))
+        create_logo.setPixmap(QPixmap("../static/asset/img/create.png"))
         create_logo.setScaledContents(True)
 
         create_num = QLabel("120", total_c_frame)
@@ -189,7 +187,7 @@ class RecipeView(QWidget):
         save_logo = QLabel(total_s_frame)
         save_logo.setObjectName("create_bg")
         save_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        save_logo.setPixmap(QPixmap("src/asset/img/save.png"))
+        save_logo.setPixmap(QPixmap("../static/asset/img/save.png"))
         save_logo.setScaledContents(True)
 
         save_num = QLabel("120", total_s_frame)
@@ -242,7 +240,7 @@ class RecipeCard(QWidget):
         card_img = QLabel(card_frame)
         card_img.setObjectName("card_img")
         card_img.setGeometry(QRect(16, 13, 168, 168))
-        card_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
+        card_img.setPixmap(QPixmap("../static/asset/img/BBQ.png"))
 
         card_name = QLabel("Pork BBQ Stick", card_frame)
         card_name.setObjectName("default_label")
@@ -282,7 +280,7 @@ class RecipeCard(QWidget):
         arrow = QLabel(card_frame)
         arrow.setObjectName("arrow")
         arrow.setGeometry(QRect(372, 158, 13, 13))
-        arrow.setPixmap(QPixmap("src/asset/img/right_arrow.png"))
+        arrow.setPixmap(QPixmap("../static/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
 
         self.setStyleSheet(Theme.get_stylesheet())
@@ -301,7 +299,7 @@ class DetailView(QWidget):
         bg_recipe_img = QLabel(self)
         bg_recipe_img.setObjectName("default_label")
         bg_recipe_img.setGeometry(QRect(0, -352, 1617, 1073))
-        bg_recipe_img.setPixmap(QPixmap("src/asset/img/bg_recipe.png"))
+        bg_recipe_img.setPixmap(QPixmap("../static/asset/img/bg_recipe.png"))
 
         nav_bar = QFrame(self)
         nav_bar.setObjectName("frame")
@@ -310,13 +308,13 @@ class DetailView(QWidget):
         label_logo = QLabel(nav_bar)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(36, 22, 199, 43))
-        label_logo.setPixmap(QPixmap("src/asset/img/logo_recipe.png"))
+        label_logo.setPixmap(QPixmap("../static/asset/img/logo_recipe.png"))
         label_logo.setScaledContents(True)
 
         nav_recipe_logo = QLabel(nav_bar)
         nav_recipe_logo.setObjectName("default_label")
         nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        nav_recipe_logo.setPixmap(QPixmap("src/asset/img/nav_recipe.png"))
+        nav_recipe_logo.setPixmap(QPixmap("../static/asset/img/nav_recipe.png"))
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
@@ -327,7 +325,7 @@ class DetailView(QWidget):
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
         nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
-        nav_create_logo.setPixmap(QPixmap("src/asset/img/nav_create.png"))
+        nav_create_logo.setPixmap(QPixmap("../static/asset/img/nav_create.png"))
         nav_create_logo.setScaledContents(True)
 
         nav_create = QPushButton("Create", nav_bar)
@@ -338,7 +336,7 @@ class DetailView(QWidget):
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
         nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
-        nav_favorite_logo.setPixmap(QPixmap("src/asset/img/nav_favorite.png"))
+        nav_favorite_logo.setPixmap(QPixmap("../static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
         nav_favorite = QPushButton("Favorite", nav_bar)
@@ -353,7 +351,7 @@ class DetailView(QWidget):
         detail_img = QLabel(detail_frame)
         detail_img.setObjectName("detail_img")
         detail_img.setGeometry(QRect(19, 18, 168, 167))
-        detail_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
+        detail_img.setPixmap(QPixmap("../static/asset/img/BBQ.png"))
 
         detail_name = QLabel("Pork BBQ Stick", detail_frame)
         detail_name.setObjectName("default_label")
@@ -473,7 +471,7 @@ class FavoriteView(QWidget):
         bg_favorite = QLabel(self)
         bg_favorite.setObjectName("default_label")
         bg_favorite.setGeometry(QRect(0, -352, 1617, 1073))
-        bg_favorite.setPixmap(QPixmap("src/asset/img/bg_recipe.png"))
+        bg_favorite.setPixmap(QPixmap("../static/asset/img/bg_recipe.png"))
         
         nav_bar = QFrame(self)
         nav_bar.setObjectName("frame")
@@ -482,13 +480,13 @@ class FavoriteView(QWidget):
         label_logo = QLabel(nav_bar)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(36, 22, 199, 43))
-        label_logo.setPixmap(QPixmap("src/asset/img/logo_recipe.png"))
+        label_logo.setPixmap(QPixmap("../static/asset/img/logo_recipe.png"))
         label_logo.setScaledContents(True)
 
         nav_recipe_logo = QLabel(nav_bar)
         nav_recipe_logo.setObjectName("default_label")
         nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        nav_recipe_logo.setPixmap(QPixmap("src/asset/img/nav_recipe.png"))
+        nav_recipe_logo.setPixmap(QPixmap("../static/asset/img/nav_recipe.png"))
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
@@ -499,7 +497,7 @@ class FavoriteView(QWidget):
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
         nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
-        nav_create_logo.setPixmap(QPixmap("src/asset/img/nav_create.png"))
+        nav_create_logo.setPixmap(QPixmap("../static/asset/img/nav_create.png"))
         nav_create_logo.setScaledContents(True)
 
         nav_create = QPushButton("Create", nav_bar)
@@ -510,7 +508,7 @@ class FavoriteView(QWidget):
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
         nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
-        nav_favorite_logo.setPixmap(QPixmap("src/asset/img/nav_favorite.png"))
+        nav_favorite_logo.setPixmap(QPixmap("../static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
         nav_favorite = QPushButton("Favorite", nav_bar)
@@ -530,7 +528,7 @@ class FavoriteView(QWidget):
         save_logo = QLabel(total_s_frame)
         save_logo.setObjectName("create_bg")
         save_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        save_logo.setPixmap(QPixmap("src/asset/img/save.png"))
+        save_logo.setPixmap(QPixmap("../static/asset/img/save.png"))
         save_logo.setScaledContents(True)
 
         save_num = QLabel("1", total_s_frame)
@@ -559,7 +557,7 @@ class CreateView(QWidget):
         bg_recipe_img = QLabel(self)
         bg_recipe_img.setObjectName("default_label")
         bg_recipe_img.setGeometry(QRect(0, -352, 1617, 1073))
-        bg_recipe_img.setPixmap(QPixmap("src/asset/img/bg_recipe.png"))
+        bg_recipe_img.setPixmap(QPixmap("../static/asset/img/bg_recipe.png"))
 
         nav_bar = QFrame(self)
         nav_bar.setObjectName("frame")
@@ -568,13 +566,13 @@ class CreateView(QWidget):
         label_logo = QLabel(nav_bar)
         label_logo.setObjectName("default_label")
         label_logo.setGeometry(QRect(36, 22, 199, 43))
-        label_logo.setPixmap(QPixmap("src/asset/img/logo_recipe.png"))
+        label_logo.setPixmap(QPixmap("../static/asset/img/logo_recipe.png"))
         label_logo.setScaledContents(True)
 
         nav_recipe_logo = QLabel(nav_bar)
         nav_recipe_logo.setObjectName("default_label")
         nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        nav_recipe_logo.setPixmap(QPixmap("src/asset/img/nav_recipe.png"))
+        nav_recipe_logo.setPixmap(QPixmap("../static/asset/img/nav_recipe.png"))
         nav_recipe_logo.setScaledContents(True)
 
         nav_recipe = QPushButton("Recipes", nav_bar)
@@ -585,7 +583,7 @@ class CreateView(QWidget):
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
         nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
-        nav_create_logo.setPixmap(QPixmap("src/asset/img/nav_create.png"))
+        nav_create_logo.setPixmap(QPixmap("../static/asset/img/nav_create.png"))
         nav_create_logo.setScaledContents(True)
 
         nav_create = QPushButton("Create", nav_bar)
@@ -596,7 +594,7 @@ class CreateView(QWidget):
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
         nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
-        nav_favorite_logo.setPixmap(QPixmap("src/asset/img/nav_favorite.png"))
+        nav_favorite_logo.setPixmap(QPixmap("../static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
         nav_favorite = QPushButton("Favorite", nav_bar)
@@ -616,7 +614,7 @@ class CreateView(QWidget):
         create_logo = QLabel(total_c_frame)
         create_logo.setObjectName("create_bg")
         create_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        create_logo.setPixmap(QPixmap("src/asset/img/create.png"))
+        create_logo.setPixmap(QPixmap("../static/asset/img/create.png"))
         create_logo.setScaledContents(True)
 
         create_num = QLabel("120", total_c_frame)
