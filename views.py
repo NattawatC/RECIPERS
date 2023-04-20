@@ -150,6 +150,16 @@ class RecipeView(QWidget):
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
 
+        logout_logo = QLabel(nav_bar)
+        logout_logo.setObjectName("create_bg")
+        logout_logo.setPixmap(QPixmap("src/asset/img/logout.png"))
+        logout_logo.setScaledContents(True)
+        logout_logo.setGeometry(QRect(215, 664, 43, 43))
+
+        logout_btn = QPushButton(nav_bar)
+        logout_btn.setObjectName("logout_button")
+        logout_btn.setGeometry(QRect(215, 664, 43, 43))
+
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")
         search_logo.setGeometry(QRect(336, 25, 35, 35))
@@ -705,26 +715,33 @@ class CreateView(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
+# if __name__ == '__main__':
+#     import sys
+#     app = QApplication(sys.argv)
+    
+#     login = LoginView()
+#     recipe = RecipeView()
+#     fav = FavoriteView()
+    
+#     stacked_widget = QStackedWidget()
+#     stacked_widget.addWidget(login)
+#     stacked_widget.addWidget(recipe)
+#     stacked_widget.addWidget(fav)
+    
+#     login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
+#     recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
+    
+#     window = QWidget()
+#     window.setLayout(QVBoxLayout())
+#     window.layout().addWidget(stacked_widget)
+    
+#     # window = LoginView()
+#     window.show()
+#     sys.exit(app.exec())
+
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    
-    login = LoginView()
-    recipe = RecipeView()
-    fav = FavoriteView()
-    
-    stacked_widget = QStackedWidget()
-    stacked_widget.addWidget(login)
-    stacked_widget.addWidget(recipe)
-    stacked_widget.addWidget(fav)
-    
-    login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
-    recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
-    
-    window = QWidget()
-    window.setLayout(QVBoxLayout())
-    window.layout().addWidget(stacked_widget)
-    
-    # window = LoginView()
-    window.show()
-    sys.exit(app.exec())
+    win = RecipeView()
+    win.show()
+    app.exec_()
