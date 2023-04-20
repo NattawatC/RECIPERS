@@ -9,8 +9,9 @@ from static.theme import Theme
 
 class RecipeView(QWidget):
     # switch_to_favorite = Signal()
-    def __init__(self, parent: QWidget = None):
-        QWidget.__init__(self, parent)
+    def __init__(self, parent):
+        super().__init__()
+        self.mainWindow = parent
         self.setFixedSize(1280, 720)
 
         bg_recipe_img = QLabel(self)
@@ -129,6 +130,10 @@ class RecipeView(QWidget):
         # self.recipe_card.setObjectName("recipe_card")
         # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
 
+    def logout(self):
+        self.mainWindow.showRecipeView()
+
+
     def search_recipe(self):
         pass
 
@@ -143,6 +148,8 @@ class RecipeView(QWidget):
 
     def show_favorite(self):
         pass
+
+
 
 # def main() -> int:
 #     root = QApplication(sys.argv)
