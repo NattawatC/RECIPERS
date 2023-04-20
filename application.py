@@ -27,6 +27,7 @@ class Application(QMainWindow):
         self.stack.addWidget(self.RecipeView)
         self.setStyleSheet(Theme.get_stylesheet())
 
+        self.AuthController = AuthController()
 
     def showAuthView(self):
         self.stack.setCurrentIndex(0)
@@ -46,6 +47,9 @@ class Application(QMainWindow):
 
         # self.stack.addWidget(self.page)
         self.setStyleSheet(Theme.get_stylesheet())
+
+    def closeEvent(self, event):
+        self.AuthView.logout()
 
     # def initialize_page(self) -> None:
     #     "set up method for user."

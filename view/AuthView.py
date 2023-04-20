@@ -84,12 +84,16 @@ class AuthView(QWidget):
     def login(self) -> None:
         self.AuthController.authenticate(username=self.get_username(), password=self.get_password())
         if self.AuthController.isLoginSuccess():
-            print("Login Success")
-            self.hide()
+            self.close()
             self.mainWindow.showRecipeView()
+            self.AuthController.RecipeController.setUser(self.AuthController.getCurrentUser())
 
         else:
             self.showError("Invalid username or password")
+
+    def logout(self) -> None:
+        self.AuthController.logout()
+        self.show()
 
     def showError(self, message: str) -> None:
         self.errorLabel.setText(message)
