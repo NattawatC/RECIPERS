@@ -1,8 +1,8 @@
 from config import ENGINE as engine
-from sqlalchemy import text, Column, Integer, String, ForeignKey, func, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 import time
-import psycopg2
+# import psycopg2
 
 
 Base = declarative_base()
@@ -37,9 +37,6 @@ class AuthModel:
     def getUser(self, username):
         return self.session.query(User).filter(User.username == username).first()
 
-    def getCurrentUser(self):
-        return self.session.query(User).filter(User.logged_in == True).first()
-
     def validate(self, username, password):
         user = self.getUser(username)
         if user and user.password == password:
@@ -60,8 +57,9 @@ class AuthModel:
         self.session.add(UserLog(user_id=user.id, logged_in_at=time.strftime('%Y-%m-%d %H:%M:%S')))
 
     def logout(self, user):
-        user.logged_in = False
-        self.session.commit()
+        if user:
+            user.logged_in = False
+            self.session.commit()
 
 # with engine.connect() as connection:
 #     result = connection.execute(text("SELECT * FROM recipes"))

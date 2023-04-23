@@ -1,26 +1,37 @@
 from model.AuthModel import AuthModel
-from controller.RecipeController import RecipeController
+
 
 class AuthController:
-    def __init__(self):
-        self.RecipeController = RecipeController()
+    def __init__(self, view=None):
         self.model = AuthModel()
-        self.isSuccess = False
+        self.view = view
+        self.currentUser = None
+        self.isLoginSuccess = False
 
     def authenticate(self,username, password):
         if self.model.validate(username, password):
-            self.isSuccess = True
-            return self.model.getUser(username)
+            self.currentUser = self.model.getUser(username)
+            self.isLoginSuccess = True
+        else:
+            self.isLoginSuccess = False
+        return self.isLoginSuccess
 
-    def isLoginSuccess(self):
-        return self.isSuccess
+    def handleLogin(self):
+        self.authenticate(self.view.lineEdit_username.text(), self.view.lineEdit_password.text())
+        if self.isLoginSuccess:
+            self.view.close()
+            self.view.mainWindow.showRecipeView()
+        else:
+            self.view.showError("Invalid username or password")
 
-    def logout(self):
-        self.model.logout(self.model.getCurrentUser())
+    def handleLogout(self, user=None):
+        self.model.logout(self.currentUser)
+        self.currentUser = None
+        self.view.mainWindow.showAuthView()
         print("log out!")
 
     def getCurrentUser(self):
-        return self.model.getCurrentUser()
+        return self.currentUser
 
 
 

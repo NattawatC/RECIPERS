@@ -1,7 +1,7 @@
 from sqlalchemy import URL, create_engine
 
 URLOBJECT = URL.create(
-    drivername="postgresql+psycopg2",
+    drivername="postgresql",
     username="atip",
     password="",
     host="localhost",
