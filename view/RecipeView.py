@@ -77,7 +77,7 @@ class RecipeView(QWidget):
 
         logout_logo = QLabel(nav_bar)
         logout_logo.setObjectName("create_bg")
-        logout_logo.setPixmap(QPixmap("src/asset/img/logout.png"))
+        logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
         logout_logo.setScaledContents(True)
         logout_logo.setGeometry(QRect(215, 664, 43, 43))
 
@@ -138,6 +138,7 @@ class RecipeView(QWidget):
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
+        self.setStyleSheet(Theme.get_stylesheet())
         """Add Card"""
         # self.recipe_card = RecipeCard(self)
         # self.recipe_card.setObjectName("recipe_card")
@@ -163,11 +164,12 @@ class RecipeView(QWidget):
 
 
 
-# def main() -> int:
-#     root = QApplication(sys.argv)
-#     app = RecipeView()
-#     app.show()
-#     return root.exec()
-#
-# if __name__ == "__main__":
-#     sys.exit(main())
+def main() -> int:
+    root = QApplication(sys.argv)
+    mainwindwo = QMainWindow()
+    app = RecipeView(mainwindwo)
+    app.show()
+    return root.exec()
+
+if __name__ == "__main__":
+    sys.exit(main())
