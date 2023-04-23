@@ -4,13 +4,16 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import *
 
+from controller.RecipeController import RecipeController
 from static.theme import Theme
 
 
 class RecipeView(QWidget):
-    # switch_to_favorite = Signal()
     def __init__(self, parent):
         super().__init__()
+
+
+        self.RecipeController = RecipeController(self)
         self.mainWindow = parent
         self.setFixedSize(1280, 720)
 
@@ -73,17 +76,28 @@ class RecipeView(QWidget):
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
 
+        logout_logo = QLabel(nav_bar)
+        logout_logo.setObjectName("create_bg")
+        logout_logo.setPixmap(QPixmap("src/asset/img/logout.png"))
+        logout_logo.setScaledContents(True)
+        logout_logo.setGeometry(QRect(215, 664, 43, 43))
+
+        logout_btn = QPushButton(nav_bar)
+        logout_btn.setObjectName("logout_button")
+        logout_btn.setGeometry(QRect(215, 664, 43, 43))
+        logout_btn.clicked.connect(self.onLogoutButtonClicked)
+
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")
         search_logo.setGeometry(QRect(336, 25, 35, 35))
         search_logo.setPixmap(QPixmap("static/asset/img/search.png"))
         search_logo.setScaledContents(True)
 
-        self.seaerch_bar = QLineEdit(self)
-        self.seaerch_bar.setObjectName("input_bar")
-        self.seaerch_bar.setPlaceholderText("Search recipe here")
-        self.seaerch_bar.setFont(Theme.CHILLAX_REGULAR_16)
-        self.seaerch_bar.setGeometry(QRect(381, 17, 520, 50))
+        self.search_bar = QLineEdit(self)
+        self.search_bar.setObjectName("input_bar")
+        self.search_bar.setPlaceholderText("Search recipe here")
+        self.search_bar.setFont(Theme.CHILLAX_REGULAR_16)
+        self.search_bar.setGeometry(QRect(381, 17, 520, 50))
 
         total_c_frame = QFrame(self)
         total_c_frame.setObjectName("total_frame")
@@ -130,9 +144,8 @@ class RecipeView(QWidget):
         # self.recipe_card.setObjectName("recipe_card")
         # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
 
-    def logout(self):
-        self.mainWindow.showRecipeView()
-
+    def onLogoutButtonClicked(self):
+        self.RecipeController.logout()
 
     def search_recipe(self):
         pass

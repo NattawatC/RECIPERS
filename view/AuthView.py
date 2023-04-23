@@ -2,19 +2,21 @@ import sys
 
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QHBoxLayout, QStackedWidget
 from PySide6.QtGui import QPixmap
-from PySide6.QtCore import QRect, Signal
+from PySide6.QtCore import QRect, Signal, QEvent, Qt
 from controller.AuthController import AuthController
 from static.theme import Theme
-from view.RecipeView import RecipeView
 
 
 class AuthView(QWidget):
     # switch_to_recipe = Signal()
 
     def __init__(self, parent):
-        self.AuthController = AuthController()
-        self.mainWindow = parent
+
         QWidget.__init__(self)
+
+        self.AuthController = AuthController(self)
+        self.mainWindow = parent
+
         self.setFixedSize(1280, 720)
         self.setObjectName("auth_view")
 
@@ -45,6 +47,7 @@ class AuthView(QWidget):
         self.lineEdit_username.setPlaceholderText("Enter your name")
         self.lineEdit_username.setFont(Theme.CHILLAX_REGULAR_20)
         self.lineEdit_username.setGeometry(QRect(59, 256, 520, 50))
+        self.lineEdit_username.installEventFilter(self)
 
         label_password = QLabel("Password", self)
         label_password.setObjectName("default_label")
@@ -56,6 +59,8 @@ class AuthView(QWidget):
         self.lineEdit_password.setPlaceholderText("**********")
         self.lineEdit_password.setFont(Theme.CHILLAX_REGULAR_20)
         self.lineEdit_password.setEchoMode(QLineEdit.Password)
+        self.lineEdit_password.installEventFilter(self)
+
         self.lineEdit_password.setGeometry(QRect(59, 399, 520, 50))
 
         pic_login = QLabel(self)
@@ -70,10 +75,37 @@ class AuthView(QWidget):
 
         self.login_button = QPushButton("Ready", self)
         self.login_button.setObjectName("logIn_button")
-        # self.login_button.clicked.connect(self.switch_to_recipe)
         self.login_button.setFont(Theme.CHILLAX_REGULAR_20)
         self.login_button.setGeometry(QRect(59, 557, 520, 50))
-        self.login_button.clicked.connect(self.login)
+        self.login_button.setDefault(True)
+        self.login_button.setAutoDefault(True)
+        self.login_button.clicked.connect(self.handleUserLogin)
+
+
+    def eventFilter(self, obj, event):
+        if obj == self.lineEdit_username and event.type() == QEvent.FocusIn:
+            self.lineEdit_username.setStyleSheet("border: 2px solid gray;")
+
+        elif obj == self.lineEdit_password and event.type() == QEvent.FocusIn:
+            self.lineEdit_password.setStyleSheet("border: 2px solid gray;")
+
+        if obj == self.lineEdit_username and event.type() == QEvent.FocusOut:
+            self.lineEdit_username.setStyleSheet(Theme.get_stylesheet())
+
+        elif obj == self.lineEdit_password and event.type() == QEvent.FocusOut:
+            self.lineEdit_password.setStyleSheet(Theme.get_stylesheet())
+            
+        if obj == self.lineEdit_username and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Return:
+                self.lineEdit_password.setFocus()
+                return True
+
+        elif obj == self.lineEdit_password and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Return:
+                self.login_button.click()
+                return True
+        return super().eventFilter(obj, event)
+
 
     def get_username(self) -> str:
         return self.lineEdit_username.text()
@@ -81,20 +113,20 @@ class AuthView(QWidget):
     def get_password(self) -> str:
         return self.lineEdit_password.text()
 
-    def login(self) -> None:
-        self.AuthController.authenticate(username=self.get_username(), password=self.get_password())
-        if self.AuthController.isLoginSuccess():
-            self.close()
-            self.mainWindow.showRecipeView()
-            self.AuthController.RecipeController.setUser(self.AuthController.getCurrentUser())
+    def handleUserLogin(self) -> None:
+        self.AuthController.handleLogin()
 
-        else:
-            self.showError("Invalid username or password")
-
-    def logout(self) -> None:
-        self.AuthController.logout()
-        self.show()
+    def handleUserLogout(self) -> None:
+        self.AuthController.handleLogout()
 
     def showError(self, message: str) -> None:
         self.errorLabel.setText(message)
         self.errorLabel.show()
+
+    def reset(self) -> None:
+        self.errorLabel.hide()
+        self.lineEdit_username.clear()
+        self.lineEdit_password.clear()
+        self.lineEdit_username.setFocus()
+
+
