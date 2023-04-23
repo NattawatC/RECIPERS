@@ -72,7 +72,6 @@ class RecipeView(QWidget):
 
         nav_favorite = QPushButton("Favorite", nav_bar)
         nav_favorite.setObjectName("nav_button")
-        # nav_favorite.clicked.connect(self.switch_to_favorite)
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
 
@@ -90,7 +89,7 @@ class RecipeView(QWidget):
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")
         search_logo.setGeometry(QRect(336, 25, 35, 35))
-        search_logo.setPixmap(QPixmap("static/asset/img/search.png"))
+        search_logo.setPixmap(QPixmap("../static/asset/img/search.png"))
         search_logo.setScaledContents(True)
 
         self.search_bar = QLineEdit(self)
