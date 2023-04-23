@@ -27,29 +27,22 @@ class Application(QMainWindow):
         self.stack.addWidget(self.RecipeView)
         self.setStyleSheet(Theme.get_stylesheet())
 
-        self.AuthController = AuthController()
 
     def showAuthView(self):
+        self.AuthView.reset()
         self.stack.setCurrentIndex(0)
+
 
     def showRecipeView(self):
         self.stack.setCurrentIndex(1)
-
-        # self.current_user = None
-#
-#         # Login Page
-#         # home Page
-#         self.recipe_page = RecipeView(self)
-#
-        # start page
-
-        # self.detail_page = DetailView(self)
-
-        # self.stack.addWidget(self.page)
+        self.RecipeView.RecipeController.setController(self.AuthView.AuthController)
         self.setStyleSheet(Theme.get_stylesheet())
 
     def closeEvent(self, event):
-        self.AuthView.logout()
+        if self.AuthView.AuthController.getCurrentUser() is not None:
+            self.AuthView.handleUserLogout()
+            self.showAuthView()
+        event.accept()
 
     # def initialize_page(self) -> None:
     #     "set up method for user."
