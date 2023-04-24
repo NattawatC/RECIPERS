@@ -5,13 +5,6 @@ from static.theme import Theme
 from view.AuthView import AuthView
 from view.RecipeView import RecipeView
 
-
-#
-# from models import *
-# from views import *
-# # from controllers import *
-#
-#
 class Application(QMainWindow):
 
     def __init__(self):
