@@ -5,12 +5,12 @@ class AuthController:
     def __init__(self, view=None):
         self.model = AuthModel()
         self.view = view
-        self.__currentUser = None
+        self.currentUser = None
         self.isLoginSuccess = False
 
     def authenticate(self,username, password):
         if self.model.validate(username, password):
-            self.__currentUser = self.model.getUser(username)
+            self.currentUser = self.model.getUser(username)
             self.isLoginSuccess = True
         else:
             self.isLoginSuccess = False
@@ -26,15 +26,12 @@ class AuthController:
 
     def handleLogout(self, user=None):
         self.model.logout(self.currentUser)
-        self.setCurrentUser(None)
+        self.currentUser = None
         self.view.mainWindow.showAuthView()
         print("log out!")
 
     def getCurrentUser(self):
-        return self.__currentUser
-
-    def setCurrentUser(self, user):
-        self.__currentUser = user
+        return self.currentUser
 
 
 
