@@ -88,10 +88,16 @@ class Condiment(Category):
     category_type = Column(String, default='condiment')
     __mapper_args__ = {'polymorphic_identity': 'condiment'}
 
+class favorite_recipes(Base):
+    __tablename__ = 'favorite_recipes'
+
+    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'), primary_key=True)
+    recipe = relationship("Recipe", backref=backref('favorite_recipes'))
 
 
 class RecipeModel:
-    def __init__(self, name, ingredients=None, instructions=None):
+    def __init__(self):
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
@@ -99,9 +105,20 @@ class RecipeModel:
         recipes = self.session.query(Recipe).all()
         return recipes
 
+    def getRecipeById(self, id):
+        recipe = self.session.query(Recipe).filter_by(id=id)
+        return recipe
+
+    def getRecipeByName(self, name):
+        recipe = self.session.query(Recipe).filter_by(name=name)
+        return recipe
+
+    def makeFavorite(self, user_id, recipe_id):
+        favorite = favorite_recipes(user_id=user_id, recipe_id=recipe_id)
+        self.session.add(favorite)
+        self.session.commit()
 
 
-#
 # class RecipeRepository:
 #     def __init__(self, session):
 #         self.session = session
@@ -122,4 +139,3 @@ class RecipeModel:
 # class  SideDish(RecipeModel):
 #     def __init__(self, name):
 #         self.name = name
-

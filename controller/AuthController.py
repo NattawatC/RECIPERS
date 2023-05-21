@@ -25,7 +25,7 @@ class AuthController:
             self.view.showError("Invalid username or password")
 
     def handleLogout(self, user=None):
-        self.model.logout(self.currentUser)
+        self.model.logout(self.getCurrentUser())
         self.setCurrentUser(None)
         self.view.mainWindow.showAuthView()
         print("log out!")

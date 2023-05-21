@@ -11,9 +11,9 @@ from static.theme import Theme
 class RecipeView(QWidget):
     def __init__(self, parent):
         super().__init__()
+        self.RecipeController = RecipeController()
+        self.RecipeController.setView(self)
 
-
-        self.RecipeController = RecipeController(self)
         self.mainWindow = parent
         self.setFixedSize(1280, 720)
 
@@ -52,6 +52,7 @@ class RecipeView(QWidget):
         nav_recipe.setObjectName("nav_button")
         nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
         nav_recipe.setGeometry(QRect(123, 147, 91, 21))
+        nav_recipe.clicked.connect(self.mainWindow.NavigateToRecipe)
 
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
@@ -63,6 +64,7 @@ class RecipeView(QWidget):
         nav_create.setObjectName("nav_button")
         nav_create.setFont(Theme.CHILLAX_REGULAR_24)
         nav_create.setGeometry(QRect(123, 214, 91, 21))
+        nav_create.clicked.connect(self.mainWindow.NavigateToCreate)
 
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
@@ -70,10 +72,12 @@ class RecipeView(QWidget):
         nav_favorite_logo.setPixmap(QPixmap("static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
+
         nav_favorite = QPushButton("Favorite", nav_bar)
         nav_favorite.setObjectName("nav_button")
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
+        nav_favorite.clicked.connect(self.mainWindow.NavigateToFavorite)
 
         logout_logo = QLabel(nav_bar)
         logout_logo.setObjectName("create_bg")
@@ -144,13 +148,10 @@ class RecipeView(QWidget):
         self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
         self.recipe_card.setParent(self)
 
-        self.recipe_card1 = RecipeCard()
-        self.recipe_card1.setObjectName("recipe_card")
-        self.recipe_card1.setGeometry(QRect(350, 280, 402, 194))
-        self.recipe_card1.setParent(self)
 
     def onLogoutButtonClicked(self):
         self.RecipeController.logout()
+
 
     def search_recipe(self):
         pass
@@ -225,16 +226,3 @@ class RecipeCard(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-    #
-    # def setupUi(self):
-
-
-def main() -> int:
-    root = QApplication(sys.argv)
-    mainwindwo = QMainWindow()
-    app = RecipeView(mainwindwo)
-    app.show()
-    return root.exec()
-
-if __name__ == "__main__":
-    sys.exit(main())

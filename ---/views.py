@@ -713,29 +713,29 @@ class CreateView(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-# if __name__ == '__main__':
-#     import sys
-#     app = QApplication(sys.argv)
+if __name__ == '__main__':
+    import sys
+    app = QApplication(sys.argv)
     
-#     login = LoginView()
-#     recipe = RecipeView()
-#     fav = FavoriteView()
+    login = LoginView()
+    recipe = RecipeView()
+    fav = FavoriteView()
     
-#     stacked_widget = QStackedWidget()
-#     stacked_widget.addWidget(login)
-#     stacked_widget.addWidget(recipe)
-#     stacked_widget.addWidget(fav)
+    stacked_widget = QStackedWidget()
+    stacked_widget.addWidget(login)
+    stacked_widget.addWidget(recipe)
+    stacked_widget.addWidget(fav)
     
-#     login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
-#     recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
+    login.switch_to_recipe.connect(lambda: stacked_widget.setCurrentIndex(1))
+    recipe.switch_to_favorite.connect(lambda: stacked_widget.setCurrentIndex(2))
     
-#     window = QWidget()
-#     window.setLayout(QVBoxLayout())
-#     window.layout().addWidget(stacked_widget)
+    window = QWidget()
+    window.setLayout(QVBoxLayout())
+    window.layout().addWidget(stacked_widget)
     
-#     # window = LoginView()
-#     window.show()
-#     sys.exit(app.exec())
+    # window = LoginView()
+    window.show()
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     import sys
