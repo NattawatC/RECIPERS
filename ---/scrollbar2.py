@@ -29,7 +29,7 @@ class scrollbar2(QWidget):
         self.vbox.addWidget(self.scroll)
         
         self.setLayout(self.vbox)
-        
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

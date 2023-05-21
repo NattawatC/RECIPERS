@@ -11,9 +11,9 @@ from static.theme import Theme
 class RecipeView(QWidget):
     def __init__(self, parent):
         super().__init__()
+        self.RecipeController = RecipeController()
+        self.RecipeController.setView(self)
 
-
-        self.RecipeController = RecipeController(self)
         self.mainWindow = parent
         self.setFixedSize(1280, 720)
 
@@ -52,6 +52,7 @@ class RecipeView(QWidget):
         nav_recipe.setObjectName("nav_button")
         nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
         nav_recipe.setGeometry(QRect(123, 147, 91, 21))
+        nav_recipe.clicked.connect(self.mainWindow.NavigateToRecipe)
 
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
@@ -63,6 +64,7 @@ class RecipeView(QWidget):
         nav_create.setObjectName("nav_button")
         nav_create.setFont(Theme.CHILLAX_REGULAR_24)
         nav_create.setGeometry(QRect(123, 214, 91, 21))
+        nav_create.clicked.connect(self.mainWindow.NavigateToCreate)
 
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
@@ -70,10 +72,12 @@ class RecipeView(QWidget):
         nav_favorite_logo.setPixmap(QPixmap("static/asset/img/nav_favorite.png"))
         nav_favorite_logo.setScaledContents(True)
 
+
         nav_favorite = QPushButton("Favorite", nav_bar)
         nav_favorite.setObjectName("nav_button")
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
+        nav_favorite.clicked.connect(self.mainWindow.NavigateToFavorite)
 
         logout_logo = QLabel(nav_bar)
         logout_logo.setObjectName("create_bg")
@@ -144,8 +148,10 @@ class RecipeView(QWidget):
         self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
         self.recipe_card.setParent(self)
 
+
     def onLogoutButtonClicked(self):
         self.RecipeController.logout()
+
 
     def search_recipe(self):
         pass
@@ -162,100 +168,61 @@ class RecipeView(QWidget):
     def show_favorite(self):
         pass
 
+
 class RecipeCard(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setObjectName(u"card_widget")
-        self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet(u"background-color: #f6f6f6;\n"
-                           "border: solid;\n"
-                           "border-width: 1px;\n"
-                           "border-radius: 10px\n"
-                           "")
-        self.font3 = QFont()
-        self.font3.setFamilies([u"Chillax"])
-        self.font3.setPointSize(20)
+    def __init__(self, parent: QWidget = None):
+        QWidget.__init__(self, parent)
+        self.setFixedSize(402, 194)
 
-        self.font2 = QFont()
-        self.font2.setFamilies([u"Chillax"])
-        self.font2.setPointSize(16)
-        self.setObjectName(u"card_widget")
-        self.setGeometry(QRect(342, 280, 402, 194))
+        card_frame = QFrame(self)
+        card_frame.setObjectName("total_frame")
+        card_frame.setFixedSize(402, 194)
 
-        card_img = QLabel(self)
-        card_info_widget = QWidget(self)
-        card_name = QLabel(card_info_widget)
-        cal_label = QLabel(card_info_widget)
-        card_prep_time = QLabel(card_info_widget)
-        card_cooking_time = QLabel(card_info_widget)
-        card_calories = QLabel(card_info_widget)
-        card_time_label = QLabel(card_info_widget)
-        prep_time_label = QLabel(card_info_widget)
-        cooking_time_label = QLabel(card_info_widget)
-
-        card_img.setObjectName(u"card_img")
+        card_img = QLabel(card_frame)
+        card_img.setObjectName("card_img")
         card_img.setGeometry(QRect(16, 13, 168, 168))
-        card_img.setPixmap(QPixmap(""))
+        card_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
 
+        card_name = QLabel("Pork BBQ Stick", card_frame)
+        card_name.setObjectName("default_label")
+        card_name.setGeometry(QRect(204, 21, 146, 28))
+        card_name.setFont(Theme.CHILLAX_REGULAR_20)
 
-        card_info_widget = QWidget(self)
-        card_info_widget.setParent(self)
-        card_info_widget.setObjectName(u"card_info_widget")
-        card_info_widget.setGeometry(QRect(200, 10, 191, 171))
-        card_info_widget.setStyleSheet(u"border: none;\n"
-                                       "background-color: transparent;")
+        card_prep_time = QLabel("Prep. Time:", card_frame)
+        card_prep_time.setObjectName("default_label")
+        card_prep_time.setGeometry(QRect(204, 64, 141, 22))
+        card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_name = QLabel(card_info_widget)
-        card_name.setObjectName(u"card_name")
-        card_name.setGeometry(QRect(-1, 10, 150, 16))
-        card_name.setFont(self.font3)
-        card_name.setStyleSheet(u"color: #343454")
+        card_prep_time_num = QLabel("30 mins", card_frame)
+        card_prep_time_num.setObjectName("default_label")
+        card_prep_time_num.setGeometry(QRect(293, 64, 141, 22))
+        card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
 
-        cal_label = QLabel(card_info_widget)
-        cal_label.setObjectName(u"cal_label")
-        cal_label.setGeometry(QRect(63, 140, 41, 21))
-        cal_label.setFont(self.font3)
-        cal_label.setStyleSheet(u"color: #343454;")
+        card_cooking_time = QLabel("Cooking Time:", card_frame)
+        card_cooking_time.setObjectName("default_label")
+        card_cooking_time.setGeometry(QRect(204, 96, 141, 22))
+        card_cooking_time.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_prep_time = QLabel(card_info_widget)
-        card_prep_time.setObjectName(u"card_prep_time")
-        card_prep_time.setGeometry(QRect(90, 50, 61, 21))
-        card_prep_time.setFont(self.font2)
-        card_prep_time.setStyleSheet(u"color: #343454;")
+        card_cooking_time_num = QLabel("30 mins", card_frame)
+        card_cooking_time_num.setObjectName("default_label")
+        card_cooking_time_num.setGeometry(QRect(317, 96, 141, 22))
+        card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
 
-        card_cooking_time = QLabel(card_info_widget)
-        card_cooking_time.setObjectName(u"card_cooking_time")
-        card_cooking_time.setGeometry(QRect(115, 94, 61, 21))
-        card_cooking_time.setFont(self.font2)
-        card_cooking_time.setStyleSheet(u"color: #343454;")
+        cal_time = QLabel("125 Kcal", card_frame)
+        cal_time.setObjectName("default_label")
+        cal_time.setGeometry(QRect(204, 155, 141, 22))
+        cal_time.setFont(Theme.CHILLAX_REGULAR_20)
 
-        card_calories = QLabel(card_info_widget)
-        card_calories.setObjectName(u"card_calories")
-        card_calories.setGeometry(QRect(0, 140, 61, 21))
-        card_calories.setFont(self.font3)
-        card_calories.setStyleSheet(u"color: #343454;")
+        card_detail_btn = QPushButton("Detail", card_frame)
+        card_detail_btn.setObjectName("card_detail_btn")
+        card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
+        card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
 
-        prep_time_label = QLabel(card_info_widget)
-        prep_time_label.setObjectName(u"prep_time_label")
-        prep_time_label.setGeometry(QRect(0, 50, 91, 21))
-        prep_time_label.setFont(self.font2)
-        prep_time_label.setStyleSheet(u"color: #343454;")
+        arrow = QLabel(card_frame)
+        arrow.setObjectName("arrow")
+        arrow.setGeometry(QRect(372, 158, 13, 13))
+        arrow.setPixmap(QPixmap("src/asset/img/right_arrow.png"))
+        arrow.setScaledContents(True)
 
-        cooking_time_label = QLabel(card_info_widget)
-        cooking_time_label.setObjectName(u"cooking_time_label")
-        cooking_time_label.setGeometry(QRect(0, 94, 111, 21))
-        cooking_time_label.setFont(self.font2)
-        cooking_time_label.setStyleSheet(u"color: #343454;")
-    #
-    # def setupUi(self):
+        self.setStyleSheet(Theme.get_stylesheet())
 
-
-# def main() -> int:
-#     root = QApplication(sys.argv)
-#     mainwindwo = QMainWindow()
-#     app = RecipeView(mainwindwo)
-#     app.show()
-#     return root.exec()
-#
-# if __name__ == "__main__":
-#     sys.exit(main())
