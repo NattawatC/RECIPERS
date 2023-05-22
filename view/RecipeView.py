@@ -11,8 +11,10 @@ from view.Navbar import NavigationBar
 
 class RecipeView(NavigationBar):
     def __init__(self, parent):
-        super().__init__()
-        self.mainWindow = parent
+        super().__init__(parent)
+
+        # self.mainWindow = parent
+        
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
@@ -25,7 +27,7 @@ class RecipeView(NavigationBar):
         recipe_label2.setGeometry(QRect(336, 104, 171, 51))
 
        
-        # -------------------------------------------
+        #-------------------------------------------
         logout_logo = QLabel(self)
         logout_logo.setObjectName("create_bg")
         logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))

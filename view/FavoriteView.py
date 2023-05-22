@@ -7,8 +7,8 @@ from view.Navbar import NavigationBar
 class FavoriteView(NavigationBar):
 
     def __init__(self, parent=None):
-        super().__init__()
-        self.mainWindow = parent
+        super().__init__(parent)
+        # self.mainWindow = parent
         #--------------------------------------
 
         favorite_label = QLabel("Save for the next time!", self)
@@ -39,4 +39,4 @@ class FavoriteView(NavigationBar):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-    
+

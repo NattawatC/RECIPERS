@@ -6,8 +6,8 @@ from static.theme import Theme
 from view.Navbar import NavigationBar
 class CreateView(NavigationBar):
     def __init__(self, parent):
-        super().__init__()
-        self.mainWindow = parent
+        super().__init__(parent)
+        # self.mainWindow = parent
         
 #------------------------------------------------------------------
         create_txt = QLabel("Create Your Masterpiece!", self)
