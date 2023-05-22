@@ -8,8 +8,6 @@ from static.theme import Theme
 
 
 class AuthView(QWidget):
-    # switch_to_recipe = Signal()
-
     def __init__(self, parent):
 
         QWidget.__init__(self)
@@ -79,7 +77,7 @@ class AuthView(QWidget):
         self.login_button.setGeometry(QRect(59, 557, 520, 50))
         self.login_button.setDefault(True)
         self.login_button.setAutoDefault(True)
-        self.login_button.clicked.connect(self.handleUserLogin)
+
 
 
     def eventFilter(self, obj, event):
@@ -112,9 +110,6 @@ class AuthView(QWidget):
 
     def get_password(self) -> str:
         return self.lineEdit_password.text()
-
-    def handleUserLogin(self) -> None:
-        self.AuthController.handleLogin()
 
     def handleUserLogout(self) -> None:
         self.AuthController.handleLogout()
