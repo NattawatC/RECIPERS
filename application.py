@@ -15,12 +15,9 @@ class Application(QMainWindow):
         self.setFixedSize(1280, 720)
         self.setWindowTitle("RECIPER")
         self.stack = QStackedWidget()
-        self.stack.addWidget(RecipeView(self))
-        self.setCentralWidget(self.stack)
-        self.setStyleSheet(Theme.get_stylesheet())
-        # self.AuthController = AuthController(AuthView(self))
-        # self.showAuthView()
-        # self.RecipeController = RecipeController()
+        self.AuthController = AuthController(AuthView(self))
+        self.showAuthView()
+        self.RecipeController = RecipeController()
 
     def handleLogin(self):
         if self.AuthController.handleLogin():
