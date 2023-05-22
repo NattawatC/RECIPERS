@@ -6,6 +6,7 @@ from view.AuthView import AuthView
 from view.RecipeView import RecipeView
 from view.FavoriteView import FavoriteView
 from view.CreateView import CreateView
+from controller.RecipeController import RecipeController
 
 class Application(QMainWindow):
 
@@ -13,50 +14,49 @@ class Application(QMainWindow):
         super().__init__()
         self.setFixedSize(1280, 720)
         self.setWindowTitle("RECIPER")
-        self.AuthView = AuthView(self)
-        self.RecipeView = RecipeView(self)
-        self.FavoriteView = FavoriteView(self)
-        self.CreateView = CreateView(self)
-
         self.stack = QStackedWidget()
-        self.setCentralWidget(self.stack)
-        self.stack.addWidget(self.AuthView)
-        self.stack.addWidget(self.RecipeView)
-        self.stack.addWidget(self.FavoriteView)
-        self.stack.addWidget(self.CreateView)
-        self.setStyleSheet(Theme.get_stylesheet())
+        self.AuthController = AuthController(AuthView(self))
+        self.showAuthView()
+        self.RecipeController = RecipeController()
 
+
+    def handleLogin(self):
+        if self.AuthController.handleLogin():
+            self.RecipeController.setController(self.AuthController)
+            self.RecipeController.addView(RecipeView(self))
+            self.RecipeController.addView(FavoriteView(self))
+            self.RecipeController.addView(CreateView(self))
+            print(str(self.RecipeController.views.__len__()))
+
+            for i in self.RecipeController.views:
+                self.stack.addWidget(i)
+        self.setCentralWidget(self.stack)
+        self.showRecipeView()
 
     def showAuthView(self):
-        self.AuthView.reset()
-        self.stack.setCurrentIndex(0)
-
+        self.stack = QStackedWidget()
+        self.RecipeController = RecipeController()
+        self.AuthController = AuthController(AuthView(self))
+        self.setCentralWidget(self.AuthController.AuthView)
+        self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
+        self.setStyleSheet(Theme.get_stylesheet())
 
     def showRecipeView(self):
-        self.stack.setCurrentIndex(1)
-        self.RecipeView.RecipeController.setController(self.AuthView.AuthController)
-        # self.setStyleSheet(Theme.get_stylesheet())
+        self.stack.setCurrentIndex(0)
 
     def closeEvent(self, event):
-        if self.AuthView.AuthController.getCurrentUser() is not None:
-            self.AuthView.handleUserLogout()
-            self.showAuthView()
+        if self.AuthController.getCurrentUser() is not None:
+            self.AuthController.handleLogout()
         event.accept()
 
     def NavigateToFavorite(self):
-        self.stack.setCurrentIndex(2)
-        # self.FavoriteView.FavoriteController.setController(self.AuthView.AuthController)
-        self.setStyleSheet(Theme.get_stylesheet())
+        self.stack.setCurrentIndex(1)
 
     def NavigateToRecipe(self):
-        self.stack.setCurrentIndex(1)
-        self.RecipeView.RecipeController.setController(self.AuthView.AuthController)
-        self.setStyleSheet(Theme.get_stylesheet())
+        self.stack.setCurrentIndex(0)
 
     def NavigateToCreate(self):
-        self.stack.setCurrentIndex(3)
-        self.CreateView.CreateController.setController(self.AuthView.AuthController)
-        self.setStyleSheet(Theme.get_stylesheet())
+        self.stack.setCurrentIndex(2)
 
     # def initialize_page(self) -> None:
     #     "set up method for user."

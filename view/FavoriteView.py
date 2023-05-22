@@ -8,6 +8,7 @@ class FavoriteView(QWidget):
     def __init__(self, parent=None):
         super().__init__()
         self.mainWindow = parent
+
         self.setFixedSize(1280, 720)
 
         bg_favorite = QLabel(self)
@@ -66,6 +67,7 @@ class FavoriteView(QWidget):
         favorite_label.setObjectName("default_label")
         favorite_label.setFont(Theme.CHILLAX_REGULAR_40)
         favorite_label.setGeometry(QRect(336, 22, 460, 56))
+        favorite_label.setText(str(self.mainWindow.AuthController.getCurrentUser()) + "'s Favorite")
 
         total_s_frame = QFrame(self)
         total_s_frame.setObjectName("total_frame")
@@ -88,3 +90,4 @@ class FavoriteView(QWidget):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         self.setStyleSheet(Theme.get_stylesheet())
+

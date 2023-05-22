@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import QRect, QCoreApplication
-from PySide6.QtGui import QPixmap, QFont, Qt
+from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
 
 from controller.RecipeController import RecipeController
@@ -11,8 +11,6 @@ from static.theme import Theme
 class RecipeView(QWidget):
     def __init__(self, parent):
         super().__init__()
-        self.RecipeController = RecipeController()
-        self.RecipeController.setView(self)
 
         self.mainWindow = parent
         self.setFixedSize(1280, 720)
@@ -148,9 +146,8 @@ class RecipeView(QWidget):
         self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
         self.recipe_card.setParent(self)
 
-
     def onLogoutButtonClicked(self):
-        self.RecipeController.logout()
+        self.mainWindow.RecipeController.logout()
 
 
     def search_recipe(self):
@@ -217,6 +214,8 @@ class RecipeCard(QWidget):
         card_detail_btn.setObjectName("card_detail_btn")
         card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
         card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
+        card_detail_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        # card_detail_btn.clicked.connect(self.RecipeController.handleMakeFavorite)
 
         arrow = QLabel(card_frame)
         arrow.setObjectName("arrow")

@@ -88,7 +88,7 @@ class Condiment(Category):
     category_type = Column(String, default='condiment')
     __mapper_args__ = {'polymorphic_identity': 'condiment'}
 
-class favorite_recipes(Base):
+class FavoriteRecipes(Base):
     __tablename__ = 'favorite_recipes'
 
     user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
@@ -114,9 +114,13 @@ class RecipeModel:
         return recipe
 
     def makeFavorite(self, user_id, recipe_id):
-        favorite = favorite_recipes(user_id=user_id, recipe_id=recipe_id)
+        favorite = FavoriteRecipes(user_id=user_id, recipe_id=recipe_id)
         self.session.add(favorite)
         self.session.commit()
+
+    def getFavorites(self, user_id):
+        favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
+        return favorites
 
 
 # class RecipeRepository:
