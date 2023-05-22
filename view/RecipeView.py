@@ -8,23 +8,21 @@ from controller.RecipeController import RecipeController
 from static.theme import Theme
 from view.Navbar import NavigationBar
 
-
 class RecipeView(NavigationBar):
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super().__init__(parent)
 
-        # self.mainWindow = parent
         
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
         recipe_label.setFont(Theme.CHILLAX_REGULAR_20)
-        recipe_label.setGeometry(QRect(336, 81, 121, 16))
+        recipe_label.setGeometry(QRect(336, 92, 121, 16))
 
         recipe_label2 = QLabel("Recipes", self)
         recipe_label2.setObjectName("default_label")
         recipe_label2.setFont(Theme.CHILLAX_REGULAR_40)
-        recipe_label2.setGeometry(QRect(336, 104, 171, 51))
+        recipe_label2.setGeometry(QRect(336, 112, 171, 51))
 
        
         #-------------------------------------------
@@ -53,7 +51,7 @@ class RecipeView(NavigationBar):
 
         total_c_frame = QFrame(self)
         total_c_frame.setObjectName("total_frame")
-        total_c_frame.setGeometry(QRect(341, 168, 234, 81))
+        total_c_frame.setGeometry(QRect(520, 89, 234, 81))
 
         create_logo = QLabel(total_c_frame)
         create_logo.setObjectName("create_bg")
@@ -73,7 +71,7 @@ class RecipeView(NavigationBar):
 
         total_s_frame = QFrame(self)
         total_s_frame.setObjectName("total_frame")
-        total_s_frame.setGeometry(QRect(610, 168, 234, 81))
+        total_s_frame.setGeometry(QRect(789, 89, 234, 81))
 
         save_logo = QLabel(total_s_frame)
         save_logo.setObjectName("create_bg")
@@ -92,7 +90,7 @@ class RecipeView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         """Add Card"""
-        recipes = [1, 2, 3, 4, 5]
+        recipes = [1, 2, 3, 4, 5, 6]
         self.createRecipeCard(recipes)
 
     def onLogoutButtonClicked(self):
@@ -105,10 +103,10 @@ class RecipeView(NavigationBar):
             recipe_card.setObjectName("recipe_card")
 
             if i % 2 == 0:
-                recipe_card.setGeometry(QRect(341, 268 + (236 * newline), 402, 194))
+                recipe_card.setGeometry(QRect(336, 192 + (230 * newline), 402, 194))
 
             else:
-                recipe_card.setGeometry(QRect(814, 268 + (236 * newline), 402, 194))
+                recipe_card.setGeometry(QRect(774, 192 + (230 * newline), 402, 194))
                 newline += 1
             recipe_card.setParent(self)
 
@@ -187,3 +185,4 @@ class RecipeCard(QWidget):
         arrow.setScaledContents(True)
 
         self.setStyleSheet(Theme.get_stylesheet())
+
