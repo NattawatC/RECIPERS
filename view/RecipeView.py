@@ -90,20 +90,6 @@ class RecipeView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         """Add Card"""
-        # self.recipe_card = RecipeCard()
-        # self.recipe_card.setObjectName("recipe_card")
-        # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
-        # self.recipe_card.setParent(self)
-        #
-        # self.recipe_card2 = RecipeCard()
-        # self.recipe_card2.setObjectName("recipe_card")
-        # self.recipe_card2.setGeometry(QRect(814, 268, 402, 194))
-        # self.recipe_card2.setParent(self)
-        #
-        # self.recipe_card = RecipeCard()
-        # self.recipe_card.setObjectName("recipe_card")
-        # self.recipe_card.setGeometry(QRect(341, 504, 402, 194))
-        # self.recipe_card.setParent(self)
         recipes = [1, 2, 3, 4, 5]
         self.createRecipeCard(recipes)
 
