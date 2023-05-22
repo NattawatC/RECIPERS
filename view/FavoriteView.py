@@ -50,7 +50,6 @@ class FavoriteView(QWidget):
         nav_create.setGeometry(QRect(123, 214, 91, 21))
         nav_create.clicked.connect(self.mainWindow.NavigateToCreate)
 
-
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
         nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))

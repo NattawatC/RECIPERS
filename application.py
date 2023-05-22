@@ -19,14 +19,12 @@ class Application(QMainWindow):
         self.showAuthView()
         self.RecipeController = RecipeController()
 
-
     def handleLogin(self):
         if self.AuthController.handleLogin():
             self.RecipeController.setController(self.AuthController)
             self.RecipeController.addView(RecipeView(self))
             self.RecipeController.addView(FavoriteView(self))
             self.RecipeController.addView(CreateView(self))
-            print(str(self.RecipeController.views.__len__()))
 
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
@@ -40,9 +38,6 @@ class Application(QMainWindow):
         self.setCentralWidget(self.AuthController.AuthView)
         self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
         self.setStyleSheet(Theme.get_stylesheet())
-
-    def showRecipeView(self):
-        self.stack.setCurrentIndex(0)
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:
