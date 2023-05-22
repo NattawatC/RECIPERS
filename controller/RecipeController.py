@@ -1,8 +1,6 @@
 from controller.AuthController import AuthController
 from model.RecipeModel import RecipeModel
 
-
-
 class RecipeController:
     def __init__(self):
         self.AuthController = None
@@ -22,6 +20,10 @@ class RecipeController:
         self.user = None
         self.views[0].mainWindow.showAuthView()
         self.views.clear()
+
+    def CreateRecipeCard(self, recipe):
+
+        return self.RecipeModel.createRecipeCard(recipe)
 
     # def CreateRecipe(self, recipe):
     #     self.RecipeModel.createRecipe(recipe)

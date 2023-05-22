@@ -12,9 +12,7 @@ from view.Navbar import NavigationBar
 class RecipeView(NavigationBar):
     def __init__(self, parent):
         super().__init__()
-
         self.mainWindow = parent
-        
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
@@ -27,22 +25,22 @@ class RecipeView(NavigationBar):
         recipe_label2.setGeometry(QRect(336, 104, 171, 51))
 
        
-        #-------------------------------------------
-        # logout_logo = QLabel(nav_bar)
-        # logout_logo.setObjectName("create_bg")
-        # logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
-        # logout_logo.setScaledContents(True)
-        # logout_logo.setGeometry(QRect(215, 664, 43, 43))
+        # -------------------------------------------
+        logout_logo = QLabel(self)
+        logout_logo.setObjectName("create_bg")
+        logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
+        logout_logo.setScaledContents(True)
+        logout_logo.setGeometry(QRect(215, 664, 43, 43))
 
-        # logout_btn = QPushButton(nav_bar)
-        # logout_btn.setObjectName("logout_button")
-        # logout_btn.setGeometry(QRect(215, 664, 43, 43))
-        # logout_btn.clicked.connect(self.onLogoutButtonClicked)
+        logout_btn = QPushButton(self)
+        logout_btn.setObjectName("logout_button")
+        logout_btn.setGeometry(QRect(215, 664, 43, 43))
+        logout_btn.clicked.connect(self.onLogoutButtonClicked)
 
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")
         search_logo.setGeometry(QRect(336, 25, 35, 35))
-        search_logo.setPixmap(QPixmap("../static/asset/img/search.png"))
+        search_logo.setPixmap(QPixmap("static/asset/img/search.png"))
         search_logo.setScaledContents(True)
 
         self.search_bar = QLineEdit(self)
@@ -92,13 +90,39 @@ class RecipeView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         """Add Card"""
-        self.recipe_card = RecipeCard()
-        self.recipe_card.setObjectName("recipe_card")
-        self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
-        self.recipe_card.setParent(self)
+        # self.recipe_card = RecipeCard()
+        # self.recipe_card.setObjectName("recipe_card")
+        # self.recipe_card.setGeometry(QRect(341, 268, 402, 194))
+        # self.recipe_card.setParent(self)
+        #
+        # self.recipe_card2 = RecipeCard()
+        # self.recipe_card2.setObjectName("recipe_card")
+        # self.recipe_card2.setGeometry(QRect(814, 268, 402, 194))
+        # self.recipe_card2.setParent(self)
+        #
+        # self.recipe_card = RecipeCard()
+        # self.recipe_card.setObjectName("recipe_card")
+        # self.recipe_card.setGeometry(QRect(341, 504, 402, 194))
+        # self.recipe_card.setParent(self)
+        recipes = [1, 2, 3, 4, 5]
+        self.createRecipeCard(recipes)
 
     def onLogoutButtonClicked(self):
         self.mainWindow.RecipeController.logout()
+
+    def createRecipeCard(self, recipes):
+        newline = 0
+        for i, recipe in enumerate(recipes):
+            recipe_card = RecipeCard()
+            recipe_card.setObjectName("recipe_card")
+
+            if i % 2 == 0:
+                recipe_card.setGeometry(QRect(341, 268 + (236 * newline), 402, 194))
+
+            else:
+                recipe_card.setGeometry(QRect(814, 268 + (236 * newline), 402, 194))
+                newline += 1
+            recipe_card.setParent(self)
 
 
     def search_recipe(self):
@@ -171,8 +195,7 @@ class RecipeCard(QWidget):
         arrow = QLabel(card_frame)
         arrow.setObjectName("arrow")
         arrow.setGeometry(QRect(372, 158, 13, 13))
-        arrow.setPixmap(QPixmap("src/asset/img/right_arrow.png"))
+        arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
 
         self.setStyleSheet(Theme.get_stylesheet())
-

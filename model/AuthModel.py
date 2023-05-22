@@ -4,7 +4,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 import time
 # import psycopg2
 
-
 Base = declarative_base()
 
 class User(Base):
