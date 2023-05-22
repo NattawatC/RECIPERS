@@ -6,19 +6,15 @@ from PySide6.QtWidgets import *
 
 from controller.RecipeController import RecipeController
 from static.theme import Theme
+from view.Navbar import NavigationBar
 
 
-class RecipeView(QWidget):
+class RecipeView(NavigationBar):
     def __init__(self, parent):
         super().__init__()
 
         self.mainWindow = parent
-        self.setFixedSize(1280, 720)
-
-        bg_recipe_img = QLabel(self)
-        bg_recipe_img.setObjectName("default_label")
-        bg_recipe_img.setGeometry(QRect(0, -352, 1617, 1073))
-        bg_recipe_img.setPixmap(QPixmap("static/asset/img/bg_recipe.png"))
+        
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
@@ -30,63 +26,18 @@ class RecipeView(QWidget):
         recipe_label2.setFont(Theme.CHILLAX_REGULAR_40)
         recipe_label2.setGeometry(QRect(336, 104, 171, 51))
 
-        nav_bar = QFrame(self)
-        nav_bar.setObjectName("frame")
-        nav_bar.setGeometry(QRect(0, 0, 271, 720))
+       
+        #-------------------------------------------
+        # logout_logo = QLabel(nav_bar)
+        # logout_logo.setObjectName("create_bg")
+        # logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
+        # logout_logo.setScaledContents(True)
+        # logout_logo.setGeometry(QRect(215, 664, 43, 43))
 
-        label_logo = QLabel(nav_bar)
-        label_logo.setObjectName("default_label")
-        label_logo.setGeometry(QRect(36, 22, 199, 43))
-        label_logo.setPixmap(QPixmap("static/asset/img/logo_recipe.png"))
-        label_logo.setScaledContents(True)
-
-        nav_recipe_logo = QLabel(nav_bar)
-        nav_recipe_logo.setObjectName("default_label")
-        nav_recipe_logo.setGeometry(QRect(55, 141, 35, 35))
-        nav_recipe_logo.setPixmap(QPixmap("static/asset/img/nav_recipe.png"))
-        nav_recipe_logo.setScaledContents(True)
-
-        nav_recipe = QPushButton("Recipes", nav_bar)
-        nav_recipe.setObjectName("nav_button")
-        nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
-        nav_recipe.setGeometry(QRect(123, 147, 91, 21))
-        nav_recipe.clicked.connect(self.mainWindow.NavigateToRecipe)
-
-        nav_create_logo = QLabel(nav_bar)
-        nav_create_logo.setObjectName("default_label")
-        nav_create_logo.setGeometry(QRect(58, 207, 35, 35))
-        nav_create_logo.setPixmap(QPixmap("static/asset/img/nav_create.png"))
-        nav_create_logo.setScaledContents(True)
-
-        nav_create = QPushButton("Create", nav_bar)
-        nav_create.setObjectName("nav_button")
-        nav_create.setFont(Theme.CHILLAX_REGULAR_24)
-        nav_create.setGeometry(QRect(123, 214, 91, 21))
-        nav_create.clicked.connect(self.mainWindow.NavigateToCreate)
-
-        nav_favorite_logo = QLabel(nav_bar)
-        nav_favorite_logo.setObjectName("default_label")
-        nav_favorite_logo.setGeometry(QRect(54, 273, 40, 40))
-        nav_favorite_logo.setPixmap(QPixmap("static/asset/img/nav_favorite.png"))
-        nav_favorite_logo.setScaledContents(True)
-
-
-        nav_favorite = QPushButton("Favorite", nav_bar)
-        nav_favorite.setObjectName("nav_button")
-        nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
-        nav_favorite.setGeometry(QRect(123, 283, 101, 21))
-        nav_favorite.clicked.connect(self.mainWindow.NavigateToFavorite)
-
-        logout_logo = QLabel(nav_bar)
-        logout_logo.setObjectName("create_bg")
-        logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
-        logout_logo.setScaledContents(True)
-        logout_logo.setGeometry(QRect(215, 664, 43, 43))
-
-        logout_btn = QPushButton(nav_bar)
-        logout_btn.setObjectName("logout_button")
-        logout_btn.setGeometry(QRect(215, 664, 43, 43))
-        logout_btn.clicked.connect(self.onLogoutButtonClicked)
+        # logout_btn = QPushButton(nav_bar)
+        # logout_btn.setObjectName("logout_button")
+        # logout_btn.setGeometry(QRect(215, 664, 43, 43))
+        # logout_btn.clicked.connect(self.onLogoutButtonClicked)
 
         search_logo = QLabel(self)
         search_logo.setObjectName("default_label")

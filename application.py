@@ -29,8 +29,7 @@ class Application(QMainWindow):
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
         self.setCentralWidget(self.stack)
-        self.showRecipeView()
-
+        self.NavigateToRecipe()
     def showAuthView(self):
         self.stack = QStackedWidget()
         self.RecipeController = RecipeController()
