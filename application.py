@@ -19,7 +19,7 @@ class Application(QMainWindow):
         self.showAuthView()
         self.RecipeController = RecipeController()
 
-    def handleLogin(self):
+    def initializeLoggedInState(self):
         if self.AuthController.handleLogin():
             self.RecipeController.setController(self.AuthController)
             self.RecipeController.addView(RecipeView(self))
@@ -37,7 +37,7 @@ class Application(QMainWindow):
         self.RecipeController = RecipeController()
         self.AuthController = AuthController(AuthView(self))
         self.setCentralWidget(self.AuthController.AuthView)
-        self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
+        self.AuthController.AuthView.login_button.clicked.connect(self.initializeLoggedInState)
         self.setStyleSheet(Theme.get_stylesheet())
 
     def closeEvent(self, event):
