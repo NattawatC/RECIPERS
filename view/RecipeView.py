@@ -4,7 +4,11 @@ import sys
 
 from PySide6.QtCore import QRect, QCoreApplication, QSize
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from PySide6.QtCore import QRect, QCoreApplication, QUrl
+from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
+import aiohttp
 import io
 
 
@@ -130,14 +134,11 @@ class CreateRecipeCard(QScrollArea):
         
           
         self.setWidget(self.scroll_area_content)
-        
 
-    def createRecipeCard(self, recipes):
-
+    def createRecipeCard(self,recipes):
         newline = 0
         for i, recipe in enumerate(recipes):
             recipe_card = RecipeCard(recipe)
-
             if i % 2 == 0:
                 recipe_card.setGeometry(QRect(0, 0 + (230 * newline), 402, 194))
 
@@ -206,12 +207,6 @@ class RecipeCard(QWidget):
         arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
 
-        # unstared_label = QLabel(card_frame)
-        # unstared_label.setObjectName("arrow")
-        # unstared_label.setGeometry(QRect(372, 50, 13, 13))
-        # unstared_label.setPixmap(QPixmap("static/asset/img/unstared.png"))
-        # unstared_label.setScaledContents(True)
-
         unstared = QPushButton(card_frame)
         unstared.setObjectName("unstared")
         unstared.setGeometry(QRect(372, 13, 17, 17))
@@ -239,4 +234,28 @@ class RecipeCard(QWidget):
     #             self.card_img.setPixmap(pixmap)
     #     except UnidentifiedImageError:
     #         print(id, "is not an image file")
+        # async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        #     async with session.get(url) as response:
+        #         image_data = await response.read()
+        # try:
+        #     with io.BytesIO(image_data) as img_bytes:
+        #         image = Image.open(img_bytes)
+        #         image = image.resize((170, 170), Image.ANTIALIAS)
+        #         pixmap = QPixmap()
+        #         pixmap.convertFromImage(ImageQt(image))
+        #         self.card_img.setPixmap(pixmap)
+        # except UnidentifiedImageError:
+        #     print(id, "is not an image file")
+        # manager =  QNetworkAccessManager()
+        # request = QNetworkRequest(QUrl(url))
+        # reply = manager.get(request)
+        # manager.get(reply)
 
+
+        # request = requests.get(url)
+        # image_data = io.BytesIO(request.content)
+        # image = Image.open(image_data)
+        # image = image.resize((170, 170), Image.ANTIALIAS)
+        # pixmap = QPixmap()
+        # pixmap.convertFromImage(ImageQt(image))
+        # self.card_img.setPixmap(pixmap)
