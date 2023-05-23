@@ -7,6 +7,12 @@ QWidget {
     background-color: #F6F6F6;
 }
 
+QWidget#default_scrollArea{
+    background-color: transparent;
+    color: transparent;
+    border: None;
+}
+
 /* Frame */
 QFrame#frame {
     background-color: #343454;
@@ -115,13 +121,19 @@ QTextEdit{
 /* Scroll Area */
 QScrollArea#default_scrollArea {
     background-color: transparent;
+    color: transparent;
+    border: None;
+}
+
+QScrollArea#test_scrollArea {
+    background-color: transparent;
     border: 1px solid #343454;
     border-radius: 10px;
 }
 
 QWidget#default_scrollAreaContents {
     background-color: transparent;
-    color: red;
+    color: transparent;
 }
 
 /* QScrollBar::handle:vertical {	

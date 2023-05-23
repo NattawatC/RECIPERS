@@ -1,13 +1,12 @@
 import asyncio
 import sys
 
-import requests
+
 from PySide6.QtCore import QRect, QCoreApplication
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
 import io
-from PIL import Image, UnidentifiedImageError
-from PIL.ImageQt import ImageQt
+
 
 from static.theme import Theme
 from view.Navbar import NavigationBar
@@ -91,40 +90,57 @@ class RecipeView(NavigationBar):
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
         
-        # scroll_area = QScrollArea(self)
-        # scroll_area.setWidgetResizable(True)
-        # scroll_content = CreateRecipeCard()
+        self.CreateRecipeCard = CreateRecipeCard()
+        self.CreateRecipeCard.setParent(self)
         
-        # scroll_area.setWidget(scroll_content)
+        self.styleSheet = Theme.get_stylesheet()
+        
 
         
     def onLogoutButtonClicked(self):
         self.mainWindow.RecipeController.logout()
         
 
-class CreateRecipeCard(QWidget):
+class CreateRecipeCard(QScrollArea):
     def __init__(self):
         super().__init__()
+        self.setObjectName("default_scrollArea")
+        self.setWidgetResizable(True)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setGeometry(QRect(336, 192, 840, 480))
+        
+        
+        self.scroll_area_content = QWidget(self)
+        self.scroll_area_content.setObjectName("default_scrollArea")
         """Add Card"""
+        recipes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.createRecipeCard(recipes)
+        
+       
+        if len(recipes) > 4:
+            if len(recipes) % 2 == 0:
+                self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230))
+            else:
+                self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230) + 82)
+        
+          
+        self.setWidget(self.scroll_area_content)
+        
 
-
-
-    def createRecipeCard(self,recipes):
+    def createRecipeCard(self, recipes):
 
         newline = 0
         for i, recipe in enumerate(recipes):
             recipe_card = RecipeCard(recipe)
 
             if i % 2 == 0:
-                recipe_card.setGeometry(QRect(336, 192 + (230 * newline), 402, 194))
+                recipe_card.setGeometry(QRect(0, 0 + (230 * newline), 402, 194))
 
             else:
-                recipe_card.setGeometry(QRect(774, 192 + (230 * newline), 402, 194))
-
-            newline += 1
-            recipe_card.setParent(self)
-
-
+                recipe_card.setGeometry(QRect(436, 0 + (230 * newline), 402, 194))
+                newline += 1
+            recipe_card.setParent(self.scroll_area_content)
 
 
 class RecipeCard(QWidget):
@@ -141,7 +157,7 @@ class RecipeCard(QWidget):
         self.card_img = QLabel(card_frame)
         self.card_img.setObjectName("card_img")
         self.card_img.setGeometry(QRect(16, 13, 168, 168))
-        self.loadImageFromURL(recipe.image.strip(), recipe.id)
+        # self.loadImageFromURL(recipe.image.strip(), recipe.id)
 
         card_name = QLabel("Pork BBQ Stick", card_frame)
         card_name.setObjectName("default_label")
@@ -188,22 +204,22 @@ class RecipeCard(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-    def loadImageFromURL(self, url, id):
-        async with aiohttp.ClientSession() as session:
-            tasks = []
-            for url in urls:
-                tasks.append(fetch_image(session, url))
+    # def loadImageFromURL(self, url, id):
+    #     async with aiohttp.ClientSession() as session:
+    #         tasks = []
+    #         for url in urls:
+    #             tasks.append(fetch_image(session, url))
 
-            images = await asyncio.gather(*tasks)
+    #         images = await asyncio.gather(*tasks)
 
-        request = requests.get(url)
-        try:
-            with io.BytesIO(request.content) as img_bytes:
-                image = Image.open(img_bytes)
-                image = image.resize((170, 170), Image.ANTIALIAS)
-                pixmap = QPixmap()
-                pixmap.convertFromImage(ImageQt(image))
-                self.card_img.setPixmap(pixmap)
-        except UnidentifiedImageError:
-            print(id, "is not an image file")
+    #     request = requests.get(url)
+    #     try:
+    #         with io.BytesIO(request.content) as img_bytes:
+    #             image = Image.open(img_bytes)
+    #             image = image.resize((170, 170), Image.ANTIALIAS)
+    #             pixmap = QPixmap()
+    #             pixmap.convertFromImage(ImageQt(image))
+    #             self.card_img.setPixmap(pixmap)
+    #     except UnidentifiedImageError:
+    #         print(id, "is not an image file")
 
