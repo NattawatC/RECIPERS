@@ -2,8 +2,8 @@ import asyncio
 import sys
 
 
-from PySide6.QtCore import QRect, QCoreApplication
-from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
+from PySide6.QtCore import QRect, QCoreApplication, QSize
+from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
 from PySide6.QtWidgets import *
 import io
 
@@ -27,15 +27,19 @@ class RecipeView(NavigationBar):
 
        
         #-------------------------------------------
-        logout_logo = QLabel(self)
-        logout_logo.setObjectName("create_bg")
-        logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
-        logout_logo.setScaledContents(True)
-        logout_logo.setGeometry(QRect(215, 664, 43, 43))
+        # logout_logo = QLabel(self)
+        # logout_logo.setObjectName("create_bg")
+        # logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
+        # logout_logo.setScaledContents(True)
+        # logout_logo.setGeometry(QRect(215, 664, 43, 43))
 
         logout_btn = QPushButton(self)
         logout_btn.setObjectName("logout_button")
         logout_btn.setGeometry(QRect(215, 664, 43, 43))
+        icon = QIcon("static/asset/img/logout.png")
+        icon_size = QSize(25, 25)
+        logout_btn.setIcon(icon)
+        logout_btn.setIconSize(icon_size)
         logout_btn.clicked.connect(self.onLogoutButtonClicked)
 
         search_logo = QLabel(self)
@@ -201,6 +205,19 @@ class RecipeCard(QWidget):
         arrow.setGeometry(QRect(372, 158, 13, 13))
         arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
+
+        # unstared_label = QLabel(card_frame)
+        # unstared_label.setObjectName("arrow")
+        # unstared_label.setGeometry(QRect(372, 50, 13, 13))
+        # unstared_label.setPixmap(QPixmap("static/asset/img/unstared.png"))
+        # unstared_label.setScaledContents(True)
+
+        unstared = QPushButton(card_frame)
+        unstared.setObjectName("unstared")
+        unstared.setGeometry(QRect(372, 13, 17, 17))
+        icon = QIcon("static/asset/img/unstared.png")
+        unstared.setIcon(icon)
+        unstared.setIconSize(unstared.size())
 
         self.setStyleSheet(Theme.get_stylesheet())
 
