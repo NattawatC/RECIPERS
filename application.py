@@ -28,8 +28,8 @@ class Application(QMainWindow):
 
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
-        self.setCentralWidget(self.stack)
-        self.NavigateToRecipe()
+            self.setCentralWidget(self.stack)
+            self.NavigateToRecipe()
     def showAuthView(self):
         self.stack = QStackedWidget()
         self.RecipeController = RecipeController()
@@ -48,6 +48,7 @@ class Application(QMainWindow):
 
     def NavigateToRecipe(self):
         self.stack.setCurrentIndex(0)
+        self.RecipeController.CreateRecipeCard()
 
     def NavigateToCreate(self):
         self.stack.setCurrentIndex(2)

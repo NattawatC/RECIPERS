@@ -21,12 +21,10 @@ class RecipeController:
         self.views[0].mainWindow.showAuthView()
         self.views.clear()
 
-    def CreateRecipeCard(self, recipe):
+    def CreateRecipeCard(self):
+        recipes = self.RecipeModel.getAllRecipes()
+        self.views[0].createRecipeCard(recipes)
 
-        return self.RecipeModel.createRecipeCard(recipe)
-
-    # def CreateRecipe(self, recipe):
-    #     self.RecipeModel.createRecipe(recipe)
 
     def handleMakeFavorite(self, recipe):
         self.RecipeModel.makeFavorite(self.user.id, recipe.id)

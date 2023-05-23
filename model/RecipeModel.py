@@ -26,6 +26,7 @@ class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    image = Column(String)
     # type_id = Column(Integer, ForeignKey('recipe_types.id'))
     # type = relationship("RecipeType", backref=backref('recipes'))
     categories: Mapped[List["Classify"]] = relationship(back_populates="recipe")
@@ -106,11 +107,11 @@ class RecipeModel:
         return recipes
 
     def getRecipeById(self, id):
-        recipe = self.session.query(Recipe).filter_by(id=id)
+        recipe = self.session.query(Recipe).filter_by(id=id).first()
         return recipe
 
     def getRecipeByName(self, name):
-        recipe = self.session.query(Recipe).filter_by(name=name)
+        recipe = self.session.query(Recipe).filter_by(name=name).first()
         return recipe
 
     def makeFavorite(self, user_id, recipe_id):

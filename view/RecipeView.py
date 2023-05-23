@@ -1,18 +1,20 @@
+import asyncio
 import sys
 
+import requests
 from PySide6.QtCore import QRect, QCoreApplication
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
+import io
+from PIL import Image, UnidentifiedImageError
+from PIL.ImageQt import ImageQt
 
-from controller.RecipeController import RecipeController
 from static.theme import Theme
 from view.Navbar import NavigationBar
 
 class RecipeView(NavigationBar):
     def __init__(self, parent = None):
         super().__init__(parent)
-
-        
 
         recipe_label = QLabel("Welcome to,", self)
         recipe_label.setObjectName("default_label")
@@ -90,8 +92,7 @@ class RecipeView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         """Add Card"""
-        recipes = [1, 2, 3, 4, 5, 6]
-        self.createRecipeCard(recipes)
+
 
     def onLogoutButtonClicked(self):
         self.mainWindow.RecipeController.logout()
@@ -99,15 +100,15 @@ class RecipeView(NavigationBar):
     def createRecipeCard(self, recipes):
         newline = 0
         for i, recipe in enumerate(recipes):
-            recipe_card = RecipeCard()
-            recipe_card.setObjectName("recipe_card")
+            recipe_card = RecipeCard(recipe)
 
             if i % 2 == 0:
                 recipe_card.setGeometry(QRect(336, 192 + (230 * newline), 402, 194))
 
             else:
                 recipe_card.setGeometry(QRect(774, 192 + (230 * newline), 402, 194))
-                newline += 1
+
+            newline += 1
             recipe_card.setParent(self)
 
 
@@ -128,18 +129,20 @@ class RecipeView(NavigationBar):
 
 
 class RecipeCard(QWidget):
-    def __init__(self, parent: QWidget = None):
-        QWidget.__init__(self, parent)
+    def __init__(self, recipe = None):
+        super().__init__()
         self.setFixedSize(402, 194)
+
+        self.recipe = recipe
 
         card_frame = QFrame(self)
         card_frame.setObjectName("total_frame")
         card_frame.setFixedSize(402, 194)
 
-        card_img = QLabel(card_frame)
-        card_img.setObjectName("card_img")
-        card_img.setGeometry(QRect(16, 13, 168, 168))
-        card_img.setPixmap(QPixmap("src/asset/img/BBQ.png"))
+        self.card_img = QLabel(card_frame)
+        self.card_img.setObjectName("card_img")
+        self.card_img.setGeometry(QRect(16, 13, 168, 168))
+        self.loadImageFromURL(recipe.image.strip(), recipe.id)
 
         card_name = QLabel("Pork BBQ Stick", card_frame)
         card_name.setObjectName("default_label")
@@ -185,4 +188,23 @@ class RecipeCard(QWidget):
         arrow.setScaledContents(True)
 
         self.setStyleSheet(Theme.get_stylesheet())
+
+    def loadImageFromURL(self, url, id):
+        async with aiohttp.ClientSession() as session:
+            tasks = []
+            for url in urls:
+                tasks.append(fetch_image(session, url))
+
+            images = await asyncio.gather(*tasks)
+
+        request = requests.get(url)
+        try:
+            with io.BytesIO(request.content) as img_bytes:
+                image = Image.open(img_bytes)
+                image = image.resize((170, 170), Image.ANTIALIAS)
+                pixmap = QPixmap()
+                pixmap.convertFromImage(ImageQt(image))
+                self.card_img.setPixmap(pixmap)
+        except UnidentifiedImageError:
+            print(id, "is not an image file")
 
