@@ -4,7 +4,7 @@ URLOBJECT = URL.create(
     drivername="postgresql",
     username="atip",
     password="",
-    host="192.168.1.55",
+    host="192.168.1.49",
     port=5432,
     database="Reciper",
 )

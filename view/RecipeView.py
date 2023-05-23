@@ -90,14 +90,27 @@ class RecipeView(NavigationBar):
         save_label.setObjectName("default_label")
         save_label.setFont(Theme.CHILLAX_REGULAR_20)
         save_label.setGeometry(QRect(92, 49, 130, 15))
+        
+        # scroll_area = QScrollArea(self)
+        # scroll_area.setWidgetResizable(True)
+        # scroll_content = CreateRecipeCard()
+        
+        # scroll_area.setWidget(scroll_content)
 
+        
+    def onLogoutButtonClicked(self):
+        self.mainWindow.RecipeController.logout()
+        
+
+class CreateRecipeCard(QWidget):
+    def __init__(self):
+        super().__init__()
         """Add Card"""
 
 
-    def onLogoutButtonClicked(self):
-        self.mainWindow.RecipeController.logout()
 
-    def createRecipeCard(self, recipes):
+    def createRecipeCard(self,recipes):
+
         newline = 0
         for i, recipe in enumerate(recipes):
             recipe_card = RecipeCard(recipe)
@@ -112,20 +125,6 @@ class RecipeView(NavigationBar):
             recipe_card.setParent(self)
 
 
-    def search_recipe(self):
-        pass
-
-    def create_recipe(self):
-        pass
-
-    def save_recipe(self):
-        pass
-
-    def show_recipe(self):
-        pass
-
-    def show_favorite(self):
-        pass
 
 
 class RecipeCard(QWidget):
