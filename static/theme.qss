@@ -172,6 +172,21 @@ QPushButton#nav_button:hover {
     font-weight: bold;
 }
 
+QPushButton#unstared{
+    background-color: transparent;
+    border: none;
+}
+
+QPushButton#logout_button{
+    background-color: #D9A32B;
+    border: none;
+    border-radius: 10px;
+}
+
+QPushButton#logout_button::hover{
+    background-color: #DEB14D;
+}
+
 /* RadioButton */
 /* QRadioButton#default_radio {
     color: #4A321C;
