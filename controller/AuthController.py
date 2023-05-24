@@ -1,9 +1,11 @@
 from model.AuthModel import AuthModel
+from view.AuthView import AuthView
 
 class AuthController:
-    def __init__(self, view):
+    def __init__(self, MainWindow):
         self.model = AuthModel()
-        self.AuthView = view
+        self.AuthView = AuthView(self)
+        self.mainWindow = MainWindow
         self.__currentUser = None
         self.isLoginSuccess = False
 

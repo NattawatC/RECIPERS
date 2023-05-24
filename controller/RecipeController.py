@@ -1,11 +1,16 @@
 from controller.AuthController import AuthController
 from model.RecipeModel import RecipeModel
+from view.RecipeView import *
+from view.FavoriteView import *
+from view.CreateView import *
 
 class RecipeController:
-    def __init__(self):
-        self.AuthController = None
+    def __init__(self, MainWindow, AuthController=None):
+        self.AuthController = AuthController
         self.RecipeModel = RecipeModel()
-        self.views = []
+        self.mainWindow = MainWindow
+        self.views = [RecipeView(self), FavoriteView(self), CreateView(self)]
+        self.views[0].onClickLogoutButton(self.handleLogout)
         self.user = None
 
     def addView(self, view):
@@ -15,19 +20,28 @@ class RecipeController:
         self.AuthController = c
         self.user = self.AuthController.getCurrentUser()
 
-    def logout(self):
+    def handleLogout(self):
         self.AuthController.handleLogout()
         self.user = None
-        self.views[0].mainWindow.showAuthView()
+        self.mainWindow.showAuthView()
         self.views.clear()
 
-    def CreateRecipeCard(self):
+    def handleNavigateToCreate(self):
+        self.mainWindow.NavigateToCreate()
+
+    def handleNavigateToRecipe(self):
+        self.mainWindow.NavigateToRecipe()
+
+    def handleNavigateToFavorite(self):
+        self.mainWindow.NavigateToFavorite()
+
+    def handleCreateRecipeCard(self):
         recipes = self.RecipeModel.getAllRecipes()
         self.views[0].createRecipeCard(recipes)
 
-
     def handleMakeFavorite(self, recipe):
         self.RecipeModel.makeFavorite(self.user.id, recipe.id)
+        self.views[1].makeFavorite(recipe)
 
     def handleGetFavorites(self):
         return self.RecipeModel.getFavorites(self.user.id)

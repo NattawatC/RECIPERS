@@ -2,41 +2,31 @@ from PySide6.QtWidgets import QStackedWidget
 from PySide6.QtWidgets import QMainWindow
 from controller.AuthController import AuthController
 from static.theme import Theme
-from view.AuthView import AuthView
-from view.RecipeView import RecipeView
-from view.FavoriteView import FavoriteView
-from view.CreateView import CreateView
 from controller.RecipeController import RecipeController
 
 class Application(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.RecipeController = None
+        self.stack = None
         self.setFixedSize(1280, 720)
         self.setWindowTitle("RECIPER")
-        self.stack = QStackedWidget()
-        self.AuthController = AuthController(AuthView(self))
         self.showAuthView()
-        self.RecipeController = RecipeController()
+        self.setStyleSheet(Theme.get_stylesheet())
 
     def handleLogin(self):
         if self.AuthController.handleLogin():
-            self.RecipeController.setController(self.AuthController)
-            self.RecipeController.addView(RecipeView(self))
-            self.RecipeController.addView(FavoriteView(self))
-            self.RecipeController.addView(CreateView(self))
-
+            self.stack = QStackedWidget()
+            self.RecipeController = RecipeController(self, self.AuthController)
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
             self.setCentralWidget(self.stack)
             self.NavigateToRecipe()
     def showAuthView(self):
-        self.stack = QStackedWidget()
-        self.RecipeController = RecipeController()
-        self.AuthController = AuthController(AuthView(self))
+        self.AuthController = AuthController(self)
         self.setCentralWidget(self.AuthController.AuthView)
         self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
-        self.setStyleSheet(Theme.get_stylesheet())
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:
@@ -45,10 +35,11 @@ class Application(QMainWindow):
 
     def NavigateToFavorite(self):
         self.stack.setCurrentIndex(1)
+        self.RecipeController.handleMakeFavorite()
 
     def NavigateToRecipe(self):
         self.stack.setCurrentIndex(0)
-        self.RecipeController.CreateRecipeCard()
+        # self.RecipeController.handleCreateRecipeCard()
 
     def NavigateToCreate(self):
         self.stack.setCurrentIndex(2)

@@ -4,9 +4,9 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 
 class NavigationBar(QWidget):
-    def __init__(self,parent=None):
+    def __init__(self, Controller =None):
         super().__init__()
-        self.mainWindow = parent
+        self.RecipeController = Controller
         
         self.setFixedSize(1280, 720)
 
@@ -36,7 +36,6 @@ class NavigationBar(QWidget):
         nav_recipe.setFont(Theme.CHILLAX_REGULAR_24)
         nav_recipe.setGeometry(QRect(123, 147, 91, 21))
         nav_recipe.clicked.connect(self.onClickedNavToRecipe)
-        #nav_recipe.clicked.connect(self.mainWindow.NavigateToRecipe)
         
         nav_create_logo = QLabel(nav_bar)
         nav_create_logo.setObjectName("default_label")
@@ -49,7 +48,6 @@ class NavigationBar(QWidget):
         nav_create.setFont(Theme.CHILLAX_REGULAR_24)
         nav_create.setGeometry(QRect(123, 214, 91, 21))
         nav_create.clicked.connect(self.onClickedNavToCreate)
-        #nav_create.clicked.connect(self.mainWindow.NavigateToCreate)
 
         nav_favorite_logo = QLabel(nav_bar)
         nav_favorite_logo.setObjectName("default_label")
@@ -62,16 +60,15 @@ class NavigationBar(QWidget):
         nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         nav_favorite.setGeometry(QRect(123, 283, 101, 21))
         nav_favorite.clicked.connect(self.onClickedNavToFavorite)
-        #nav_favorite.clicked.connect(self.mainWindow.NavigateToFavorite)
 
     def onClickedNavToRecipe(self):
-        self.mainWindow.NavigateToRecipe()
+        self.RecipeController.handleNavigateToRecipe()
     
     def onClickedNavToCreate(self):
-        self.mainWindow.NavigateToCreate()
+        self.RecipeController.handleNavigateToCreate()
     
     def onClickedNavToFavorite(self):
-        self.mainWindow.NavigateToFavorite()
+        self.RecipeController.handleNavigateToFavorite()
             
             
             

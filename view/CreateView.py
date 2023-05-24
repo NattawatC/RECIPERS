@@ -5,9 +5,8 @@ from PySide6.QtWidgets import *
 from static.theme import Theme
 from view.Navbar import NavigationBar
 class CreateView(NavigationBar):
-    def __init__(self, parent):
-        super().__init__(parent)
-        # self.mainWindow = parent
+    def __init__(self, Controller = None):
+        super().__init__(Controller)
         
 #------------------------------------------------------------------
         create_txt = QLabel("Create Your Masterpiece!", self)

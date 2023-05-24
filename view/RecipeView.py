@@ -1,115 +1,105 @@
-import asyncio
 import sys
-
 
 from PySide6.QtCore import QRect, QCoreApplication, QSize
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
-from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PySide6.QtCore import QRect, QCoreApplication, QUrl
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
-import aiohttp
-import io
 
 
 from static.theme import Theme
 from view.Navbar import NavigationBar
 
 class RecipeView(NavigationBar):
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, Controller = None):
+        super().__init__(Controller)
 
-        recipe_label = QLabel("Welcome to,", self)
-        recipe_label.setObjectName("default_label")
-        recipe_label.setFont(Theme.CHILLAX_REGULAR_20)
-        recipe_label.setGeometry(QRect(336, 92, 121, 16))
+        self.recipe_label = QLabel("Welcome to,", self)
+        self.recipe_label2 = QLabel("Recipes", self)
+        self.logout_btn = QPushButton(self)
+        self.search_bar = QLineEdit(self)
+        self.search_logo = QLabel(self)
+        self.total_c_frame = QFrame(self)
+        self.create_logo = QLabel(self.total_c_frame)
+        self.create_num = QLabel("120", self.total_c_frame)
+        self.create_label = QLabel("Total Created", self.total_c_frame)
+        self.total_s_frame = QFrame(self)
+        self.save_logo = QLabel(self.total_s_frame)
+        self.save_label = QLabel("Total Saved", self.total_s_frame)
+        self.save_num = QLabel("120", self.total_s_frame)
+        self.RecipeCardScrollArea = RecipeCardScrollArea()
 
-        recipe_label2 = QLabel("Recipes", self)
-        recipe_label2.setObjectName("default_label")
-        recipe_label2.setFont(Theme.CHILLAX_REGULAR_40)
-        recipe_label2.setGeometry(QRect(336, 112, 171, 51))
+        self.decorateWidgets()
 
-       
-        #-------------------------------------------
-        # logout_logo = QLabel(self)
-        # logout_logo.setObjectName("create_bg")
-        # logout_logo.setPixmap(QPixmap("static/asset/img/logout.png"))
-        # logout_logo.setScaledContents(True)
-        # logout_logo.setGeometry(QRect(215, 664, 43, 43))
 
-        logout_btn = QPushButton(self)
-        logout_btn.setObjectName("logout_button")
-        logout_btn.setGeometry(QRect(215, 664, 43, 43))
+    def onClickLogoutButton(self, func):
+        self.logout_btn.clicked.connect(func)
+
+    def decorateWidgets(self):
+        self.recipe_label.setObjectName("default_label")
+        self.recipe_label.setFont(Theme.CHILLAX_REGULAR_20)
+        self.recipe_label.setGeometry(QRect(336, 92, 121, 16))
+
+        self.recipe_label2.setObjectName("default_label")
+        self.recipe_label2.setFont(Theme.CHILLAX_REGULAR_40)
+        self.recipe_label2.setGeometry(QRect(336, 112, 171, 51))
+
+        self.logout_btn.setObjectName("logout_button")
+        self.logout_btn.setGeometry(QRect(215, 664, 43, 43))
         icon = QIcon("static/asset/img/logout.png")
         icon_size = QSize(25, 25)
-        logout_btn.setIcon(icon)
-        logout_btn.setIconSize(icon_size)
-        logout_btn.clicked.connect(self.onLogoutButtonClicked)
+        self.logout_btn.setIcon(icon)
+        self.logout_btn.setIconSize(icon_size)
 
-        search_logo = QLabel(self)
-        search_logo.setObjectName("default_label")
-        search_logo.setGeometry(QRect(336, 25, 35, 35))
-        search_logo.setPixmap(QPixmap("static/asset/img/search.png"))
-        search_logo.setScaledContents(True)
+        self.search_logo.setObjectName("default_label")
+        self.search_logo.setGeometry(QRect(336, 25, 35, 35))
+        self.search_logo.setPixmap(QPixmap("static/asset/img/search.png"))
+        self.search_logo.setScaledContents(True)
 
-        self.search_bar = QLineEdit(self)
         self.search_bar.setObjectName("input_bar")
         self.search_bar.setPlaceholderText("Search recipe here")
         self.search_bar.setFont(Theme.CHILLAX_REGULAR_16)
         self.search_bar.setGeometry(QRect(381, 17, 520, 50))
 
-        total_c_frame = QFrame(self)
-        total_c_frame.setObjectName("total_frame")
-        total_c_frame.setGeometry(QRect(520, 89, 234, 81))
+        self.total_c_frame.setObjectName("total_frame")
+        self.total_c_frame.setGeometry(QRect(520, 89, 234, 81))
 
-        create_logo = QLabel(total_c_frame)
-        create_logo.setObjectName("create_bg")
-        create_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        create_logo.setPixmap(QPixmap("static/asset/img/create.png"))
-        create_logo.setScaledContents(True)
+        self.create_logo.setObjectName("create_bg")
+        self.create_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
+        self.create_logo.setPixmap(QPixmap("static/asset/img/create.png"))
+        self.create_logo.setScaledContents(True)
 
-        create_num = QLabel("120", total_c_frame)
-        create_num.setObjectName("default_label")
-        create_num.setFont(Theme.CHILLAX_REGULAR_24)
-        create_num.setGeometry(QRect(92, 17, 60, 20))
+        self.create_num.setObjectName("default_label")
+        self.create_num.setFont(Theme.CHILLAX_REGULAR_24)
+        self.create_num.setGeometry(QRect(92, 17, 60, 20))
 
-        create_label = QLabel("Total Created", total_c_frame)
-        create_label.setObjectName("default_label")
-        create_label.setFont(Theme.CHILLAX_REGULAR_20)
-        create_label.setGeometry(QRect(92, 49, 130, 15))
+        self.create_label.setObjectName("default_label")
+        self.create_label.setFont(Theme.CHILLAX_REGULAR_20)
+        self.create_label.setGeometry(QRect(92, 49, 130, 15))
 
-        total_s_frame = QFrame(self)
-        total_s_frame.setObjectName("total_frame")
-        total_s_frame.setGeometry(QRect(789, 89, 234, 81))
+        self.total_s_frame.setObjectName("total_frame")
+        self.total_s_frame.setGeometry(QRect(789, 89, 234, 81))
 
-        save_logo = QLabel(total_s_frame)
-        save_logo.setObjectName("create_bg")
-        save_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
-        save_logo.setPixmap(QPixmap("static/asset/img/save.png"))
-        save_logo.setScaledContents(True)
+        self.save_logo.setObjectName("create_bg")
+        self.save_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
+        self.save_logo.setPixmap(QPixmap("static/asset/img/save.png"))
+        self.save_logo.setScaledContents(True)
 
-        save_num = QLabel("120", total_s_frame)
-        save_num.setObjectName("default_label")
-        save_num.setFont(Theme.CHILLAX_REGULAR_24)
-        save_num.setGeometry(QRect(92, 17, 60, 20))
+        self.save_num.setObjectName("default_label")
+        self.save_num.setFont(Theme.CHILLAX_REGULAR_24)
+        self.save_num.setGeometry(QRect(92, 17, 60, 20))
 
-        save_label = QLabel("Total Saved", total_s_frame)
-        save_label.setObjectName("default_label")
-        save_label.setFont(Theme.CHILLAX_REGULAR_20)
-        save_label.setGeometry(QRect(92, 49, 130, 15))
-        
-        self.CreateRecipeCard = CreateRecipeCard()
-        self.CreateRecipeCard.setParent(self)
-        
+
+        self.save_label.setObjectName("default_label")
+        self.save_label.setFont(Theme.CHILLAX_REGULAR_20)
+        self.save_label.setGeometry(QRect(92, 49, 130, 15))
+
+        self.RecipeCardScrollArea.setParent(self)
         self.styleSheet = Theme.get_stylesheet()
-        
 
-        
-    def onLogoutButtonClicked(self):
-        self.mainWindow.RecipeController.logout()
-        
 
-class CreateRecipeCard(QScrollArea):
+
+class RecipeCardScrollArea(QScrollArea):
     def __init__(self):
         super().__init__()
         self.setObjectName("default_scrollArea")
@@ -117,10 +107,10 @@ class CreateRecipeCard(QScrollArea):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setGeometry(QRect(336, 192, 840, 480))
-        
-        
         self.scroll_area_content = QWidget(self)
         self.scroll_area_content.setObjectName("default_scrollArea")
+        self.cards = []
+
         """Add Card"""
         recipes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.createRecipeCard(recipes)
@@ -131,8 +121,7 @@ class CreateRecipeCard(QScrollArea):
                 self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230))
             else:
                 self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230) + 82)
-        
-          
+
         self.setWidget(self.scroll_area_content)
 
     def createRecipeCard(self,recipes):
@@ -146,6 +135,10 @@ class CreateRecipeCard(QScrollArea):
                 recipe_card.setGeometry(QRect(436, 0 + (230 * newline), 402, 194))
                 newline += 1
             recipe_card.setParent(self.scroll_area_content)
+            self.cards.append(recipe_card)
+
+    def getAllRecipeCard(self):
+        return self.cards
 
 
 class RecipeCard(QWidget):
@@ -215,6 +208,14 @@ class RecipeCard(QWidget):
         unstared.setIconSize(unstared.size())
 
         self.setStyleSheet(Theme.get_stylesheet())
+
+
+
+
+
+
+
+
 
     # def loadImageFromURL(self, url, id):
     #     async with aiohttp.ClientSession() as session:
