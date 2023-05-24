@@ -54,16 +54,17 @@ class RecipeController:
 
     def connectFavoriteSignals(self, cards):
         favorites = self.handleGetFavorites()
+        recipe_cards = {}  # Dictionary to store recipe ID-card mapping
+
         for card in cards:
-            card.unStarred.clicked.connect(partial(self.handleMakeFavorite, card.recipe.id, card.unStarred))
-            
-        for favorite in favorites:
-            for card in cards:
-                if favorite.id == card.recipe.id:
-                    card.setFavorite(True)
-                    card.unStarred.clicked.disconnect()  # Disconnect previous connection
-                    card.unStarred.clicked.connect(
-                        partial(self.handleUnFavorite, card.recipe.id, card.unStarred))
+            card_id = card.recipe.id
+            recipe_cards[card_id] = card
+
+            if card_id in [favorite.id for favorite in favorites]:
+                card.setFavorite(True)
+                card.unStarred.clicked.connect(partial(self.handleUnFavorite, card_id, card.unStarred))
+            else:
+                card.unStarred.clicked.connect(partial(self.handleMakeFavorite, card_id, card.unStarred))
 
     def initializeCard(self):
         recipes = self.RecipeModel.getAllRecipes()
