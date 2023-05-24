@@ -17,6 +17,28 @@ class RecipeController:
         self.FavoriteView = self.initFavoriteView()
         self.views = [self.RecipeView, self.FavoriteView, CreateView(self)]
 
+    @staticmethod
+    def createCards(items) -> list:
+        cards = []
+        newline = 0
+
+        if len(items) == 1:
+            recipe_card = RecipeCard(items[0])
+            recipe_card.setGeometry(QRect(0, 0, 402, 194))
+            cards.append(recipe_card)
+        else:
+            for i, item in enumerate(items):
+                recipe_card = RecipeCard(item)
+                x = 0 if i % 2 == 0 else 436
+                y = 230 * newline
+
+                if i % 2 != 0:
+                    newline += 1
+
+                recipe_card.setGeometry(QRect(x, y, 402, 194))
+                cards.append(recipe_card)
+        return cards
+
     def addView(self, view):
         self.views.append(view)
 
@@ -30,42 +52,24 @@ class RecipeController:
         self.RecipeView = RecipeView(self, self.initializeCard())
         return self.RecipeView
 
-    def initializeCard(self):
-        cards = []
-        recipes = self.RecipeModel.getAllRecipes()
-
-        newline = 0
-
-        if type(recipes) == Recipe:
-            recipe_card = RecipeCard(recipes)
-            recipe_card.setGeometry(QRect(0, 0, 402, 194))
-            cards.append(recipe_card)
-
-        else:
-            for i, recipe in enumerate(recipes):
-                recipe_card = RecipeCard(recipe)
-
-                x = 0 if i % 2 == 0 else 436
-                y = 230 * newline
-
-                if i % 2 != 0:
-                    newline += 1
-
-                recipe_card.setGeometry(QRect(x, y, 402, 194))
-
-                cards.append(recipe_card)
-                # recipe_card.unStarred.clicked.connect(lambda: self.handleMakeFavorite(recipe.id))
+    def connectFavoriteSignals(self, cards):
+        favorites = self.handleGetFavorites()
         for card in cards:
             card.unStarred.clicked.connect(partial(self.handleMakeFavorite, card.recipe.id, card.unStarred))
-
-        favorites = self.handleGetFavorites()
+            
         for favorite in favorites:
             for card in cards:
                 if favorite.id == card.recipe.id:
                     card.setFavorite(True)
-                    card.unStarred.clicked.disconnect()
+                    card.unStarred.clicked.disconnect()  # Disconnect previous connection
                     card.unStarred.clicked.connect(
                         partial(self.handleUnFavorite, card.recipe.id, card.unStarred))
+
+    def initializeCard(self):
+        recipes = self.RecipeModel.getAllRecipes()
+        cards = self.createCards(recipes)
+        self.connectFavoriteSignals(cards)
+
         return cards
 
 
@@ -91,32 +95,12 @@ class RecipeController:
         return self.FavoriteView
 
     def initFavoriteCards(self):
-        if self.handleGetFavorites() is None:
-            return
+        favorites = self.handleGetFavorites()
+        if favorites is None:
+            return []
         else:
-            favorites = self.handleGetFavorites()
-            cards = []
-            newline = 0
-
-            if len(favorites) == 1:
-                recipe_card = RecipeCard(favorites[0])
-                recipe_card.setGeometry(QRect(0, 0, 402, 194))
-                cards.append(recipe_card)
-
-            else:
-                for i, recipe in enumerate(favorites):
-                    recipe_card = RecipeCard(recipe)
-                    x = 0 if i % 2 == 0 else 436
-                    y = 230 * newline
-
-                    if i % 2 != 0:
-                        newline += 1
-
-                    recipe_card.setGeometry(QRect(x, y, 402, 194))
-                    cards.append(recipe_card)
+            cards = self.createCards(favorites)
             return cards
-
-
 
 
     def handleGetFavorites(self):
