@@ -117,9 +117,16 @@ class RecipeModel:
         self.session.add(favorite)
         self.session.commit()
 
+    def unFavorite(self, user_id , recipe_id):
+        favorite = self.session.query(FavoriteRecipes).filter_by(user_id=user_id, recipe_id=recipe_id).first()
+        self.session.delete(favorite)
+        self.session.commit()
+
     def getFavorites(self, user_id):
         favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
         return favorites
+
+
 
 
 # class RecipeRepository:

@@ -7,7 +7,6 @@ from view.Navbar import NavigationBar
 class CreateView(NavigationBar):
     def __init__(self, Controller = None):
         super().__init__(Controller)
-        
 #------------------------------------------------------------------
         self.create_txt = QLabel("Create Your Masterpiece!", self)
         self.total_c_frame = QFrame(self)
@@ -29,6 +28,7 @@ class CreateView(NavigationBar):
         self.create_dir_input = QTextEdit(self.create_frame)
        
         self.decorateWidgets()
+
     def decorateWidgets(self):
         self.create_txt.setObjectName("default_label")
         self.create_txt.setFont(Theme.CHILLAX_REGULAR_40)
@@ -111,4 +111,4 @@ class CreateView(NavigationBar):
         self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         
-        self.styleSheet = Theme.get_stylesheet()
+        self.setStyleSheet(Theme.get_stylesheet())

@@ -73,4 +73,4 @@ class NavigationBar(QWidget):
         self.nav_favorite.setGeometry(QRect(123, 283, 101, 21))
         self.nav_favorite.clicked.connect(self.onClickedNavToFavorite)
         
-        self.styleSheet = Theme.get_stylesheet()
+        self.setStyleSheet(Theme.get_stylesheet())

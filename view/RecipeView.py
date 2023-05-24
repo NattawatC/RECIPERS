@@ -1,5 +1,8 @@
+import io
 import sys
-
+import requests
+from PIL import Image, UnidentifiedImageError
+from PIL.ImageQt import ImageQt
 from PySide6.QtCore import QRect, QCoreApplication, QSize, Signal
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
 from PySide6.QtCore import QRect, QCoreApplication, QUrl
@@ -7,14 +10,16 @@ from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
 from math import ceil
 
-
 from static.theme import Theme
 from view.Navbar import NavigationBar
+from view.RecipeCard import RecipeCard
+
 
 class RecipeView(NavigationBar):
-    def __init__(self, Controller = None):
+    def __init__(self, Controller = None, Cards = None):
         super().__init__(Controller)
 
+        self.cards = Cards
         self.recipe_label = QLabel("Welcome to,", self)
         self.recipe_label2 = QLabel("Recipes", self)
         self.logout_btn = QPushButton(self)
@@ -28,18 +33,18 @@ class RecipeView(NavigationBar):
         self.save_logo = QLabel(self.total_s_frame)
         self.save_label = QLabel("Total Saved", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
-        self.RecipeCardScrollArea = RecipeCardScrollArea(self.RecipeController.handleCreateRecipeCard())
 
-        self.decorateWidgets()
         self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
-        self.RecipeCardScrollArea.connectFavoriteSignal(self.MarkAsFavorite)
+
+        self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
+        self.decorateWidgets()
+
+
 
         # self.search_bar.textChanged.connect(self.RecipeController.handleSearch)
 
-
-
-    def MarkAsFavorite(self, recipe_id):
-        self.RecipeController.handleMakeFavorite(recipe_id)
+    def handleFavoriteButton(self):
+        self.RecipeController.handleFavoriteButton()
 
     def onClickLogoutButton(self, func):
         self.logout_btn.clicked.connect(func)
@@ -109,9 +114,8 @@ class RecipeView(NavigationBar):
 
 
 class RecipeCardScrollArea(QScrollArea):
-    def __init__(self, recipes = []):
+    def __init__(self, recipeCards):
         super().__init__()
-        self.RecipeCardList = []
         self.setObjectName("default_scrollArea")
         self.setWidgetResizable(True)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -119,165 +123,33 @@ class RecipeCardScrollArea(QScrollArea):
         self.setGeometry(QRect(336, 192, 840, 480))
         self.scroll_area_content = QWidget(self)
         self.scroll_area_content.setObjectName("default_scrollArea")
-        self.recipes = recipes
-
-        """Add Card"""
-
-        if self.recipes is not None:
-            self.createRecipeCard(self.recipes)
-            if len(self.recipes) > 4:
-                height = ceil((len(self.recipes) / 2)) * 230
-                if len(self.recipes) % 2 == 0:
-                    self.scroll_area_content.setMinimumSize(840, height)
-                else:
-                    self.scroll_area_content.setMinimumSize(840, height + 82)
+        self.recipeCards= recipeCards
+        self.initContent()
 
         self.setWidget(self.scroll_area_content)
 
-    def createRecipeCard(self,recipes):
-        if len(recipes) > 1:
-            newline = 0
-            for i, recipe in enumerate(recipes):
-                recipe_card = RecipeCard(recipe)
-                if i % 2 == 0:
-                    recipe_card.setGeometry(QRect(0, 0 + (230 * newline), 402, 194))
 
-                else:
-                    recipe_card.setGeometry(QRect(436, 0 + (230 * newline), 402, 194))
-                    newline += 1
-                recipe_card.setParent(self.scroll_area_content)
-                self.RecipeCardList.append(recipe_card)
+    def initContent(self):
+        for recipe in self.recipeCards:
+            recipe.setParent(self.scroll_area_content)
+        height = (len(self.recipeCards) // 2)* 230
+        if len(self.recipeCards) % 2 == 0:
+            self.scroll_area_content.setMinimumSize(840, height)
         else:
-            recipe_card = RecipeCard(recipes[0])
-            recipe_card.setGeometry(QRect(0, 0, 402, 194))
-            recipe_card.setParent(self.scroll_area_content)
-            self.RecipeCardList.append(recipe_card)
+            self.scroll_area_content.setMinimumSize(840, height + 82)
 
-    def connectFavoriteSignal(self, func):
-        for recipe_card in self.RecipeCardList:
-            recipe_card.cardStarred.connect(func)
-
-
-
-class RecipeCard(QWidget):
-    cardStarred = Signal(int)
-
-    def __init__(self, recipe = None):
-        super().__init__()
-        self.setFixedSize(402, 194)
-
-        self.recipe = recipe
+    # def refresh(self, recipes):
+    #     self.recipes = recipes
+    #     for recipe_card in self.RecipeCardList:
+    #         recipe_card.setParent(None)
+    #     self.RecipeCardList = []
+    #     self.createRecipeCard(self.recipes)
+    #     if len(self.recipes) > 4:
+    #         height = ceil((len(self.recipes) / 2)) * 230
+    #         if len(self.recipes) % 2 == 0:
+    #             self.scroll_area_content.setMinimumSize(840, height)
+    #         else:
+    #             self.scroll_area_content.setMinimumSize(840, height + 82)
+    #     self.setWidget(self.scroll_area_content)
 
 
-        card_frame = QFrame(self)
-        card_frame.setObjectName("total_frame")
-        card_frame.setFixedSize(402, 194)
-
-        self.card_img = QLabel(card_frame)
-        self.card_img.setObjectName("card_img")
-        self.card_img.setGeometry(QRect(16, 13, 168, 168))
-        # self.loadImageFromURL(recipe.image.strip(), recipe.id)
-
-        card_name = QLabel(card_frame)
-        card_name.setObjectName("default_label")
-        card_name.setGeometry(QRect(204, 21, 146, 28))
-        card_name.setFont(Theme.CHILLAX_REGULAR_20)
-        card_name.setText(recipe.name)
-
-        card_prep_time = QLabel("Prep. Time:", card_frame)
-        card_prep_time.setObjectName("default_label")
-        card_prep_time.setGeometry(QRect(204, 64, 141, 22))
-        card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
-
-        card_prep_time_num = QLabel("30 mins", card_frame)
-        card_prep_time_num.setObjectName("default_label")
-        card_prep_time_num.setGeometry(QRect(293, 64, 141, 22))
-        card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
-
-        card_cooking_time = QLabel("Cooking Time:", card_frame)
-        card_cooking_time.setObjectName("default_label")
-        card_cooking_time.setGeometry(QRect(204, 96, 141, 22))
-        card_cooking_time.setFont(Theme.CHILLAX_REGULAR_16)
-
-        card_cooking_time_num = QLabel("30 mins", card_frame)
-        card_cooking_time_num.setObjectName("default_label")
-        card_cooking_time_num.setGeometry(QRect(317, 96, 141, 22))
-        card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
-
-        cal_time = QLabel("125 Kcal", card_frame)
-        cal_time.setObjectName("default_label")
-        cal_time.setGeometry(QRect(204, 155, 141, 22))
-        cal_time.setFont(Theme.CHILLAX_REGULAR_20)
-
-        card_detail_btn = QPushButton("Detail", card_frame)
-        card_detail_btn.setObjectName("card_detail_btn")
-        card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
-        card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
-        card_detail_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        # card_detail_btn.clicked.connect(self.RecipeController.handleMakeFavorite)
-
-        arrow = QLabel(card_frame)
-        arrow.setObjectName("arrow")
-        arrow.setGeometry(QRect(372, 158, 13, 13))
-        arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
-        arrow.setScaledContents(True)
-
-        self.unStarred = QPushButton(card_frame)
-        self.unStarred.setObjectName("unstared")
-        self.unStarred.setGeometry(QRect(372, 13, 17, 17))
-        icon = QIcon("static/asset/img/unstared.png")
-        self.unStarred.setIcon(icon)
-        self.unStarred.setIconSize(self.unStarred.size())
-        self.unStarred.setCursor(QCursor(Qt.PointingHandCursor))
-        self.unStarred.clicked.connect(self.MarkAsFavorite)
-
-        self.setStyleSheet(Theme.get_stylesheet())
-
-    def MarkAsFavorite(self):
-        self.cardStarred.emit(self.recipe.id)
-
-
-
-    # def loadImageFromURL(self, url, id):
-    #     async with aiohttp.ClientSession() as session:
-    #         tasks = []
-    #         for url in urls:
-    #             tasks.append(fetch_image(session, url))
-
-    #         images = await asyncio.gather(*tasks)
-
-    #     request = requests.get(url)
-    #     try:
-    #         with io.BytesIO(request.content) as img_bytes:
-    #             image = Image.open(img_bytes)
-    #             image = image.resize((170, 170), Image.ANTIALIAS)
-    #             pixmap = QPixmap()
-    #             pixmap.convertFromImage(ImageQt(image))
-    #             self.card_img.setPixmap(pixmap)
-    #     except UnidentifiedImageError:
-    #         print(id, "is not an image file")
-        # async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-        #     async with session.get(url) as response:
-        #         image_data = await response.read()
-        # try:
-        #     with io.BytesIO(image_data) as img_bytes:
-        #         image = Image.open(img_bytes)
-        #         image = image.resize((170, 170), Image.ANTIALIAS)
-        #         pixmap = QPixmap()
-        #         pixmap.convertFromImage(ImageQt(image))
-        #         self.card_img.setPixmap(pixmap)
-        # except UnidentifiedImageError:
-        #     print(id, "is not an image file")
-        # manager =  QNetworkAccessManager()
-        # request = QNetworkRequest(QUrl(url))
-        # reply = manager.get(request)
-        # manager.get(reply)
-
-
-        # request = requests.get(url)
-        # image_data = io.BytesIO(request.content)
-        # image = Image.open(image_data)
-        # image = image.resize((170, 170), Image.ANTIALIAS)
-        # pixmap = QPixmap()
-        # pixmap.convertFromImage(ImageQt(image))
-        # self.card_img.setPixmap(pixmap)

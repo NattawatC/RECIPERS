@@ -3,13 +3,14 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QRect, Signal, QEvent, Qt
 from view.Navbar import NavigationBar
-from view.RecipeView import RecipeCardScrollArea ,RecipeCard
+from view.RecipeView import RecipeCardScrollArea
 
 class FavoriteView(NavigationBar):
 
-    def __init__(self, Controller = None):
+    def __init__(self, Controller = None, Cards = None):
         super().__init__(Controller)
 
+        self.cards = Cards
         favorite_label = QLabel("Save for the next time!", self)
         favorite_label.setObjectName("default_label")
         favorite_label.setFont(Theme.CHILLAX_REGULAR_40)
@@ -37,8 +38,15 @@ class FavoriteView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         self.setStyleSheet(Theme.get_stylesheet())
+        if self.cards is not None:
+            self.scrollArea = RecipeCardScrollArea(self.cards)
+            self.scrollArea.setParent(self)
 
-        self.scrollArea = RecipeCardScrollArea(self.RecipeController.handleGetFavorites())
+    def setCards(self, cards):
+        self.scrollArea.setParent(None)
+        self.cards = cards
+        self.scrollArea = RecipeCardScrollArea(self.cards)
+        self.scrollArea.setParent(self)
 
 
 
