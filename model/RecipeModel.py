@@ -1,13 +1,9 @@
-from abc import ABCMeta, abstractmethod
-
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum
 from sqlalchemy.orm import declarative_base, sessionmaker, Mapped, mapped_column, relationship, backref
 from config import ENGINE as engine
 from typing import List
-
-Base = declarative_base()
+from model.BaseModel import Base
+from model.AuthModel import User
 
 
 class Classify(Base):
@@ -92,9 +88,11 @@ class Condiment(Category):
 class FavoriteRecipes(Base):
     __tablename__ = 'favorite_recipes'
 
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
+
     recipe_id = Column(Integer, ForeignKey('recipes.id'), primary_key=True)
-    recipe = relationship("Recipe", backref=backref('favorite_recipes'))
+    user = relationship(User , backref=backref('favorite_recipes'))
+    recipe = relationship(Recipe, backref=backref('favorite_recipes'))
 
 
 class RecipeModel:
@@ -114,7 +112,7 @@ class RecipeModel:
         recipe = self.session.query(Recipe).filter_by(name=name).first()
         return recipe
 
-    def makeFavorite(self, user_id, recipe_id):
+    def makeFavorite(self, user_id , recipe_id):
         favorite = FavoriteRecipes(user_id=user_id, recipe_id=recipe_id)
         self.session.add(favorite)
         self.session.commit()

@@ -8,6 +8,7 @@ class Application(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.AuthController = None
         self.RecipeController = None
         self.stack = None
         self.setFixedSize(1280, 720)
@@ -35,11 +36,9 @@ class Application(QMainWindow):
 
     def NavigateToFavorite(self):
         self.stack.setCurrentIndex(1)
-        self.RecipeController.handleMakeFavorite()
 
     def NavigateToRecipe(self):
         self.stack.setCurrentIndex(0)
-        # self.RecipeController.handleCreateRecipeCard()
 
     def NavigateToCreate(self):
         self.stack.setCurrentIndex(2)

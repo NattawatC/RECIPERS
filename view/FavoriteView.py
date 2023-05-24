@@ -3,6 +3,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QRect, Signal, QEvent, Qt
 from view.Navbar import NavigationBar
+from view.RecipeView import RecipeCardScrollArea ,RecipeCard
 
 class FavoriteView(NavigationBar):
 
@@ -36,6 +37,12 @@ class FavoriteView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         self.setStyleSheet(Theme.get_stylesheet())
+
+        self.scrollArea = RecipeCardScrollArea(self.RecipeController.handleGetFavorites())
+
+
+
+
 
 
 

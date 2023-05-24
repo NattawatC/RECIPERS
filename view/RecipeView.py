@@ -1,10 +1,11 @@
 import sys
 
-from PySide6.QtCore import QRect, QCoreApplication, QSize
+from PySide6.QtCore import QRect, QCoreApplication, QSize, Signal
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
 from PySide6.QtCore import QRect, QCoreApplication, QUrl
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
+from math import ceil
 
 
 from static.theme import Theme
@@ -27,10 +28,18 @@ class RecipeView(NavigationBar):
         self.save_logo = QLabel(self.total_s_frame)
         self.save_label = QLabel("Total Saved", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
-        self.RecipeCardScrollArea = RecipeCardScrollArea()
+        self.RecipeCardScrollArea = RecipeCardScrollArea(self.RecipeController.handleCreateRecipeCard())
 
         self.decorateWidgets()
+        self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
+        self.RecipeCardScrollArea.connectFavoriteSignal(self.MarkAsFavorite)
 
+        # self.search_bar.textChanged.connect(self.RecipeController.handleSearch)
+
+
+
+    def MarkAsFavorite(self, recipe_id):
+        self.RecipeController.handleMakeFavorite(recipe_id)
 
     def onClickLogoutButton(self, func):
         self.logout_btn.clicked.connect(func)
@@ -65,7 +74,7 @@ class RecipeView(NavigationBar):
         self.total_c_frame.setGeometry(QRect(520, 89, 234, 81))
 
         self.create_logo.setObjectName("create_bg")
-        self.create_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
+        self.create_logo.setGeometry(QRect(13, 11, 58, 58))
         self.create_logo.setPixmap(QPixmap("static/asset/img/create.png"))
         self.create_logo.setScaledContents(True)
 
@@ -81,7 +90,7 @@ class RecipeView(NavigationBar):
         self.total_s_frame.setGeometry(QRect(789, 89, 234, 81))
 
         self.save_logo.setObjectName("create_bg")
-        self.save_logo.setGeometry(QRect(13, 11, 58.8, 58.8))
+        self.save_logo.setGeometry(QRect(13, 11, 58, 58))
         self.save_logo.setPixmap(QPixmap("static/asset/img/save.png"))
         self.save_logo.setScaledContents(True)
 
@@ -100,8 +109,9 @@ class RecipeView(NavigationBar):
 
 
 class RecipeCardScrollArea(QScrollArea):
-    def __init__(self):
+    def __init__(self, recipes = []):
         super().__init__()
+        self.RecipeCardList = []
         self.setObjectName("default_scrollArea")
         self.setWidgetResizable(True)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -109,44 +119,55 @@ class RecipeCardScrollArea(QScrollArea):
         self.setGeometry(QRect(336, 192, 840, 480))
         self.scroll_area_content = QWidget(self)
         self.scroll_area_content.setObjectName("default_scrollArea")
-        self.cards = []
+        self.recipes = recipes
 
         """Add Card"""
-        recipes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        self.createRecipeCard(recipes)
-        
-       
-        if len(recipes) > 4:
-            if len(recipes) % 2 == 0:
-                self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230))
-            else:
-                self.scroll_area_content.setMinimumSize(840, ((len(recipes) / 2) * 230) + 82)
+
+        if self.recipes is not None:
+            self.createRecipeCard(self.recipes)
+            if len(self.recipes) > 4:
+                height = ceil((len(self.recipes) / 2)) * 230
+                if len(self.recipes) % 2 == 0:
+                    self.scroll_area_content.setMinimumSize(840, height)
+                else:
+                    self.scroll_area_content.setMinimumSize(840, height + 82)
 
         self.setWidget(self.scroll_area_content)
 
     def createRecipeCard(self,recipes):
-        newline = 0
-        for i, recipe in enumerate(recipes):
-            recipe_card = RecipeCard(recipe)
-            if i % 2 == 0:
-                recipe_card.setGeometry(QRect(0, 0 + (230 * newline), 402, 194))
+        if len(recipes) > 1:
+            newline = 0
+            for i, recipe in enumerate(recipes):
+                recipe_card = RecipeCard(recipe)
+                if i % 2 == 0:
+                    recipe_card.setGeometry(QRect(0, 0 + (230 * newline), 402, 194))
 
-            else:
-                recipe_card.setGeometry(QRect(436, 0 + (230 * newline), 402, 194))
-                newline += 1
+                else:
+                    recipe_card.setGeometry(QRect(436, 0 + (230 * newline), 402, 194))
+                    newline += 1
+                recipe_card.setParent(self.scroll_area_content)
+                self.RecipeCardList.append(recipe_card)
+        else:
+            recipe_card = RecipeCard(recipes[0])
+            recipe_card.setGeometry(QRect(0, 0, 402, 194))
             recipe_card.setParent(self.scroll_area_content)
-            self.cards.append(recipe_card)
+            self.RecipeCardList.append(recipe_card)
 
-    def getAllRecipeCard(self):
-        return self.cards
+    def connectFavoriteSignal(self, func):
+        for recipe_card in self.RecipeCardList:
+            recipe_card.cardStarred.connect(func)
+
 
 
 class RecipeCard(QWidget):
+    cardStarred = Signal(int)
+
     def __init__(self, recipe = None):
         super().__init__()
         self.setFixedSize(402, 194)
 
         self.recipe = recipe
+
 
         card_frame = QFrame(self)
         card_frame.setObjectName("total_frame")
@@ -157,10 +178,11 @@ class RecipeCard(QWidget):
         self.card_img.setGeometry(QRect(16, 13, 168, 168))
         # self.loadImageFromURL(recipe.image.strip(), recipe.id)
 
-        card_name = QLabel("Pork BBQ Stick", card_frame)
+        card_name = QLabel(card_frame)
         card_name.setObjectName("default_label")
         card_name.setGeometry(QRect(204, 21, 146, 28))
         card_name.setFont(Theme.CHILLAX_REGULAR_20)
+        card_name.setText(recipe.name)
 
         card_prep_time = QLabel("Prep. Time:", card_frame)
         card_prep_time.setObjectName("default_label")
@@ -200,20 +222,19 @@ class RecipeCard(QWidget):
         arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         arrow.setScaledContents(True)
 
-        unstared = QPushButton(card_frame)
-        unstared.setObjectName("unstared")
-        unstared.setGeometry(QRect(372, 13, 17, 17))
+        self.unStarred = QPushButton(card_frame)
+        self.unStarred.setObjectName("unstared")
+        self.unStarred.setGeometry(QRect(372, 13, 17, 17))
         icon = QIcon("static/asset/img/unstared.png")
-        unstared.setIcon(icon)
-        unstared.setIconSize(unstared.size())
+        self.unStarred.setIcon(icon)
+        self.unStarred.setIconSize(self.unStarred.size())
+        self.unStarred.setCursor(QCursor(Qt.PointingHandCursor))
+        self.unStarred.clicked.connect(self.MarkAsFavorite)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-
-
-
-
-
+    def MarkAsFavorite(self):
+        self.cardStarred.emit(self.recipe.id)
 
 
 
