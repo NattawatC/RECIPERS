@@ -1,5 +1,5 @@
 from PySide6.QtCore import QRect, QCoreApplication
-from PySide6.QtGui import QPixmap, QFont, Qt
+from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
 from PySide6.QtWidgets import *
 
 from static.theme import Theme
@@ -110,5 +110,11 @@ class CreateView(NavigationBar):
         self.create_dir_input.setGeometry(QRect(564, 56, 278, 354))
         self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        self.submit_btn = QPushButton("Submit", self)
+        self.submit_btn.setObjectName("submit_button")
+        self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
+        self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
+        self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
         
         self.setStyleSheet(Theme.get_stylesheet())
