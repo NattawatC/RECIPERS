@@ -18,10 +18,12 @@ class CreateView(NavigationBar):
         self.create_menu_name_input = QLineEdit(self.create_frame)
         self.create_cal = QLabel("Calories", self.create_frame)
         self.create_cal_input = QLineEdit(self.create_frame)
-        self.create_prep_time = QLabel("Preparation Time", self.create_frame)
-        self.create_prep_time_input = QLineEdit(self.create_frame)
         self.create_cook_time = QLabel("Cooking Time", self.create_frame)
         self.create_cook_time_input = QLineEdit(self.create_frame)
+        self.create_prep_time = QLabel("Servings", self.create_frame)
+        self.create_prep_time_input = QLineEdit(self.create_frame)
+        self.create_category = QLabel("Category", self.create_frame)
+        self.create_category_input = QTextEdit(self.create_frame)
         self.create_ing = QLabel("Ingredients", self.create_frame)
         self.create_ing_input = QTextEdit(self.create_frame)
         self.create_dir = QLabel("Directions", self.create_frame)
@@ -53,6 +55,7 @@ class CreateView(NavigationBar):
         self.create_frame.setObjectName("create_frame")
         self.create_frame.setGeometry(QRect(341, 189, 875, 445))
 
+        #Create Area
         self.create_menu_name.setObjectName("default_label")
         self.create_menu_name.setFont(Theme.CHILLAX_REGULAR_20)
         self.create_menu_name.setGeometry(QRect(33, 25, 119, 31))
@@ -64,30 +67,39 @@ class CreateView(NavigationBar):
         
         self.create_cal.setObjectName("default_label")
         self.create_cal.setFont(Theme.CHILLAX_REGULAR_20)
-        self.create_cal.setGeometry(QRect(33, 132, 78, 31))
+        self.create_cal.setGeometry(QRect(33, 105, 78, 31))
         
         self.create_cal_input.setObjectName("create_bar")
         self.create_cal_input.setPlaceholderText("Calories")
         self.create_cal_input.setFont(Theme.CHILLAX_REGULAR_16)
-        self.create_cal_input.setGeometry(QRect(33, 163, 227, 33))
-        
-        self.create_prep_time.setObjectName("default_label")
-        self.create_prep_time.setFont(Theme.CHILLAX_REGULAR_20)
-        self.create_prep_time.setGeometry(QRect(33, 239, 170, 33))
-        
-        self.create_prep_time_input.setObjectName("create_bar")
-        self.create_prep_time_input.setPlaceholderText("hrs. or mins.")
-        self.create_prep_time_input.setFont(Theme.CHILLAX_REGULAR_16)
-        self.create_prep_time_input.setGeometry(QRect(33, 270, 227, 33))
+        self.create_cal_input.setGeometry(QRect(33, 136, 227, 33))
         
         self.create_cook_time.setObjectName("default_label")
         self.create_cook_time.setFont(Theme.CHILLAX_REGULAR_20)
-        self.create_cook_time.setGeometry(QRect(33, 346, 134, 31))
+        self.create_cook_time.setGeometry(QRect(33, 185, 134, 31))
         
         self.create_cook_time_input.setObjectName("create_bar")
         self.create_cook_time_input.setPlaceholderText("hrs. or mins.")
         self.create_cook_time_input.setFont(Theme.CHILLAX_REGULAR_16)
-        self.create_cook_time_input.setGeometry(QRect(33, 377, 227, 33))
+        self.create_cook_time_input.setGeometry(QRect(33, 216, 227, 33))
+
+        self.create_prep_time.setObjectName("default_label")
+        self.create_prep_time.setFont(Theme.CHILLAX_REGULAR_20)
+        self.create_prep_time.setGeometry(QRect(33, 265, 170, 33))
+        
+        self.create_prep_time_input.setObjectName("create_bar")
+        self.create_prep_time_input.setPlaceholderText("hrs. or mins.")
+        self.create_prep_time_input.setFont(Theme.CHILLAX_REGULAR_16)
+        self.create_prep_time_input.setGeometry(QRect(33, 296, 227, 33))
+        
+        self.create_category.setObjectName("default_label")
+        self.create_category.setFont(Theme.CHILLAX_REGULAR_20)
+        self.create_category.setGeometry(QRect(33, 345, 134, 31))
+        
+        self.create_category_input.setObjectName("create_bar")
+        self.create_category_input.setPlaceholderText("ie. Breakfast,Lunch, ...")
+        self.create_category_input.setFont(Theme.CHILLAX_REGULAR_16)
+        self.create_category_input.setGeometry(QRect(33, 376, 227, 33))
         
         self.create_ing.setObjectName("default_label")
         self.create_ing.setFont(Theme.CHILLAX_REGULAR_20)
