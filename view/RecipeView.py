@@ -32,7 +32,7 @@ class RecipeView(NavigationBar):
 
         self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
-        self.decorateWidgets()
+        self.decorateRecipeView()
 
 
 
@@ -47,7 +47,7 @@ class RecipeView(NavigationBar):
     def onClickLogoutButton(self, func):
         self.logout_btn.clicked.connect(func)
 
-    def decorateWidgets(self):
+    def decorateRecipeView(self):
         self.recipe_label.setObjectName("default_label")
         self.recipe_label.setFont(Theme.CHILLAX_REGULAR_20)
         self.recipe_label.setGeometry(QRect(336, 92, 121, 16))
