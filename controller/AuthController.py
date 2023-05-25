@@ -32,7 +32,6 @@ class AuthController:
     def getCurrentUser(self):
         return self.__currentUser
 
-
     def setCurrentUser(self, user):
         self.__currentUser = user
 
