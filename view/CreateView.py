@@ -27,9 +27,9 @@ class CreateView(NavigationBar):
         self.create_dir = QLabel("Directions", self.create_frame)
         self.create_dir_input = QTextEdit(self.create_frame)
        
-        self.decorateWidgets()
+        self.decorateCreateView()
 
-    def decorateWidgets(self):
+    def decorateCreateView(self):
         self.create_txt.setObjectName("default_label")
         self.create_txt.setFont(Theme.CHILLAX_REGULAR_40)
         self.create_txt.setGeometry(QRect(341, 15, 681, 61))
