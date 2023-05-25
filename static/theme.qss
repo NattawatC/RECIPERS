@@ -197,6 +197,15 @@ QPushButton#filter_button{
     color: #F6F6F6;
 }
 
+QPushButton#submit_button{
+    background-color: #D9A32B;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+
 /* RadioButton */
 /* QRadioButton#default_radio {
     color: #4A321C;
