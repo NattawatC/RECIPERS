@@ -103,10 +103,22 @@ class RecipeView(NavigationBar):
         self.save_num.setFont(Theme.CHILLAX_REGULAR_24)
         self.save_num.setGeometry(QRect(92, 17, 60, 20))
 
-
         self.save_label.setObjectName("default_label")
         self.save_label.setFont(Theme.CHILLAX_REGULAR_20)
         self.save_label.setGeometry(QRect(92, 49, 130, 15))
+
+        # self.filter_frame.setObjectName("filter_frame")
+        # self.filter_frame.setGeometry(QRect(999, 26, 88, 34))
+
+        # self.filter_btn.setObjectName("filter_button")
+        # self.filter_btn.setGeometry(QRect(10, 8, 49, 28))
+        # self.filter_btn.setFont(Theme.CHILLAX_REGULAR_20)
+        # self.filter_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        
+        # self.filter_arrow.setObjectName("arrow")
+        # self.filter_arrow.setGeometry(QRect(60, 8, 19, 19))
+        # self.filter_arrow.setPixmap(QPixmap("static/asset/img/arrowdown.png"))
+        # self.filter_arrow.setScaledContents(True)
 
         self.RecipeCardScrollArea.setParent(self)
         self.styleSheet = Theme.get_stylesheet()

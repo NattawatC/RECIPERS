@@ -97,7 +97,6 @@ class RecipeCard(QWidget):
     def setFavorite(self, isFavorite):
         self.isStarred = isFavorite
 
-
     def loadImageFromURL(self, url):
         if self.image_cache is not None and url in self.image_cache:
             pixmap = self.image_cache[url]
@@ -116,3 +115,20 @@ class RecipeCard(QWidget):
                     self.card_img.setPixmap(pixmap)
             except Exception as e:
                 print(id, "is not an image file")
+
+    def toggleStar(self):
+        self.isStarred = not self.isStarred
+        self.updateStar()
+
+    def updateStar(self):
+        if self.isStarred:
+            icon = QIcon("static/asset/img/stared.png")
+            self.unStarred.setIcon(icon)
+            self.unStarred.setIconSize(self.unStarred.size())
+        else:
+            icon = QIcon("static/asset/img/unstared.png")
+            self.unStarred.setIcon(icon)
+            self.unStarred.setIconSize(self.unStarred.size())
+
+        self.unStarred.repaint()
+    
