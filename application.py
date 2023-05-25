@@ -12,18 +12,21 @@ class Application(QMainWindow):
         self.RecipeController = None
         self.stack = None
         self.setFixedSize(1280, 720)
+        self.imageCache = None
         self.setWindowTitle("RECIPER")
         self.showAuthView()
         self.setStyleSheet(Theme.get_stylesheet())
 
+
     def handleLogin(self):
         if self.AuthController.handleLogin():
             self.stack = QStackedWidget()
-            self.RecipeController = RecipeController(self, self.AuthController)
+            self.RecipeController = RecipeController(self, self.imageCache, self.AuthController)
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
             self.setCentralWidget(self.stack)
             self.NavigateToRecipe()
+
     def showAuthView(self):
         self.AuthController = AuthController(self)
         self.setCentralWidget(self.AuthController.AuthView)

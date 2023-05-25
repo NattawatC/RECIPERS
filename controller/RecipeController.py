@@ -8,7 +8,8 @@ from view.CreateView import *
 from view.RecipeCard import *
 
 class RecipeController:
-    def __init__(self, MainWindow, Controller = None):
+    def __init__(self, MainWindow,  imageCache, Controller = None,):
+        self.imageCache = imageCache
         self.AuthController = Controller
         self.User = self.AuthController.getCurrentUser()
         self.RecipeModel = RecipeModel()
@@ -17,18 +18,24 @@ class RecipeController:
         self.FavoriteView = self.initFavoriteView()
         self.views = [self.RecipeView, self.FavoriteView, CreateView(self)]
 
-    @staticmethod
-    def createCards(items) -> list:
+
+    def createCards(self,items) -> list:
         cards = []
         newline = 0
 
         if len(items) == 1:
-            recipe_card = RecipeCard(items[0])
+            recipe_card = RecipeCard(items[0], self.imageCache)
+            if self.imageCache is None:
+                self.imageCache = {}
+            self.imageCache[items[0].image] = recipe_card.card_img.pixmap()
             recipe_card.setGeometry(QRect(0, 0, 402, 194))
             cards.append(recipe_card)
         else:
             for i, item in enumerate(items):
-                recipe_card = RecipeCard(item)
+                if self.imageCache is None:
+                    self.imageCache = {}
+                recipe_card = RecipeCard(item, self.imageCache)
+                self.imageCache[item.image] = recipe_card.card_img.pixmap()
                 x = 0 if i % 2 == 0 else 436
                 y = 230 * newline
 
@@ -45,6 +52,8 @@ class RecipeController:
     def handleLogout(self):
         self.AuthController.handleLogout()
         self.mainWindow.showAuthView()
+        self.mainWindow.stack = None
+        self.mainWindow.imageCache = self.imageCache
         self.views.clear()
 
     #RecipeView
@@ -54,7 +63,7 @@ class RecipeController:
 
     def connectFavoriteSignals(self, cards):
         favorites = self.handleGetFavorites()
-        recipe_cards = {}  # Dictionary to store recipe ID-card mapping
+        recipe_cards = {}
 
         for card in cards:
             card_id = card.recipe.id

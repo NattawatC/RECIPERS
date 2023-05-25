@@ -1,8 +1,10 @@
-from typing import io
+import concurrent
+import io
+import sys
+import urllib.request
 
 import requests
-from PIL import UnidentifiedImageError
-from PIL.Image import Image
+from PIL import Image, UnidentifiedImageError
 from PIL.ImageQt import ImageQt
 from PySide6.QtCore import Signal, QRect, Qt
 from PySide6.QtGui import QCursor, QPixmap, QIcon
@@ -14,12 +16,13 @@ from static.theme import Theme
 class RecipeCard(QWidget):
     cardStarred = Signal(int)
 
-    def __init__(self, recipe = None):
+    def __init__(self, recipe = None, image_cache = None):
         super().__init__()
         self.setFixedSize(402, 194)
         self.isStarred = False
         self.recipe = recipe
         self.recipeId = recipe.id
+        self.image_cache = image_cache
 
         card_frame = QFrame(self)
         card_frame.setObjectName("total_frame")
@@ -93,48 +96,22 @@ class RecipeCard(QWidget):
         self.isStarred = isFavorite
 
 
-    # def emitFavoriteSignal(self):
-    #     self.cardStarred.emit(self.recipe.id)
-    #     self.isStarred = True
-    #
-    # def emitUnfavoriteSignal(self):
-    #     self.cardStarred.emit(self.recipe.id)
-    #     self.isStarred = False
-
-
-
     def loadImageFromURL(self, url):
-        # url += "?raw=true"
+        if self.image_cache is not None and url in self.image_cache:
+            pixmap = self.image_cache[url]
+            self.card_img.setPixmap(pixmap)
 
-    #     async with aiohttp.ClientSession() as session:
-    #         tasks = []
-    #         for url in urls:
-    #             tasks.append(fetch_image(session, url))
+        else:
+            try:
+                request = requests.get(url)
+                with io.BytesIO(request.content) as img_bytes:
+                    image = Image.open(img_bytes)
+                    image = image.resize((170, 170), Image.ANTIALIAS)
+                    pixmap = QPixmap.fromImage(ImageQt(image))
 
-    #         images = await asyncio.gather(*tasks)
+                    # Cache the image for future use
+                    self.image_cache[url] = pixmap
 
-    #     request = requests.get(url)
-    #     try:
-    #         with io.BytesIO(request.content) as img_bytes:
-    #             image = Image.open(img_bytes)
-    #             image = image.resize((170, 170), Image.ANTIALIAS)
-    #             pixmap = QPixmap()
-    #             pixmap.convertFromImage(ImageQt(image))
-    #             self.card_img.setPixmap(pixmap)
-    #     except UnidentifiedImageError:
-    #         print(id, "is not an image file")
-        # async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-        #     async with session.get(url) as response:
-        #         image_data = await response.read()
-
-        image_data = requests.get(url).content
-
-        try:
-            with io.BytesIO(image_data) as img_bytes:
-                image = Image.open(img_bytes)
-                image = image.resize((170, 170), Image.ANTIALIAS)
-                pixmap = QPixmap()
-                pixmap.convertFromImage(ImageQt(image))
-                self.card_img.setPixmap(pixmap)
-        except UnidentifiedImageError:
-            print(id, "is not an image file")
+                    self.card_img.setPixmap(pixmap)
+            except Exception as e:
+                print(id, "is not an image file")

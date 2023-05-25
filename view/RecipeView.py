@@ -1,8 +1,4 @@
-import io
-import sys
-import requests
-from PIL import Image, UnidentifiedImageError
-from PIL.ImageQt import ImageQt
+
 from PySide6.QtCore import QRect, QCoreApplication, QSize, Signal
 from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QIcon
 from PySide6.QtCore import QRect, QCoreApplication, QUrl
