@@ -226,11 +226,17 @@ QPushButton#submit_button{
 
 /* CheckBox */
 QCheckBox{
-    background: transparent;
+    background-color: transparent;
     color: #F6F6F6;
     padding-left: 10px;
 }
 
+QCheckBox::indicator:checked{
+    background: #95424E;
+    color: #F6F6F6;
+    border-radius: 2px;
+
+}
 
 /* 
     Log In Page
