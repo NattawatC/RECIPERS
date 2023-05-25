@@ -19,7 +19,7 @@ class DetailView(NavigationBar):
         self.detail_img = QLabel(self.detail_frame)
         self.detail_name = QLabel("Pork BBQ Stick", self.detail_frame)
         self.detail_cal = QLabel("Calories:", self.detail_frame)
-        self.detial_cal_num = QLabel("125 Kcal", self.detail_frame)
+        self.detail_cal_num = QLabel("125 Kcal", self.detail_frame)
         self.detail_prep_time = QLabel("Prep Time:", self.detail_frame)
         self.detail_prep_time_num = QLabel("30 mins", self.detail_frame)
         self.detail_cooking_time = QLabel("Cooking time:", self.detail_frame)
@@ -83,9 +83,9 @@ class DetailView(NavigationBar):
         self.detail_cal.setGeometry(QRect(212, 67, 127, 34))
         self.detail_cal.setFont(Theme.CHILLAX_REGULAR_24)
         
-        self.detial_cal_num.setObjectName("default_label")
-        self.detial_cal_num.setGeometry(QRect(315, 67, 127, 34))
-        self.detial_cal_num.setFont(Theme.CHILLAX_REGULAR_24)
+        self.detail_cal_num.setObjectName("default_label")
+        self.detail_cal_num.setGeometry(QRect(315, 67, 127, 34))
+        self.detail_cal_num.setFont(Theme.CHILLAX_REGULAR_24)
         
         self.detail_prep_time.setObjectName("default_label")
         self.detail_prep_time.setGeometry(QRect(212, 112, 127, 34))

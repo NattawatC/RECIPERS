@@ -113,8 +113,6 @@ class RecipeController:
         button.setIcon(icon)
         self.FavoriteView.removeCard(recipeId)
 
-
-
     def handleSearchRecipe(self, keyword):
         recipes = self.RecipeModel.searchRecipe(keyword)
         cards = self.createCards(recipes)

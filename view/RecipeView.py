@@ -29,15 +29,14 @@ class RecipeView(NavigationBar):
         self.save_logo = QLabel(self.total_s_frame)
         self.save_label = QLabel("Total Saved", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
-
-        self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
+
         self.decorateRecipeView()
 
 
-
-        # self.search_bar.textChanged.connect(self.RecipeController.handleSearch)
-        # self.search_bar.returnPressed.connect(self.RecipeController.handleSearch)
+        self.search_bar.textChanged.connect(self.RecipeController.handleSearchRecipe)
+        self.search_bar.returnPressed.connect(self.RecipeController.handleSearchRecipe)
+        self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
 
 
     def setFavoriteCount(self, num):
