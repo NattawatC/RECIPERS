@@ -131,11 +131,11 @@ class RecipeCardScrollArea(QScrollArea):
     def initContent(self):
         for recipe in self.recipeCards:
             recipe.setParent(self.scroll_area_content)
-        height = (len(self.recipeCards) // 2)* 230
+        height = ((len(self.recipeCards) // 2)) * 230
         if len(self.recipeCards) % 2 == 0:
             self.scroll_area_content.setMinimumSize(840, height)
         else:
-            self.scroll_area_content.setMinimumSize(840, height + 82)
+            self.scroll_area_content.setMinimumSize(840, height + 230)
 
     def removeCard(self, recipeId):
         for recipeCard in self.recipeCards:
