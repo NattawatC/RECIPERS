@@ -28,6 +28,8 @@ class CreateView(NavigationBar):
         self.create_ing_input = QTextEdit(self.create_frame)
         self.create_dir = QLabel("Directions", self.create_frame)
         self.create_dir_input = QTextEdit(self.create_frame)
+        self.submit_btn = QPushButton("Submit", self)
+        
        
         self.decorateCreateView()
 
@@ -123,7 +125,7 @@ class CreateView(NavigationBar):
         self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.submit_btn = QPushButton("Submit", self)
+        
         self.submit_btn.setObjectName("submit_button")
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)

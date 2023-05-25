@@ -50,6 +50,12 @@ QFrame#filter_frame{
     border-radius: 10px;
 }
 
+QFrame#filter_list_frame{
+    background-color: #a27e38;
+    border-radius: 10px;
+    border: none;
+}
+
 
 /* Line */
 QFrame#white_line {
@@ -83,6 +89,11 @@ QLabel#create_bg{
 } */
 
 QLabel#arrow{
+    background-color:transparent;
+}
+
+QLabel#filter_label{
+    color: #F6F6F6;
     background-color:transparent;
 }
 
@@ -206,6 +217,7 @@ QPushButton#submit_button{
 
 
 
+
 /* RadioButton */
 /* QRadioButton#default_radio {
     color: #4A321C;
@@ -213,11 +225,12 @@ QPushButton#submit_button{
 }
 
 /* CheckBox */
-/* QCheckBox#default_checkbox {
+QCheckBox{
     background: transparent;
-    color: #4A321C;
+    color: #F6F6F6;
+    padding-left: 10px;
 }
-*/
+
 
 /* 
     Log In Page
@@ -247,4 +260,26 @@ QPushButton#logIn_button:hover {
 
 QPushButton#user_base_page:hover {
     color: #F9F5F0;
+}
+
+/* QToolButton */
+QToolButton#filter_button{
+    background-color: #D9A32B;
+    color: #F6F6F6;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 5px;
+}
+
+QToolButton#filter_button::menu-indicator{
+    image: none;
+}
+
+/* QMenu */
+QMenu#filter_menu{
+    background-color: #A27E38;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }

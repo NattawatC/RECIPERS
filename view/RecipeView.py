@@ -30,6 +30,23 @@ class RecipeView(NavigationBar):
         self.save_label = QLabel("Total Saved", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
+        # self.filterBar = QPushButton("Filter",self)
+        # self.filterListFrame = QFrame(self)
+        self.filter_Button = QToolButton(self)
+        self.filter_menubox = QMenu(self.filter_Button)
+        self.breakfast_checkbox = QCheckBox("Breakfast")
+        self.lunch_checkbox = QCheckBox("Lunch")
+        self.dinner_checkbox = QCheckBox("Dinner")  
+        self.meat_checkbox = QCheckBox("Meat")
+        self.seafood_checkbox = QCheckBox("Seafood")
+        self.vegetable_checkbox = QCheckBox("Vegetable")
+        self.lessthan5_checkbox = QCheckBox("< 5")
+        self.morethan5_checkbox = QCheckBox("> 5")
+        self.filterMenuLayout = QVBoxLayout()
+        self.typeLabel=QLabel("Type")
+        self.ingredientsLabel=QLabel("Ingredients")
+        self.servingLabel=QLabel("Serving")
+        
 
 
         self.decorateRecipeView()
@@ -101,22 +118,85 @@ class RecipeView(NavigationBar):
         self.save_label.setObjectName("default_label")
         self.save_label.setFont(Theme.CHILLAX_REGULAR_20)
         self.save_label.setGeometry(QRect(92, 49, 130, 15))
-
-        # self.filter_frame.setObjectName("filter_frame")
-        # self.filter_frame.setGeometry(QRect(999, 26, 88, 34))
-
-        # self.filter_btn.setObjectName("filter_button")
-        # self.filter_btn.setGeometry(QRect(10, 8, 49, 28))
-        # self.filter_btn.setFont(Theme.CHILLAX_REGULAR_20)
-        # self.filter_btn.setCursor(QCursor(Qt.PointingHandCursor))
         
-        # self.filter_arrow.setObjectName("arrow")
-        # self.filter_arrow.setGeometry(QRect(60, 8, 19, 19))
-        # self.filter_arrow.setPixmap(QPixmap("static/asset/img/arrowdown.png"))
-        # self.filter_arrow.setScaledContents(True)
-
+        # self.filterBar.setObjectName("Filter_button")
+        # self.filterBar.setGeometry(QRect(55, 343, 164, 34))
+        # self.filterBar.setFont(Theme.CHILLAX_REGULAR_20)
+        # self.filterBar.setCursor(QCursor(Qt.PointingHandCursor))
+        
+        # self.filterListFrame.setObjectName("filter_list_frame")
+        # self.filterListFrame.setGeometry(QRect(55, 377, 164, 247))
+        
+        self.filter_Button.setText("Filter")
+        self.filter_Button.setGeometry(QRect(55, 339, 164, 34))
+        self.filter_Button.setFont(Theme.CHILLAX_REGULAR_20)
+        self.filter_Button.setObjectName("filter_button") 
+        self.filter_Button.setCursor(QCursor(Qt.PointingHandCursor))
+        self.filter_Button.setPopupMode(QToolButton.InstantPopup)
+        self.filter_Button.setMenu(self.filter_menubox)
+        
+        self.filter_menubox.setObjectName("filter_menu")
+        self.filter_menubox.setLayout(self.filterMenuLayout)
+        self.filter_menubox.setFixedWidth(164)
+        
+        self.breakfast_checkbox.setChecked(False)
+        self.breakfast_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.breakfast_checkbox.setObjectName("default_checkbox")
+        
+        self.lunch_checkbox.setChecked(False)
+        self.lunch_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.lunch_checkbox.setObjectName("default_checkbox")
+        
+        self.dinner_checkbox.setChecked(False)
+        self.dinner_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.dinner_checkbox.setObjectName("default_checkbox")
+        
+        self.meat_checkbox.setChecked(False)
+        self.meat_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.meat_checkbox.setObjectName("default_checkbox")
+        
+        self.seafood_checkbox.setChecked(False)
+        self.seafood_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.seafood_checkbox.setObjectName("default_checkbox")
+        
+        self.vegetable_checkbox.setChecked(False)
+        self.vegetable_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.vegetable_checkbox.setObjectName("default_checkbox")
+        
+        self.lessthan5_checkbox.setChecked(False)
+        self.lessthan5_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.lessthan5_checkbox.setObjectName("default_checkbox")
+        
+        self.morethan5_checkbox.setChecked(False)
+        self.morethan5_checkbox.setFont(Theme.CHILLAX_REGULAR_16)
+        self.morethan5_checkbox.setObjectName("default_checkbox")
+        
+        self.filterMenuLayout.addWidget(self.typeLabel)
+        self.filterMenuLayout.setSpacing(0)
+        self.filterMenuLayout.addWidget(self.breakfast_checkbox)
+        self.filterMenuLayout.addWidget(self.lunch_checkbox)
+        self.filterMenuLayout.addWidget(self.dinner_checkbox)
+        self.filterMenuLayout.addWidget(self.ingredientsLabel)
+        self.filterMenuLayout.addWidget(self.meat_checkbox)
+        self.filterMenuLayout.addWidget(self.seafood_checkbox)
+        self.filterMenuLayout.addWidget(self.vegetable_checkbox)
+        self.filterMenuLayout.addWidget(self.servingLabel)
+        self.filterMenuLayout.addWidget(self.lessthan5_checkbox)
+        self.filterMenuLayout.addWidget(self.morethan5_checkbox)
+        
+        self.typeLabel.setFont(Theme.CHILLAX_REGULAR_16)
+        self.typeLabel.setObjectName("filter_label")
+        
+        self.ingredientsLabel.setFont(Theme.CHILLAX_REGULAR_16)
+        self.ingredientsLabel.setObjectName("filter_label")
+        
+        self.servingLabel.setFont(Theme.CHILLAX_REGULAR_16)
+        self.servingLabel.setObjectName("filter_label")
+        
         self.RecipeCardScrollArea.setParent(self)
         self.styleSheet = Theme.get_stylesheet()
+    
+    
 
 
 
