@@ -1,4 +1,7 @@
 import sys
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 
 from PySide6.QtCore import QRect, QCoreApplication
 from PySide6.QtGui import QPixmap, QFont, Qt
@@ -6,10 +9,11 @@ from PySide6.QtWidgets import *
 from Navbar import NavigationBar
 from static.theme import Theme
 
+from view.Navbar import NavigationBar
 
 class DetailView(NavigationBar):
     def __init__(self, parent: QWidget = None):
-        super.__init__(self, parent)
+        super().__init__(self, parent)
         
 #--------------------------------------------------------------
         self.detail_frame = QFrame(self)
@@ -127,6 +131,32 @@ class DetailView(NavigationBar):
         self.directions_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
         
         self.setStyleSheet(Theme.get_stylesheet())
+
+        self.set_recipe(recipe)
+
+    def set_recipe(self, recipe):
+        self.recipe = recipe
+        # self.detail_name.setText(recipe.name)
+        # self.detail_img.setPixmap(QPixmap(recipe.image))
+        # self.detial_cal_num.setText(str(recipe.calories) + " Kcal")
+        # self.detail_prep_time_num.setText(str(recipe.prep_time) + " mins")
+        # self.detail_cooking_time_num.setText(str(recipe.cooking_time) + " mins")
+        # self.set_ingredients(recipe.ingredients)
+        # self.set_directions(recipe.directions)
+
+    def set_ingredients(self, ingredients):
+        for ingredient in ingredients:
+            detail_ingredients = QLabel(ingredient.name)
+            detail_ingredients.setFont(Theme.CHILLAX_REGULAR_14)
+            detail_ingredients.setObjectName("default_label")
+            self.vBox.addWidget(detail_ingredients)
+
+    def set_directions(self, directions):
+        for direction in directions:
+            detail_directions = QLabel(direction)
+            detail_directions.setFont(Theme.CHILLAX_REGULAR_14)
+            detail_directions.setObjectName("default_label")
+            self.vBox.addWidget(detail_directions)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -6,6 +6,7 @@ from view.RecipeView import *
 from view.FavoriteView import *
 from view.CreateView import *
 from view.RecipeCard import *
+from view.DetailView import *
 
 class RecipeController:
     def __init__(self, MainWindow,  imageCache, Controller = None,):
@@ -16,7 +17,8 @@ class RecipeController:
         self.mainWindow = MainWindow
         self.RecipeView = self.initRecipeView()
         self.FavoriteView = self.initFavoriteView()
-        self.views = [self.RecipeView, self.FavoriteView, CreateView(self)]
+        self.views = [self.RecipeView, self.FavoriteView, CreateView(self), DetailView()]
+
 
 
     def createCards(self,items) -> list:
@@ -42,6 +44,7 @@ class RecipeController:
                 if i % 2 != 0:
                     newline += 1
 
+                recipe_card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, item.id))
                 recipe_card.setGeometry(QRect(x, y, 402, 194))
                 cards.append(recipe_card)
         return cards
@@ -78,6 +81,10 @@ class RecipeController:
                 card.unStarred.clicked.connect(partial(self.handleMakeFavorite, recipe.id, card.unStarred))
                 card.updateStar()
 
+    def connectDetailSignals(self, cards):
+        for card in cards:
+            card.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
+
     def initializeCard(self) -> list:
         recipes = self.RecipeModel.getAllRecipes()
         cards = self.createCards(recipes)
@@ -108,8 +115,12 @@ class RecipeController:
 
 
 
-    # def handleSearchRecipe(self, keyword):
-    #     pass
+    def handleSearchRecipe(self, keyword):
+        recipes = self.RecipeModel.searchRecipe(keyword)
+        cards = self.createCards(recipes)
+        self.connectFavoriteSignals(cards)
+        self.RecipeView.setCards(cards)
+    #----------------------------------------------------
 
     #FavoriteView
     def initFavoriteView(self) -> FavoriteView:
@@ -137,6 +148,32 @@ class RecipeController:
             recipe = self.RecipeModel.getRecipeById(favorite.recipe_id)
             favorites.append(recipe)
         return favorites
+
+
+
+
+
+
+
+    #----------------------------------------------------
+
+    #DetailView
+
+
+    def initDetailView(self, recipeId) -> DetailView:
+        recipe = self.handleGetRecipeById(recipeId)
+        view = DetailView(self, recipe)
+        if recipe.image in self.imageCache:
+            view.setRecipeImage(self.imageCache[recipe.image])
+
+        return view
+
+    def handleNavigateToDetail(self, recipeId):
+        self.mainWindow.NavigateToDetail(recipeId)
+
+
+
+
 
 
     #----------------------------------------------------
