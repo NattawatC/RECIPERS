@@ -142,8 +142,6 @@ class RecipeCardScrollArea(QScrollArea):
             if recipeCard.getRecipeId() == recipeId:
                 recipeCard.setParent(None)
                 self.recipeCards.remove(recipeCard)
-        self.initContent()
-        self.setWidget(self.scroll_area_content)
 
     def refreshAll(self, recipeCards):
         self.scroll_area_content = QWidget(self)
