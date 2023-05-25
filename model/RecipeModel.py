@@ -41,21 +41,23 @@ class Category(Base):
 
 
 
-# class Ingredient(Base):
-#     __tablename__ = 'ingredients'
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String)
-#     quantity = Column(String)
-#     recipe_id = Column(Integer, ForeignKey('recipes.id'))
-#
-# class Instruction(Base):
-#     __tablename__ = 'instructions'
-#
-#     id = Column(Integer, primary_key=True)
-#     step_number = Column(Integer)
-#     instruction = Column(String)
-#     recipe_id = Column(Integer, ForeignKey('recipes.id'))
+class Ingredient(Base):
+    __tablename__ = 'ingredients'
+
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    name = Column(String)
+    amount = Column(String)
+    unit = Column(String)
+
+class Instruction(Base):
+    __tablename__ = 'instructions'
+
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    step = Column(Integer)
+    detail = Column(String)
+
 
 
 class Cuisine(Category):
@@ -127,30 +129,15 @@ class RecipeModel:
         favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
         return favorites
 
-    def searchRecipe(self, name):
-        recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{name}%")).all()
+    def searchRecipe(self, keyword, userId):
+        category = self.session.query(Category).filter_by(name=keyword).first()
+        if category is not None:
+            recipes = self.session.query(Recipe).join(Classify).join(Category).all()
+
+        elif keyword == 'favorite':
+            recipes = self.session.query(Recipe).join(FavoriteRecipes).filter_by(user_id=userId).all()
+
+        else:
+            recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{keyword}%")).all()
         return recipes
-
-# class RecipeRepository:
-#     def __init__(self, session):
-#         self.session = session
-
-
-# class CategoryModel(Base):
-#     __tablename__ = 'categories'
-#     id = Column(Integer,primary_key=True)
-#     recipe_id = Column(Integer, ForeignKey("recipes.id"))
-#     type = Column(String)
-
-
-# class MainDish(RecipeModel):
-#     def __init__(self, name, ingredients=None, instructions=):
-#         self.name = name
-#
-#
-# class  SideDish(RecipeModel):
-#     def __init__(self, name):
-#         self.name = name
-
-
 

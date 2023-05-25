@@ -31,12 +31,11 @@ class RecipeView(NavigationBar):
         self.save_num = QLabel("120", self.total_s_frame)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
 
+
         self.decorateRecipeView()
-
-
+        self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
         self.search_bar.textChanged.connect(self.RecipeController.handleSearchRecipe)
         self.search_bar.returnPressed.connect(self.RecipeController.handleSearchRecipe)
-        self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
 
 
     def setFavoriteCount(self, num):
@@ -44,9 +43,6 @@ class RecipeView(NavigationBar):
 
     def setCards(self, cards):
         self.RecipeCardScrollArea.refreshAll(cards)
-
-    def onClickLogoutButton(self, func):
-        self.logout_btn.clicked.connect(func)
 
     def decorateRecipeView(self):
         self.recipe_label.setObjectName("default_label")
@@ -121,6 +117,7 @@ class RecipeView(NavigationBar):
 
         self.RecipeCardScrollArea.setParent(self)
         self.styleSheet = Theme.get_stylesheet()
+
 
 
 

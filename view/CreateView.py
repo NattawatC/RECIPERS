@@ -116,5 +116,21 @@ class CreateView(NavigationBar):
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
         self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        
+        self.submit_btn.clicked.connect(self.submit)
+
         self.setStyleSheet(Theme.get_stylesheet())
+
+    def submit(self):
+        self.getRecipeName()
+        self.getIngredients()
+        self.getDirections()
+
+    def getRecipeName(self):
+        print(self.create_menu_name_input.text())
+
+    def getIngredients(self):
+        print(self.create_ing_input.toPlainText().split("\n"))
+
+    def getDirections(self):
+        print(self.create_dir_input.toPlainText().split("\n"))
+
