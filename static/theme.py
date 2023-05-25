@@ -1,6 +1,6 @@
 import os
 from PySide6.QtGui import QFont
-
+from PySide6.QtGui import QFontDatabase
 
 class Theme:
     __ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

@@ -2,43 +2,35 @@ from PySide6.QtWidgets import QStackedWidget
 from PySide6.QtWidgets import QMainWindow
 from controller.AuthController import AuthController
 from static.theme import Theme
-from view.AuthView import AuthView
-from view.RecipeView import RecipeView
-from view.FavoriteView import FavoriteView
-from view.CreateView import CreateView
 from controller.RecipeController import RecipeController
 
 class Application(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.AuthController = None
+        self.RecipeController = None
+        self.stack = None
         self.setFixedSize(1280, 720)
+        self.imageCache = {}
         self.setWindowTitle("RECIPER")
-        self.stack = QStackedWidget()
-        self.AuthController = AuthController(AuthView(self))
         self.showAuthView()
-        self.RecipeController = RecipeController()
+        self.setStyleSheet(Theme.get_stylesheet())
 
-    def initializeLoggedInState(self):
+
+    def handleLogin(self):
         if self.AuthController.handleLogin():
-            self.RecipeController.setController(self.AuthController)
-            self.RecipeController.addView(RecipeView(self))
-            self.RecipeController.addView(FavoriteView(self))
-            self.RecipeController.addView(CreateView(self))
-
+            self.stack = QStackedWidget()
+            self.RecipeController = RecipeController(self, self.imageCache, self.AuthController)
             for i in self.RecipeController.views:
                 self.stack.addWidget(i)
-            self.NavigateToRecipe()
             self.setCentralWidget(self.stack)
-
+            self.NavigateToRecipe()
 
     def showAuthView(self):
-        self.stack = QStackedWidget()
-        self.RecipeController = RecipeController()
-        self.AuthController = AuthController(AuthView(self))
+        self.AuthController = AuthController(self)
         self.setCentralWidget(self.AuthController.AuthView)
-        self.AuthController.AuthView.login_button.clicked.connect(self.initializeLoggedInState)
-        self.setStyleSheet(Theme.get_stylesheet())
+        self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:

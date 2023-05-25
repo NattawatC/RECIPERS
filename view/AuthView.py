@@ -3,17 +3,14 @@ import sys
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QHBoxLayout, QStackedWidget
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QRect, Signal, QEvent, Qt
-from controller.AuthController import AuthController
 from static.theme import Theme
 
 
 class AuthView(QWidget):
-    def __init__(self, parent):
+    def __init__(self, Controller = None):
+        super().__init__()
 
-        QWidget.__init__(self)
-
-        self.AuthController = AuthController(self)
-        self.mainWindow = parent
+        self.AuthController = Controller
 
         self.setFixedSize(1280, 720)
         self.setObjectName("auth_view")
@@ -77,6 +74,8 @@ class AuthView(QWidget):
         self.login_button.setGeometry(QRect(59, 557, 520, 50))
         self.login_button.setDefault(True)
         self.login_button.setAutoDefault(True)
+
+        self.setStyleSheet(Theme.get_stylesheet())
 
 
 

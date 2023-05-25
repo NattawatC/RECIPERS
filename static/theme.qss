@@ -7,6 +7,12 @@ QWidget {
     background-color: #F6F6F6;
 }
 
+QWidget#default_scrollArea{
+    background-color: transparent;
+    color: transparent;
+    border: None;
+}
+
 /* Frame */
 QFrame#frame {
     background-color: #343454;
@@ -36,6 +42,11 @@ QFrame#detail_frame{
 QFrame#create_frame{
     background-color: #F6F6F6;
     border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+QFrame#filter_frame{
+    background-color: #D9A32B;
     border-radius: 10px;
 }
 
@@ -115,13 +126,19 @@ QTextEdit{
 /* Scroll Area */
 QScrollArea#default_scrollArea {
     background-color: transparent;
+    color: transparent;
+    border: None;
+}
+
+QScrollArea#test_scrollArea {
+    background-color: transparent;
     border: 1px solid #343454;
     border-radius: 10px;
 }
 
 QWidget#default_scrollAreaContents {
     background-color: transparent;
-    color: red;
+    color: transparent;
 }
 
 /* QScrollBar::handle:vertical {	
@@ -158,6 +175,26 @@ QPushButton#nav_button {
 QPushButton#nav_button:hover {
     color: #D9A32B;
     font-weight: bold;
+}
+
+QPushButton#unstared{
+    background-color: transparent;
+    border: none;
+}
+
+QPushButton#logout_button{
+    background-color: #D9A32B;
+    border: none;
+    border-radius: 10px;
+}
+
+QPushButton#logout_button::hover{
+    background-color: #DEB14D;
+}
+
+QPushButton#filter_button{
+    background-color: transparent;
+    color: #F6F6F6;
 }
 
 /* RadioButton */

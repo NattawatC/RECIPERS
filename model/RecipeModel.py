@@ -1,13 +1,9 @@
-from abc import ABCMeta, abstractmethod
-
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum
 from sqlalchemy.orm import declarative_base, sessionmaker, Mapped, mapped_column, relationship, backref
 from config import ENGINE as engine
 from typing import List
-
-Base = declarative_base()
+from model.BaseModel import Base
+from model.AuthModel import User
 
 
 class Classify(Base):
@@ -26,6 +22,7 @@ class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    image = Column(String)
     # type_id = Column(Integer, ForeignKey('recipe_types.id'))
     # type = relationship("RecipeType", backref=backref('recipes'))
     categories: Mapped[List["Classify"]] = relationship(back_populates="recipe")
@@ -91,9 +88,11 @@ class Condiment(Category):
 class FavoriteRecipes(Base):
     __tablename__ = 'favorite_recipes'
 
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
+
     recipe_id = Column(Integer, ForeignKey('recipes.id'), primary_key=True)
-    recipe = relationship("Recipe", backref=backref('favorite_recipes'))
+    user = relationship(User , backref=backref('favorite_recipes'))
+    recipe = relationship(Recipe, backref=backref('favorite_recipes'))
 
 
 class RecipeModel:
@@ -106,22 +105,30 @@ class RecipeModel:
         return recipes
 
     def getRecipeById(self, id):
-        recipe = self.session.query(Recipe).filter_by(id=id)
+        recipe = self.session.query(Recipe).filter_by(id=id).first()
         return recipe
 
     def getRecipeByName(self, name):
-        recipe = self.session.query(Recipe).filter_by(name=name)
+        recipe = self.session.query(Recipe).filter_by(name=name).first()
         return recipe
 
-    def makeFavorite(self, user_id, recipe_id):
+    def makeFavorite(self, user_id , recipe_id):
         favorite = FavoriteRecipes(user_id=user_id, recipe_id=recipe_id)
         self.session.add(favorite)
+        self.session.commit()
+
+    def unFavorite(self, user_id , recipe_id):
+        favorite = self.session.query(FavoriteRecipes).filter_by(user_id=user_id, recipe_id=recipe_id).first()
+        self.session.delete(favorite)
         self.session.commit()
 
     def getFavorites(self, user_id):
         favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
         return favorites
 
+    def searchRecipe(self, name):
+        recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{name}%")).all()
+        return recipes
 
 # class RecipeRepository:
 #     def __init__(self, session):
@@ -143,3 +150,6 @@ class RecipeModel:
 # class  SideDish(RecipeModel):
 #     def __init__(self, name):
 #         self.name = name
+
+
+

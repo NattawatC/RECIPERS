@@ -1,11 +1,8 @@
 from config import ENGINE as engine
 from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import  sessionmaker
+from model.BaseModel import Base
 import time
-# import psycopg2
-
-
-Base = declarative_base()
 
 class User(Base):
     __tablename__ = "user_info"
