@@ -59,6 +59,7 @@ class RecipeController:
     #RecipeView
     def initRecipeView(self):
         self.RecipeView = RecipeView(self, self.initializeCard())
+        self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         return self.RecipeView
 
     def connectFavoriteSignals(self, cards):
@@ -86,6 +87,7 @@ class RecipeController:
     def handleMakeFavorite(self, recipeId, button):
         self.RecipeModel.makeFavorite(self.User.id, recipeId)
         print(str(recipeId) + " is favorited")
+        self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         button.clicked.disconnect()
         button.clicked.connect(partial(self.handleUnFavorite, recipeId, button))
 
@@ -116,6 +118,9 @@ class RecipeController:
             self.connectFavoriteSignals(cards)
             return cards
 
+    def getFavoriteCount(self):
+        return len(self.handleGetFavorites())
+
     def refreshFavoriteView(self):
         self.FavoriteView.setCards(self.initFavoriteCards())
 
@@ -134,6 +139,7 @@ class RecipeController:
 
     def handleNavigateToRecipe(self):
         self.RecipeView.setCards(self.initializeCard())
+        self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         self.mainWindow.NavigateToRecipe()
 
     def handleNavigateToFavorite(self):

@@ -15,7 +15,7 @@ class FavoriteView(NavigationBar):
         favorite_label.setObjectName("default_label")
         favorite_label.setFont(Theme.CHILLAX_REGULAR_40)
         favorite_label.setGeometry(QRect(336, 22, 460, 56))
-        favorite_label.setText(str(self.RecipeController.AuthController.getCurrentUser()) + "'s Favorite")
+        # favorite_label.setText(str(self.RecipeController.AuthController.getCurrentUser()) + "'s Favorite")
 
         total_s_frame = QFrame(self)
         total_s_frame.setObjectName("total_frame")
@@ -27,10 +27,11 @@ class FavoriteView(NavigationBar):
         save_logo.setPixmap(QPixmap("static/asset/img/save.png"))
         save_logo.setScaledContents(True)
 
-        save_num = QLabel("1", total_s_frame)
-        save_num.setObjectName("default_label")
-        save_num.setFont(Theme.CHILLAX_REGULAR_24)
-        save_num.setGeometry(QRect(92, 17, 60, 20))
+        self.save_num = QLabel("1", total_s_frame)
+        self.save_num.setObjectName("default_label")
+        self.save_num.setFont(Theme.CHILLAX_REGULAR_24)
+        self.save_num.setGeometry(QRect(92, 17, 60, 20))
+        self.save_num.setText(str(len(self.cards)))
 
         save_label = QLabel("Total Saved", total_s_frame)
         save_label.setObjectName("default_label")
@@ -42,9 +43,11 @@ class FavoriteView(NavigationBar):
         self.scrollArea.setParent(self)
 
     def removeCard(self, card):
+        self.save_num.setText(str(int(self.save_num.text()) - 1))
         self.scrollArea.removeCard(card)
 
     def setCards(self, cards):
+        self.save_num.setText(str(len(cards)))
         self.scrollArea.refreshAll(cards)
 
 
