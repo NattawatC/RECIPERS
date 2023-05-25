@@ -17,7 +17,8 @@ class RecipeController:
         self.mainWindow = MainWindow
         self.RecipeView = self.initRecipeView()
         self.FavoriteView = self.initFavoriteView()
-        self.views = [self.RecipeView, self.FavoriteView, CreateView(self), DetailView()]
+        self.DetailView = DetailView(self)
+        self.views = [self.RecipeView, self.FavoriteView, CreateView(self), self.DetailView]
 
 
 
@@ -44,7 +45,6 @@ class RecipeController:
                 if i % 2 != 0:
                     newline += 1
 
-                recipe_card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, item.id))
                 recipe_card.setGeometry(QRect(x, y, 402, 194))
                 cards.append(recipe_card)
         return cards
@@ -83,15 +83,17 @@ class RecipeController:
 
     def connectDetailSignals(self, cards):
         for card in cards:
-            card.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
+            card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
+
+
 
     def initializeCard(self) -> list:
         recipes = self.RecipeModel.getAllRecipes()
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
+        self.connectDetailSignals(cards)
 
         return cards
-
 
     def handleMakeFavorite(self, recipeId, button):
         self.RecipeModel.makeFavorite(self.User.id, recipeId)
@@ -132,6 +134,7 @@ class RecipeController:
         else:
             cards = self.createCards(favorites)
             self.connectFavoriteSignals(cards)
+            self.connectDetailSignals(cards)
             return cards
 
     def getFavoriteCount(self) -> int:
@@ -158,19 +161,9 @@ class RecipeController:
     #DetailView
 
 
-    def initDetailView(self, recipeId) -> DetailView:
-        recipe = self.handleGetRecipeById(recipeId)
-        view = DetailView(self, recipe)
-        if recipe.image in self.imageCache:
-            view.setRecipeImage(self.imageCache[recipe.image])
-
-        return view
-
     def handleNavigateToDetail(self, recipeId):
-        self.mainWindow.NavigateToDetail(recipeId)
-
-
-
+        self.DetailView.setRecipe(self.RecipeModel.getRecipeById(recipeId))
+        self.mainWindow.NavigateToDetail()
 
 
 
@@ -187,6 +180,7 @@ class RecipeController:
     def handleNavigateToFavorite(self):
         self.refreshFavoriteView()
         self.mainWindow.NavigateToFavorite()
+
 
     def __repr__(self) -> str:
         return self.user.username

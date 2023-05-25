@@ -46,6 +46,9 @@ class Application(QMainWindow):
     def NavigateToCreate(self):
         self.stack.setCurrentIndex(2)
 
+    def NavigateToDetail(self):
+        self.stack.setCurrentIndex(3)
+
     # def initialize_page(self) -> None:
     #     "set up method for user."
     #     if self.current_user is None:

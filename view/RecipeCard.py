@@ -22,7 +22,7 @@ class RecipeCard(QWidget):
 
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
-        # self.loadImageFromURL(recipe.image.strip())
+        # self.loadImageFromUrl(recipe.image.strip())
         self.card_name = QLabel(self.card_frame)
         self.card_prep_time = QLabel("Prep. Time:", self.card_frame)
         self.card_prep_time_num = QLabel("30 mins", self.card_frame)
@@ -97,7 +97,7 @@ class RecipeCard(QWidget):
     def setFavorite(self, isFavorite):
         self.isStarred = isFavorite
 
-    def loadImageFromURL(self, url):
+    def loadImageFromUrl(self, url):
         if self.image_cache is not None and url in self.image_cache:
             pixmap = self.image_cache[url]
             self.card_img.setPixmap(pixmap)

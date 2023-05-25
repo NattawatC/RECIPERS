@@ -22,6 +22,7 @@ class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    duration_minute = Column(Integer)
     image = Column(String)
     # type_id = Column(Integer, ForeignKey('recipe_types.id'))
     # type = relationship("RecipeType", backref=backref('recipes'))
