@@ -73,8 +73,10 @@ class RecipeController:
             if recipe.id in [favorite.id for favorite in favorites]:
                 card.setFavorite(True)
                 card.unStarred.clicked.connect(partial(self.handleUnFavorite, recipe.id, card.unStarred))
+                card.updateStar()
             else:
                 card.unStarred.clicked.connect(partial(self.handleMakeFavorite, recipe.id, card.unStarred))
+                card.updateStar()
 
     def initializeCard(self) -> list:
         recipes = self.RecipeModel.getAllRecipes()
@@ -88,9 +90,11 @@ class RecipeController:
         self.RecipeModel.makeFavorite(self.User.id, recipeId)
         print(str(recipeId) + " is favorited")
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
+        icon = QIcon("static/asset/img/stared.png")
+        button.setIcon(icon)
         button.clicked.disconnect()
         button.clicked.connect(partial(self.handleUnFavorite, recipeId, button))
-
+       
 
     def handleUnFavorite(self, recipeId, button):
         self.RecipeModel.unFavorite(self.User.id, recipeId)
@@ -98,6 +102,8 @@ class RecipeController:
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         button.clicked.disconnect()
         button.clicked.connect(partial(self.handleMakeFavorite, recipeId, button))
+        icon = QIcon("static/asset/img/unstared.png")
+        button.setIcon(icon)
         self.FavoriteView.removeCard(recipeId)
 
 
