@@ -18,8 +18,8 @@ class RecipeController:
         self.RecipeView = self.initRecipeView()
         self.FavoriteView = self.initFavoriteView()
         self.DetailView = DetailView(self)
-        self.views = [self.RecipeView, self.FavoriteView, CreateView(self), self.DetailView]
-
+        self.CreateView = CreateView(self)
+        self.views = [self.RecipeView, self.FavoriteView, self.CreateView, self.DetailView]
 
 
     def createCards(self,items) -> list:
@@ -58,6 +58,8 @@ class RecipeController:
         self.mainWindow.stack = None
         self.mainWindow.imageCache = self.imageCache
         self.views.clear()
+
+    #-------------------------------------------------
 
     #RecipeView
     def initRecipeView(self) -> RecipeView:
@@ -116,10 +118,11 @@ class RecipeController:
         self.FavoriteView.removeCard(recipeId)
 
     def handleSearchRecipe(self, keyword):
-        recipes = self.RecipeModel.searchRecipe(keyword)
+        recipes = self.RecipeModel.searchRecipe(keyword, self.User.id)
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
         self.RecipeView.setCards(cards)
+
     #----------------------------------------------------
 
     #FavoriteView
@@ -160,10 +163,18 @@ class RecipeController:
 
     #DetailView
 
-
     def handleNavigateToDetail(self, recipeId):
         self.DetailView.setRecipe(self.RecipeModel.getRecipeById(recipeId))
         self.mainWindow.NavigateToDetail()
+
+    #----------------------------------------------------
+
+    #CreateView
+
+    # def handleCreateRecipe(self):
+    #     self.CreateView.
+
+
 
 
 
