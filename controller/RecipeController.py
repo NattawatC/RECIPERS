@@ -95,6 +95,7 @@ class RecipeController:
     def handleUnFavorite(self, recipeId, button):
         self.RecipeModel.unFavorite(self.User.id, recipeId)
         print(str(recipeId) + " is unfavorited")
+        self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         button.clicked.disconnect()
         button.clicked.connect(partial(self.handleMakeFavorite, recipeId, button))
         self.FavoriteView.removeCard(recipeId)
