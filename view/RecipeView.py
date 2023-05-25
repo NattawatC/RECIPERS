@@ -172,7 +172,7 @@ class RecipeView(NavigationBar):
         self.morethan5_checkbox.setObjectName("default_checkbox")
         
         self.filterMenuLayout.addWidget(self.typeLabel)
-        self.filterMenuLayout.setSpacing(0)
+        # self.filterMenuLayout.setSpacing(0)
         self.filterMenuLayout.addWidget(self.breakfast_checkbox)
         self.filterMenuLayout.addWidget(self.lunch_checkbox)
         self.filterMenuLayout.addWidget(self.dinner_checkbox)
@@ -196,12 +196,6 @@ class RecipeView(NavigationBar):
         self.RecipeCardScrollArea.setParent(self)
         self.styleSheet = Theme.get_stylesheet()
     
-    
-
-
-
-
-
 class RecipeCardScrollArea(QScrollArea):
     def __init__(self, recipeCards):
         super().__init__()
