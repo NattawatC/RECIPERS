@@ -45,6 +45,11 @@ QFrame#create_frame{
     border-radius: 10px;
 }
 
+QFrame#filter_frame{
+    background-color: #D9A32B;
+    border-radius: 10px;
+}
+
 
 /* Line */
 QFrame#white_line {
@@ -185,6 +190,11 @@ QPushButton#logout_button{
 
 QPushButton#logout_button::hover{
     background-color: #DEB14D;
+}
+
+QPushButton#filter_button{
+    background-color: transparent;
+    color: #F6F6F6;
 }
 
 /* RadioButton */
