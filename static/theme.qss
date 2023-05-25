@@ -215,9 +215,6 @@ QPushButton#submit_button{
     padding: 5px;
 }
 
-
-
-
 /* RadioButton */
 /* QRadioButton#default_radio {
     color: #4A321C;
@@ -286,6 +283,6 @@ QToolButton#filter_button::menu-indicator{
 QMenu#filter_menu{
     background-color: #A27E38;
     border: none;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
