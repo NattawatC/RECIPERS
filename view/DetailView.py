@@ -6,16 +6,17 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import QRect, QCoreApplication
 from PySide6.QtGui import QPixmap, QFont, Qt
 from PySide6.QtWidgets import *
-from Navbar import NavigationBar
+from view.Navbar import NavigationBar
 from static.theme import Theme
 
 from view.Navbar import NavigationBar
 
 class DetailView(NavigationBar):
-    def __init__(self, parent: QWidget = None):
-        super().__init__(self, parent)
+    def __init__(self, Controller = None):
+        super().__init__(Controller)
         
 #--------------------------------------------------------------
+        self.recipe = None
         self.detail_frame = QFrame(self)
         self.detail_img = QLabel(self.detail_frame)
         self.detail_name = QLabel("Pork BBQ Stick", self.detail_frame)
@@ -132,7 +133,7 @@ class DetailView(NavigationBar):
         
         self.setStyleSheet(Theme.get_stylesheet())
 
-        self.set_recipe(recipe)
+        self.set_recipe(self.recipe)
 
     def set_recipe(self, recipe):
         self.recipe = recipe
