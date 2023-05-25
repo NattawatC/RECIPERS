@@ -57,7 +57,7 @@ class RecipeController:
         self.views.clear()
 
     #RecipeView
-    def initRecipeView(self):
+    def initRecipeView(self) -> RecipeView:
         self.RecipeView = RecipeView(self, self.initializeCard())
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         return self.RecipeView
@@ -76,7 +76,7 @@ class RecipeController:
             else:
                 card.unStarred.clicked.connect(partial(self.handleMakeFavorite, recipe.id, card.unStarred))
 
-    def initializeCard(self):
+    def initializeCard(self) -> list:
         recipes = self.RecipeModel.getAllRecipes()
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
@@ -106,11 +106,11 @@ class RecipeController:
     #     pass
 
     #FavoriteView
-    def initFavoriteView(self):
+    def initFavoriteView(self) -> FavoriteView:
         self.FavoriteView = FavoriteView(self, self.initFavoriteCards())
         return self.FavoriteView
 
-    def initFavoriteCards(self):
+    def initFavoriteCards(self) -> list:
         favorites = self.handleGetFavorites()
         if favorites is None:
             return []
@@ -119,13 +119,13 @@ class RecipeController:
             self.connectFavoriteSignals(cards)
             return cards
 
-    def getFavoriteCount(self):
+    def getFavoriteCount(self) -> int:
         return len(self.handleGetFavorites())
 
     def refreshFavoriteView(self):
         self.FavoriteView.setCards(self.initFavoriteCards())
 
-    def handleGetFavorites(self):
+    def handleGetFavorites(self) -> list:
         favorites = []
         for favorite in self.RecipeModel.getFavorites(self.User.id):
             recipe = self.RecipeModel.getRecipeById(favorite.recipe_id)
@@ -147,6 +147,6 @@ class RecipeController:
         self.refreshFavoriteView()
         self.mainWindow.NavigateToFavorite()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.user.username
 
