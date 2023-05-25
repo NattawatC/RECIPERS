@@ -47,25 +47,25 @@ class RecipeCard(QWidget):
         self.card_img.setGeometry(QRect(16, 13, 168, 168))
         
         self.card_name.setObjectName("default_label")
-        self.card_name.setGeometry(QRect(204, 21, 146, 28))
+        self.card_name.setGeometry(QRect(204, 21, 164, 55))
         self.card_name.setFont(Theme.CHILLAX_REGULAR_20)
         self.card_name.setText(self.recipe.name)
         self.card_name.setWordWrap(True)
     
         self.card_prep_time.setObjectName("default_label")
-        self.card_prep_time.setGeometry(QRect(204, 64, 141, 22))
+        self.card_prep_time.setGeometry(QRect(204, 87, 141, 22))
         self.card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.card_prep_time_num.setObjectName("default_label")
-        self.card_prep_time_num.setGeometry(QRect(293, 64, 141, 22))
+        self.card_prep_time_num.setGeometry(QRect(293, 87, 141, 22))
         self.card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.card_cooking_time.setObjectName("default_label")
-        self.card_cooking_time.setGeometry(QRect(204, 96, 141, 22))
+        self.card_cooking_time.setGeometry(QRect(204, 119, 141, 22))
         self.card_cooking_time.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.card_cooking_time_num.setObjectName("default_label")
-        self.card_cooking_time_num.setGeometry(QRect(317, 96, 141, 22))
+        self.card_cooking_time_num.setGeometry(QRect(317, 119, 141, 22))
         self.card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.cal_time.setObjectName("default_label")
