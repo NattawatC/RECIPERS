@@ -66,14 +66,14 @@ class RecipeController:
         recipe_cards = {}
 
         for card in cards:
-            card_id = card.recipe.id
-            recipe_cards[card_id] = card
+            recipe = card.recipe
+            recipe_cards[recipe.id] = card
 
-            if card_id in [favorite.id for favorite in favorites]:
+            if recipe.id in [favorite.id for favorite in favorites]:
                 card.setFavorite(True)
-                card.unStarred.clicked.connect(partial(self.handleUnFavorite, card_id, card.unStarred))
+                card.unStarred.clicked.connect(partial(self.handleUnFavorite, recipe.id, card.unStarred))
             else:
-                card.unStarred.clicked.connect(partial(self.handleMakeFavorite, card_id, card.unStarred))
+                card.unStarred.clicked.connect(partial(self.handleMakeFavorite, recipe.id, card.unStarred))
 
     def initializeCard(self):
         recipes = self.RecipeModel.getAllRecipes()
@@ -95,6 +95,9 @@ class RecipeController:
         print(str(recipeId) + " is unfavorited")
         button.clicked.disconnect()
         button.clicked.connect(partial(self.handleMakeFavorite, recipeId, button))
+        self.FavoriteView.removeCard(recipeId)
+
+
 
     # def handleSearchRecipe(self, keyword):
     #     pass
@@ -110,8 +113,11 @@ class RecipeController:
             return []
         else:
             cards = self.createCards(favorites)
+            self.connectFavoriteSignals(cards)
             return cards
 
+    def refreshFavoriteView(self):
+        self.FavoriteView.setCards(self.initFavoriteCards())
 
     def handleGetFavorites(self):
         favorites = []
@@ -127,11 +133,11 @@ class RecipeController:
         self.mainWindow.NavigateToCreate()
 
     def handleNavigateToRecipe(self):
-        # self.handleCreateRecipeCard()
+        self.RecipeView.setCards(self.initializeCard())
         self.mainWindow.NavigateToRecipe()
 
     def handleNavigateToFavorite(self):
-        self.views[1].setCards(self.initFavoriteCards())
+        self.refreshFavoriteView()
         self.mainWindow.NavigateToFavorite()
 
     def __repr__(self):

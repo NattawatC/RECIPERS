@@ -38,19 +38,14 @@ class FavoriteView(NavigationBar):
         save_label.setGeometry(QRect(92, 49, 130, 15))
 
         self.setStyleSheet(Theme.get_stylesheet())
-        if self.cards is not None:
-            self.scrollArea = RecipeCardScrollArea(self.cards)
-            self.scrollArea.setParent(self)
-
-    def setCards(self, cards):
-        self.scrollArea.setParent(None)
-        self.cards = cards
         self.scrollArea = RecipeCardScrollArea(self.cards)
         self.scrollArea.setParent(self)
 
+    def removeCard(self, card):
+        self.scrollArea.removeCard(card)
 
-
-
+    def setCards(self, cards):
+        self.scrollArea.refreshAll(cards)
 
 
 

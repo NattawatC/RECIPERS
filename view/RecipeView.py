@@ -39,8 +39,11 @@ class RecipeView(NavigationBar):
 
         # self.search_bar.textChanged.connect(self.RecipeController.handleSearch)
 
-    def handleFavoriteButton(self):
-        self.RecipeController.handleFavoriteButton()
+    def setCards(self, cards):
+        self.RecipeCardScrollArea.setParent(None)
+        self.cards = cards
+        self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
+        self.RecipeCardScrollArea.setParent(self)
 
     def onClickLogoutButton(self, func):
         self.logout_btn.clicked.connect(func)
@@ -109,6 +112,7 @@ class RecipeView(NavigationBar):
 
 
 
+
 class RecipeCardScrollArea(QScrollArea):
     def __init__(self, recipeCards):
         super().__init__()
@@ -134,18 +138,19 @@ class RecipeCardScrollArea(QScrollArea):
         else:
             self.scroll_area_content.setMinimumSize(840, height + 82)
 
-    # def refresh(self, recipes):
-    #     self.recipes = recipes
-    #     for recipe_card in self.RecipeCardList:
-    #         recipe_card.setParent(None)
-    #     self.RecipeCardList = []
-    #     self.createRecipeCard(self.recipes)
-    #     if len(self.recipes) > 4:
-    #         height = ceil((len(self.recipes) / 2)) * 230
-    #         if len(self.recipes) % 2 == 0:
-    #             self.scroll_area_content.setMinimumSize(840, height)
-    #         else:
-    #             self.scroll_area_content.setMinimumSize(840, height + 82)
-    #     self.setWidget(self.scroll_area_content)
+    def removeCard(self, recipeId):
+        for recipeCard in self.recipeCards:
+            if recipeCard.getRecipeId() == recipeId:
+                recipeCard.setParent(None)
+                self.recipeCards.remove(recipeCard)
+        self.initContent()
+        self.setWidget(self.scroll_area_content)
+
+    def refreshAll(self, recipeCards):
+        self.scroll_area_content = QWidget(self)
+        self.scroll_area_content.setObjectName("default_scrollArea")
+        self.recipeCards = recipeCards
+        self.initContent()
+        self.setWidget(self.scroll_area_content)
 
 

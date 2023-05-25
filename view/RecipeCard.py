@@ -1,10 +1,6 @@
-import concurrent
 import io
-import sys
-import urllib.request
-
 import requests
-from PIL import Image, UnidentifiedImageError
+from PIL import Image
 from PIL.ImageQt import ImageQt
 from PySide6.QtCore import Signal, QRect, Qt
 from PySide6.QtGui import QCursor, QPixmap, QIcon
@@ -102,8 +98,8 @@ class RecipeCard(QWidget):
             self.card_img.setPixmap(pixmap)
 
         else:
+            request = requests.get(url)
             try:
-                request = requests.get(url)
                 with io.BytesIO(request.content) as img_bytes:
                     image = Image.open(img_bytes)
                     image = image.resize((170, 170), Image.ANTIALIAS)
@@ -111,7 +107,6 @@ class RecipeCard(QWidget):
 
                     # Cache the image for future use
                     self.image_cache[url] = pixmap
-
                     self.card_img.setPixmap(pixmap)
             except Exception as e:
                 print(id, "is not an image file")

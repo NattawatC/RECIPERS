@@ -12,7 +12,7 @@ class Application(QMainWindow):
         self.RecipeController = None
         self.stack = None
         self.setFixedSize(1280, 720)
-        self.imageCache = None
+        self.imageCache = {}
         self.setWindowTitle("RECIPER")
         self.showAuthView()
         self.setStyleSheet(Theme.get_stylesheet())
