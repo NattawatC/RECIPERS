@@ -126,8 +126,9 @@ class RecipeModel:
         favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
         return favorites
 
-
-
+    def searchRecipe(self, name):
+        recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{name}%")).all()
+        return recipes
 
 # class RecipeRepository:
 #     def __init__(self, session):
@@ -149,3 +150,6 @@ class RecipeModel:
 # class  SideDish(RecipeModel):
 #     def __init__(self, name):
 #         self.name = name
+
+
+

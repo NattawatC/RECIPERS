@@ -37,6 +37,8 @@ class RecipeView(NavigationBar):
 
 
         # self.search_bar.textChanged.connect(self.RecipeController.handleSearch)
+        # self.search_bar.returnPressed.connect(self.RecipeController.handleSearch)
+
 
     def setFavoriteCount(self, num):
         self.save_num.setText(str(num))
@@ -131,7 +133,7 @@ class RecipeCardScrollArea(QScrollArea):
     def initContent(self):
         for recipe in self.recipeCards:
             recipe.setParent(self.scroll_area_content)
-        height = ((len(self.recipeCards) // 2)) * 230
+        height = (len(self.recipeCards) // 2) * 230
         if len(self.recipeCards) % 2 == 0:
             self.scroll_area_content.setMinimumSize(840, height)
         else:
