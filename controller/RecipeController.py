@@ -164,6 +164,8 @@ class RecipeController:
     #DetailView
 
     def handleNavigateToDetail(self, recipeId):
+        if self.imageCache is not None:
+            self.DetailView.setImage(self.imageCache[self.RecipeModel.getRecipeById(recipeId).image])
         self.DetailView.setRecipe(self.RecipeModel.getRecipeById(recipeId))
         self.DetailView.setIngredients(self.RecipeModel.getIngredients(recipeId))
         self.DetailView.setDirections(self.RecipeModel.getInstructions(recipeId))

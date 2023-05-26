@@ -104,12 +104,16 @@ class DetailView(NavigationBar):
         
         self.setStyleSheet(Theme.get_stylesheet())
 
+    def setImage(self, image):
+        self.detail_img.setPixmap(QPixmap(image))
+
     def setRecipe(self, recipe):
         self.detail_name.setText(recipe.name)
-        # self.detail_img.setPixmap(self.loadImageFromUrl(recipe.image))
+        self.detail_cooking_time_num.setText(str(recipe.duration_minute) + " mins")
+        # if self.loadImageFromUrl(recipe.image) is not None:
+        #     self.detail_img.setPixmap(self.loadImageFromUrl(recipe.image))
         # self.detial_cal_num.setText(str(recipe.calories) + " Kcal")
         # self.detail_prep_time_num.setText(str(recipe.prep_time) + " mins")
-        self.detail_cooking_time_num.setText(str(recipe.duration_minute) + " mins")
         # self.set_ingredients(recipe.ingredients)
         # self.set_directions(recipe.directions)
 
@@ -144,20 +148,19 @@ class DetailView(NavigationBar):
 
     @staticmethod
     def loadImageFromUrl(url):
-        request = requests.get(url)
-
         try:
+            request = requests.get(url)
             with io.BytesIO(request.content) as img_bytes:
                 image = Image.open(img_bytes)
-                image = image.resize((500, 500), Image.ANTIALIAS)
-                draw = ImageDraw.Draw(image)
-                draw.rounded_rectangle(radius=20)
+                image = image.resize((170, 170), Image.ANTIALIAS)
+                # draw = ImageDraw.Draw(image)
+                # draw.rounded_rectangle(radius=20)
 
-                pixmap = QPixmap.fromImage(ImageQt(image))
+                pixmap = QPixmap.convertfromImage(ImageQt(image))
 
                 return pixmap
         except Exception as e:
-            print(id, "is not an image file")
+            return e
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

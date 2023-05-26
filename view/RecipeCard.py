@@ -22,7 +22,7 @@ class RecipeCard(QWidget):
 
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
-        # self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
+        self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
         self.card_name = QLabel(self.card_frame)
         self.card_serving = QLabel("Serving:", self.card_frame)
         self.card_serving_num = QLabel(str(self.recipe.serving), self.card_frame)
@@ -30,13 +30,9 @@ class RecipeCard(QWidget):
         self.card_cooking_time_num = QLabel("30 mins", self.card_frame)
         self.cal_time = QLabel(f"{random.randint(100,1000)} Kcal", self.card_frame)
         self.card_detail_btn = QPushButton("Detail", self.card_frame)
-        # card_detail_btn.clicked.connect(self.RecipeController.handleMakeFavorite)
         self.arrow = QLabel(self.card_frame)
         self.unStarred = QPushButton(self.card_frame)
         self.icon = QIcon("static/asset/img/unstared.png")
-        
-        # self.unStarred.clicked.connect(self.emitFavoriteSignal)
-
         self.decorateRecipeCard()
 
     def decorateRecipeCard(self):
@@ -67,11 +63,12 @@ class RecipeCard(QWidget):
         self.card_cooking_time_num.setObjectName("default_label")
         self.card_cooking_time_num.setGeometry(QRect(317, 119, 141, 22))
         self.card_cooking_time_num.setFont(Theme.CHILLAX_REGULAR_16)
+        self.card_cooking_time_num.setText(f"{self.recipe.duration_minute} mins")
         
         self.cal_time.setObjectName("default_label")
         self.cal_time.setGeometry(QRect(204, 155, 141, 22))
         self.cal_time.setFont(Theme.CHILLAX_REGULAR_20)
-        
+
         self.card_detail_btn.setObjectName("card_detail_btn")
         self.card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
         self.card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
@@ -103,8 +100,8 @@ class RecipeCard(QWidget):
             self.card_img.setPixmap(pixmap)
 
         else:
-            request = requests.get(url)
             try:
+                request = requests.get(url)
                 with io.BytesIO(request.content) as img_bytes:
                     image = Image.open(img_bytes)
                     image = image.resize((170, 170), Image.ANTIALIAS)
