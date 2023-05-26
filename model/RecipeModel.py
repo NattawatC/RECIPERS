@@ -150,3 +150,6 @@ class RecipeModel:
             recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{keyword}%")).all()
         return recipes
 
+    def createRecipe(self):
+        pass
+

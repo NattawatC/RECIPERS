@@ -207,6 +207,9 @@ class CreateView(NavigationBar):
                 return True
         return False
 
+    def showWarningMessage(self, message):
+        QMessageBox.warning(self, "Warning", message)
+
     def getCategories(self) -> list[str] | None:
 
         if self.validateInput(self.create_category_input, "Please enter a category"):

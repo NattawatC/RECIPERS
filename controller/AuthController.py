@@ -3,7 +3,6 @@ from view.AuthView import AuthView
 from view.RegisterView import RegisterView
 from PySide6.QtCore import Qt
 
-
 class AuthController:
     def __init__(self, MainWindow):
         self.model = AuthModel()
@@ -29,8 +28,7 @@ class AuthController:
             self.AuthView.showError("Invalid username or password")
 
     def handleRegister(self):
-        self.mainWindow.setWindowState(Qt.WindowMinimized)
-        self.RegisterView.show()
+        pass
 
     def handleLogout(self, user=None):
         self.model.logout(self.getCurrentUser())

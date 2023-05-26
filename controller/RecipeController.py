@@ -87,8 +87,6 @@ class RecipeController:
         for card in cards:
             card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
 
-
-
     def initializeCard(self) -> list:
         # recipes = self.RecipeModel.getAllRecipes()
         recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
@@ -176,12 +174,12 @@ class RecipeController:
         recipeInfo = self.recipeSubmitted()
 
         if recipeInfo["name"] == self.RecipeModel.getRecipeByName(recipeInfo["name"]):
-            print("Recipe already exists")
-            return
+            self.CreateView.showMessageBox("Recipe name already exists")
+        
         else:
-            pass
-
-
+            self.RecipeModel.createRecipe(recipeInfo)
+            self.CreateView.showMessageBox("Recipe created successfully")
+            # self.CreateView.clearForm()
 
 
 

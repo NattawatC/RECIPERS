@@ -32,10 +32,21 @@ class Application(QMainWindow):
             self.NavigateToRecipe()
 
     def showAuthView(self):
-        self.setCentralWidget(self.AuthController.AuthView)
+        self.stack = QStackedWidget()
+        self.AuthController = AuthController(self)
+        self.stack.addWidget(self.AuthController.AuthView)
+        self.stack.addWidget(self.AuthController.RegisterView)
+        self.setCentralWidget(self.stack)
         self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
-       
-        self.AuthController.AuthView.register_button.clicked.connect(self.AuthController.handleRegister)
+        self.AuthController.AuthView.register_button.clicked.connect(self.NavigateToRegister)
+        self.AuthController.RegisterView.start_button.clicked.connect(self.handleRegister)
+
+    def handleRegister(self):
+        self.AuthController.handleRegister()
+        self.stack.setCurrentIndex(0)
+
+    def NavigateToRegister(self):
+        self.stack.setCurrentIndex(1)
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:
@@ -53,6 +64,7 @@ class Application(QMainWindow):
 
     def NavigateToDetail(self):
         self.stack.setCurrentIndex(3)
+
 
     # def initialize_page(self) -> None:
     #     "set up method for user."
