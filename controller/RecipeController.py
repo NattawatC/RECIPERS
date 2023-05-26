@@ -155,11 +155,6 @@ class RecipeController:
         return favorites
 
 
-
-
-
-
-
     #----------------------------------------------------
 
     #DetailView
@@ -178,9 +173,16 @@ class RecipeController:
     #CreateView
 
     def handleCreateRecipe(self):
-        # self.CreateView.getRecipeDetail()
-        self.CreateView.getIngredients()
-        # self.CreateView.getInstructions()
+        recipeInfo = self.recipeSubmitted()
+
+        if recipeInfo["name"] == self.RecipeModel.getRecipeByName(recipeInfo["name"]):
+            print("Recipe already exists")
+            return
+        else:
+            pass
+
+
+
 
 
 
