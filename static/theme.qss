@@ -215,6 +215,16 @@ QPushButton#submit_button{
     padding: 5px;
 }
 
+QPushButton#delete_button{
+    background-color: #95424E;
+    border: none;
+    border-radius: 5px;
+}
+
+QPushButton#delete_button::hover{
+    background-color: #A15862;
+}
+
 /* RadioButton */
 /* QRadioButton#default_radio {
     color: #4A321C;
