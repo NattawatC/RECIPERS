@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QMainWindow
 from controller.AuthController import AuthController
 from static.theme import Theme
 from controller.RecipeController import RecipeController
+from functools import partial
 
 class Application(QMainWindow):
 
@@ -14,7 +15,10 @@ class Application(QMainWindow):
         self.setFixedSize(1280, 720)
         self.imageCache = {}
         self.setWindowTitle("RECIPER")
+        self.AuthController = AuthController(self)
+ 
         self.showAuthView()
+        
         self.setStyleSheet(Theme.get_stylesheet())
 
 
@@ -28,9 +32,10 @@ class Application(QMainWindow):
             self.NavigateToRecipe()
 
     def showAuthView(self):
-        self.AuthController = AuthController(self)
         self.setCentralWidget(self.AuthController.AuthView)
         self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
+       
+        self.AuthController.AuthView.register_button.clicked.connect(self.AuthController.handleRegister)
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:

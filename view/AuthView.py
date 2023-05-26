@@ -91,10 +91,10 @@ class AuthView(QWidget):
 
     def eventFilter(self, obj, event):
         if obj == self.lineEdit_username and event.type() == QEvent.FocusIn:
-            self.lineEdit_username.setStyleSheet("border: 2px solid gray;")
+            self.lineEdit_username.setStyleSheet("border: 2px solid #D9A32B;")
 
         elif obj == self.lineEdit_password and event.type() == QEvent.FocusIn:
-            self.lineEdit_password.setStyleSheet("border: 2px solid gray;")
+            self.lineEdit_password.setStyleSheet("border: 2px solid #D9A32B;")
 
         if obj == self.lineEdit_username and event.type() == QEvent.FocusOut:
             self.lineEdit_username.setStyleSheet(Theme.get_stylesheet())
@@ -132,5 +132,3 @@ class AuthView(QWidget):
         self.lineEdit_username.clear()
         self.lineEdit_password.clear()
         self.lineEdit_username.setFocus()
-
-
