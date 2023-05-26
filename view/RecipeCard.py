@@ -2,7 +2,7 @@ import io
 import requests
 from PIL import Image
 from PIL.ImageQt import ImageQt
-from PySide6.QtCore import Signal, QRect, Qt
+from PySide6.QtCore import Signal, QRect, Qt, QSize
 from PySide6.QtGui import QCursor, QPixmap, QIcon
 from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QLabel
 import random
@@ -32,7 +32,8 @@ class RecipeCard(QWidget):
         self.card_detail_btn = QPushButton("Detail", self.card_frame)
         self.arrow = QLabel(self.card_frame)
         self.unStarred = QPushButton(self.card_frame)
-        self.icon = QIcon("static/asset/img/unstared.png")
+        self.starIcon = QIcon("static/asset/img/unstared.png")
+        self.deleteIcon = QIcon("static/asset/img/delete.png")
         self.decorateRecipeCard()
 
     def decorateRecipeCard(self):
@@ -70,22 +71,29 @@ class RecipeCard(QWidget):
         self.cal_time.setFont(Theme.CHILLAX_REGULAR_20)
 
         self.card_detail_btn.setObjectName("card_detail_btn")
-        self.card_detail_btn.setGeometry(QRect(316, 153, 74, 22))
+        self.card_detail_btn.setGeometry(QRect(290, 153, 74, 22))
         self.card_detail_btn.setFont(Theme.CHILLAX_REGULAR_16)
         self.card_detail_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.arrow.setObjectName("arrow")
-        self.arrow.setGeometry(QRect(372, 158, 13, 13))
+        self.arrow.setGeometry(QRect(345, 158, 13, 13))
         self.arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         self.arrow.setScaledContents(True)
+
+        self.delete_btn = QPushButton(self.card_frame)
+        self.delete_btn.setObjectName("delete_button")
+        self.delete_btn.setGeometry(QRect(372, 153, 22, 22))
+        self.delete_btn.setIcon(self.deleteIcon)
+        deleteSize = QSize(15, 15)
+        self.delete_btn.setIconSize(deleteSize)
+        self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
         
         self.unStarred.setObjectName("unstared")
         self.unStarred.setGeometry(QRect(372, 13, 17, 17))
-        
-        self.unStarred.setIcon(self.icon)
+        self.unStarred.setIcon(self.starIcon)
         self.unStarred.setIconSize(self.unStarred.size())
         self.unStarred.setCursor(QCursor(Qt.PointingHandCursor))
-        
+
         self.setStyleSheet(Theme.get_stylesheet())
         
     def getRecipeId(self):
