@@ -90,7 +90,8 @@ class RecipeController:
 
 
     def initializeCard(self) -> list:
-        recipes = self.RecipeModel.getAllRecipes()
+        # recipes = self.RecipeModel.getAllRecipes()
+        recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
         self.connectDetailSignals(cards)
@@ -176,10 +177,10 @@ class RecipeController:
 
     #CreateView
 
-    # def handleCreateRecipe(self):
-    #     self.CreateView.
-
-
+    def handleCreateRecipe(self):
+        # self.CreateView.getRecipeDetail()
+        self.CreateView.getIngredients()
+        # self.CreateView.getInstructions()
 
 
 

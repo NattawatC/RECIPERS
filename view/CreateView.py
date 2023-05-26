@@ -139,12 +139,25 @@ class CreateView(NavigationBar):
         self.getIngredients()
         self.getDirections()
 
-    def getRecipeName(self):
-        print(self.create_menu_name_input.text())
+    def getRecipeDetail(self):
+        detail = {}
+        detail["name"] = self.create_menu_name_input.text()
+
 
     def getIngredients(self):
-        print(self.create_ing_input.toPlainText().split("\n"))
+        ingredients = []
+        if self.create_ing_input.toPlainText() != "":
+            each = self.create_ing_input.toPlainText().split("\n")
+            for e in each:
+                if e != "":
+                    ingredients.append(e.split(" "))
+        return ingredients
 
     def getDirections(self):
-        print(self.create_dir_input.toPlainText().split("\n"))
-
+        directions = []
+        if self.create_dir_input.toPlainText() != "":
+            each = self.create_dir_input.toPlainText().split("\n")
+            for e in each:
+                if e != "" and "." in e and e[0] in "1234567890":
+                    directions.append(e.split(".",1))
+        return directions

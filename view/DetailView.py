@@ -124,7 +124,6 @@ class DetailView(NavigationBar):
         ingredientsVBox = QVBoxLayout()
         ingredientsVBox.setAlignment(Qt.AlignTop)
         for ingredient in ingredients:
-            print(ingredient.name)
             detail_ingredients = QLabel(ingredient.name + " " + str(ingredient.amount) + " " + ingredient.unit)
             detail_ingredients.setFont(Theme.CHILLAX_REGULAR_14)
             detail_ingredients.setObjectName("default_label")
