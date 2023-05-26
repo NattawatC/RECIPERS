@@ -12,6 +12,7 @@ class RecipeController:
     def __init__(self, MainWindow,  imageCache, Controller = None,):
         self.imageCache = imageCache
         self.AuthController = Controller
+        self.UserLogIn = self.AuthController.getCurrentUserLog()
         self.User = self.AuthController.getCurrentUser()
         self.RecipeModel = RecipeModel()
         self.mainWindow = MainWindow
@@ -121,6 +122,13 @@ class RecipeController:
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
         self.RecipeView.setCards(cards)
+        
+    # def handleFilterRecipe(self,tag):
+    #     recipes = self.RecipeModel.filterRecipe(tag)
+    #     cards = self.createCards(recipes)
+    #     self.RecipeView.setCards(cards)
+        #not finished
+        
 
     #----------------------------------------------------
 
@@ -202,3 +210,8 @@ class RecipeController:
     def __repr__(self) -> str:
         return self.user.username
 
+    def getUser(self):
+        return self.User.username
+    
+    def getUserLoginTime(self):
+        return self.UserLogIn

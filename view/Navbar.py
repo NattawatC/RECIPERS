@@ -90,7 +90,8 @@ class NavigationBar(QWidget):
         
         self.user_message_box.setObjectName("user_message_box")
         self.user_message_box.setWindowTitle("User")
-        self.user_message_box.setText("User_name: \n"+ "Created recipe at: \n" + "Login at:")
+        self.user_message_box.setText("User_name: "+ self.RecipeController.getUser() + "\n" + "Created recipe at: \n" + "Login at: " + str(self.RecipeController.getUserLoginTime()))
+        # self.user_message_box.setText(self.RecipeController.getUser())
         self.user_message_box.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.setStyleSheet(Theme.get_stylesheet())

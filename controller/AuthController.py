@@ -1,5 +1,6 @@
 from model.AuthModel import AuthModel
 from view.AuthView import AuthView
+import time
 from view.RegisterView import RegisterView
 from PySide6.QtCore import Qt
 
@@ -11,6 +12,7 @@ class AuthController:
         self.mainWindow = MainWindow
         self.__currentUser = None
         self.isLoginSuccess = False
+        self.__currentUserLog = None
 
     def authenticate(self,username, password):
         if self.model.validate(username, password):
@@ -40,6 +42,11 @@ class AuthController:
 
     def setCurrentUser(self, user):
         self.__currentUser = user
+
+    def getCurrentUserLog(self):
+        self.__currentUserLog = self.model.getUserLogTime(time.strftime('%Y-%m-%d %H:%M:%S'))
+        return self.__currentUserLog
+
 
     # def NavigateToRegister(self):
     #     print(self.AuthView)

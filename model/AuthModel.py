@@ -33,6 +33,9 @@ class AuthModel:
 
     def getUser(self, username):
         return self.session.query(User).filter(User.username == username).first()
+    
+    def getUserLogTime(self, time):
+        return self.session.query(UserLog).filter(UserLog.logged_in_at == time).first()
 
     def validate(self, username, password):
         user = self.getUser(username)
@@ -49,6 +52,9 @@ class AuthModel:
             self.session.commit()
             return user
         return None
+    
+    
+         
 
     def addUserLog(self, user):
         self.session.add(UserLog(user_id=user.id, logged_in_at=time.strftime('%Y-%m-%d %H:%M:%S')))
