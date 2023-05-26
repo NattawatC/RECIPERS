@@ -4,19 +4,18 @@ from controller.AuthController import AuthController
 from static.theme import Theme
 from controller.RecipeController import RecipeController
 from functools import partial
+from view.RegisterView import RegisterView
 
 class Application(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.AuthController = None
+        self.AuthController = AuthController(self)
         self.RecipeController = None
         self.stack = None
         self.setFixedSize(1280, 720)
         self.imageCache = {}
         self.setWindowTitle("RECIPER")
-        self.AuthController = AuthController(self)
- 
         self.showAuthView()
         
         self.setStyleSheet(Theme.get_stylesheet())
@@ -39,7 +38,12 @@ class Application(QMainWindow):
         self.setCentralWidget(self.stack)
         self.AuthController.AuthView.login_button.clicked.connect(self.handleLogin)
         self.AuthController.AuthView.register_button.clicked.connect(self.NavigateToRegister)
-        self.AuthController.RegisterView.start_button.clicked.connect(self.handleRegister)
+
+        #Vega------------------------------------
+    def passwordIsValid(self):
+        if self.AuthController.isRegisterValid: 
+            self.AuthController.RegisterView.start_button.clicked.connect(self.handleRegister)
+        #Vega------------------------------------
 
     def handleRegister(self):
         self.AuthController.handleRegister()
