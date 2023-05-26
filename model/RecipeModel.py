@@ -21,12 +21,10 @@ class Classify(Base):
 class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
+    duration_minute = Column(Integer)
     name = Column(String)
     serving = Column(Integer)
-    duration_minute = Column(Integer)
     image = Column(String)
-    # type_id = Column(Integer, ForeignKey('recipe_types.id'))
-    # type = relationship("RecipeType", backref=backref('recipes'))
     categories: Mapped[List["Classify"]] = relationship(back_populates="recipe")
 
 
@@ -98,6 +96,15 @@ class FavoriteRecipes(Base):
     user = relationship(User , backref=backref('favorite_recipes'))
     recipe = relationship(Recipe, backref=backref('favorite_recipes'))
 
+class AddedRecipes(Base):
+    __tablename__ = 'added_recipes'
+
+    user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'), primary_key=True)
+
+    user = relationship(User , backref=backref('added_recipes'))
+    recipe = relationship(Recipe, backref=backref('added_recipes'))
+
 
 class RecipeModel:
     def __init__(self):
@@ -163,6 +170,69 @@ class RecipeModel:
             
         
 
-    def createRecipe(self):
-        pass
+    def createRecipe(self, recipeInfo, userId):
+        recipeId = self.session.query(func.max(Recipe.id)).scalar() + 1
+
+        #Add recipe to AddedRecipes
+        addedRecipe = AddedRecipes(user_id=userId, recipe_id=recipeId)
+        self.session.add(addedRecipe)
+
+        #Add new recipe
+        recipe = Recipe(id=recipeId,
+                        name=recipeInfo['detail']['name'],
+                        duration_minute=recipeInfo['detail']['duration_minute'],
+                        serving=recipeInfo['detail']['serving'],
+                        image='null')
+
+        self.session.add(recipe)
+
+        #Add ingredients
+        ingredientId = self.session.query(func.max(Ingredient.id)).scalar() + 1
+        for i in range(len(recipeInfo['ingredients'])):
+            ingredient = Ingredient(id= ingredientId,
+                                    recipe_id=recipeId,
+                                    name=recipeInfo['ingredients'][i][0],
+                                    amount=recipeInfo['ingredients'][i][1],
+                                    unit=recipeInfo['ingredients'][i][2])
+            self.session.add(ingredient)
+
+        #Add instructions
+        instructionId = self.session.query(func.max(Instruction.id)).scalar() + 1
+        for i in range(len(recipeInfo['instructions'])):
+            instruction = Instruction(id=instructionId,
+                                      recipe_id=recipeId,
+                                      step=recipeInfo['instructions'][i][0],
+                                      detail=recipeInfo['instructions'][i][1])
+            self.session.add(instruction)
+
+        #Add categories
+        for i in range(len(recipeInfo['categories'])):
+            category = self.session.query(Category).filter_by(name=recipeInfo['categories'][i]).first()
+            category_type = 'other'
+            if category is not None:
+                if category.category_id in [5, 7, 4, 15, 11]:
+                    category_type = 'meal'
+                elif category.category_id  in [1, 2, 9, 10, 14, 16, 18, 20, 21]:
+                    category_type = 'cuisine'
+                elif category.category_id in [3, 12, 13, 19, 22, 23]:
+                    category_type = 'course'
+                elif category.category_id in [6, 8, 17]:
+                    category_type = 'condiment'
+                elif category.category_id in [24, 25]:
+                    category_type = 'beverage'
+                elif category.category_id in [26]:
+                    category_type = 'dessert'
+                classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
+                self.session.add(classify)
+            else:
+                id = self.session.query(Category).count() + 1
+                category = Category(name=recipeInfo['categories'][i], category_id=id)
+                self.session.add(category)
+                classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
+                self.session.add(classify)
+
+
+        print('add recipe success')
+        self.session.commit()
+
 

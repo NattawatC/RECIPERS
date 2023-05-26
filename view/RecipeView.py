@@ -45,8 +45,6 @@ class RecipeView(NavigationBar):
         self.ingredientsLabel=QLabel("Ingredients")
         self.servingLabel=QLabel("Serving")
 
-
-
         self.decorateRecipeView()
         self.logout_btn.clicked.connect(self.RecipeController.handleLogout)
         self.search_bar.textChanged.connect(self.RecipeController.handleSearchRecipe)

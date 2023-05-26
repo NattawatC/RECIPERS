@@ -83,6 +83,7 @@ class CreateView(NavigationBar):
         self.create_cal_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_cal_input.setGeometry(QRect(33, 136, 227, 33))
         self.create_cal_input.setMaxLength(50)
+        self.create_cal_input.setValidator(QIntValidator(0, 10000, self))
         self.create_cal_input.setClearButtonEnabled(True)
         
         self.create_cook_time.setObjectName("default_label")
@@ -150,21 +151,19 @@ class CreateView(NavigationBar):
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
         self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.submit_btn.clicked.connect(self.recipeSubmitted)
+        self.submit_btn.clicked.connect(self.RecipeController.handleCreateRecipe)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
     def recipeSubmitted(self):
         try:
             data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
-                  "ingredients": self.getIngredients(), "directions": self.getDirections()}
-            print(data)
+                  "ingredients": self.getIngredients(), "instructions": self.getInstructions()}
 
         except Exception as e:
             print(e)
-
-        finally:
-            return data
+            return
+        return data
 
     def getRecipeDetail(self) -> Exception | dict[str, str]:
         if self.validateInput(self.create_menu_name_input, "Please enter a name"):
@@ -180,7 +179,7 @@ class CreateView(NavigationBar):
             return Exception("Validation error occurred.")
 
         detail = {"name": self.create_menu_name_input.text(), "calories": self.create_cal_input.text(),
-                  "cook_time": self.create_cook_time_input.text(), "serving": self.create_serving_input.text()}
+                  "duration_minute": self.create_cook_time_input.text(), "serving": self.create_serving_input.text()}
 
         return detail
 
@@ -207,34 +206,57 @@ class CreateView(NavigationBar):
                 return True
         return False
 
-    def showWarningMessage(self, message):
-        QMessageBox.warning(self, "Warning", message)
+    @staticmethod
+    def showWarningMessage(message):
+        message_box = QMessageBox()
+        message_box.setIcon(QMessageBox.Warning)
+        message_box.setWindowTitle("Warning")
+        message_box.setText(message)
+        message_box.exec()
+
+    @staticmethod
+    def showMessageBox(message):
+        message_box = QMessageBox()
+        message_box.setIcon(QMessageBox.Information)
+        message_box.setWindowTitle("Success")
+        message_box.setText(message)
+        message_box.exec()
 
     def getCategories(self) -> list[str] | None:
 
         if self.validateInput(self.create_category_input, "Please enter a category"):
             return
 
-        categories = self.create_category_input.toPlainText().split(",")
-        print(categories)
+        if "," in self.create_category_input.text():
+            categories = self.create_category_input.text().split(",")
+        else:
+            categories = [self.create_category_input.text()]
         return categories
 
     def getIngredients(self) -> list:
-
-        if self.validateInput(self.create_ing_input, "Please enter a ingredient"):
-            return
-
         ingredients = []
-        # if self.create_ing_input.toPlainText() != "":
-        each = self.create_ing_input.toPlainText().split("\n")
-        for e in each:
-            if e != "":
-                ingredients.append(e.split(" "))
 
-        print(ingredients)
+        input_text = self.create_ing_input.toPlainText()
+        lines = input_text.split("\n") if "\n" in input_text else [input_text]
+
+        for line in lines:
+            if line != "":
+                parts = line.split(" ")
+
+                if len(parts) == 3 or (len(parts) == 2 and parts[2] == ""):
+                    ingredients.append(parts)
+
+                elif parts[1].isnumeric():
+                    self.showWarningMessage("Amount must be a number")
+                    return
+
+                else:
+                    self.showWarningMessage("Please enter ingredients in the format: 'name amount unit'")
+                    return
+
         return ingredients
 
-    def getDirections(self) -> list:
+    def getInstructions(self) -> list:
         directions = []
         if self.create_dir_input.toPlainText() != "":
             each = self.create_dir_input.toPlainText().split("\n")
@@ -242,6 +264,8 @@ class CreateView(NavigationBar):
                 if e != "" and "." in e and e[0] in "1234567890":
                     directions.append(e.split(".",1))
         return directions
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

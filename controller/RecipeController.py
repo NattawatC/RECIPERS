@@ -179,16 +179,15 @@ class RecipeController:
     #CreateView
 
     def handleCreateRecipe(self):
-        recipeInfo = self.recipeSubmitted()
+        recipeInfo = self.CreateView.recipeSubmitted()
 
-        if recipeInfo["name"] == self.RecipeModel.getRecipeByName(recipeInfo["name"]):
-            self.CreateView.showMessageBox("Recipe name already exists")
-        
+        if self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
+            self.CreateView.showWarningMessage("Recipe name already exists")
+
         else:
-            self.RecipeModel.createRecipe(recipeInfo)
+            self.RecipeModel.createRecipe(recipeInfo, self.User.id)
             self.CreateView.showMessageBox("Recipe created successfully")
             # self.CreateView.clearForm()
-
 
 
 

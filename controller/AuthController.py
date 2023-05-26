@@ -22,6 +22,9 @@ class AuthController:
             self.isLoginSuccess = False
         return self.isLoginSuccess
 
+    def checkpassword(self, password):
+        pass
+
     def handleLogin(self):
         self.authenticate(self.AuthView.lineEdit_username.text(), self.AuthView.lineEdit_password.text())
         if self.isLoginSuccess:

@@ -19,7 +19,7 @@ class RegisterView(QWidget):
         self.pic_login = QLabel(self)
         self.text_label2 = QLabel("Be a Part of Our Team!", self)
         self.start_button = QPushButton("Start!", self)
-        
+
 
         self.decorateRegView()
 
