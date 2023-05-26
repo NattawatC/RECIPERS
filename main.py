@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication
 from application import Application
 
 
+
 def main() -> int:
     root = QApplication(sys.argv)
     app = Application()

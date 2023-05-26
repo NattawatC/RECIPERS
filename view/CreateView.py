@@ -1,5 +1,8 @@
+import sys
+from typing import Dict, List
+
 from PySide6.QtCore import QRect, QCoreApplication
-from PySide6.QtGui import QPixmap, QFont, Qt, QCursor
+from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QTextOption, QIntValidator
 from PySide6.QtWidgets import *
 
 from static.theme import Theme
@@ -18,12 +21,12 @@ class CreateView(NavigationBar):
         self.create_menu_name_input = QLineEdit(self.create_frame)
         self.create_cal = QLabel("Calories", self.create_frame)
         self.create_cal_input = QLineEdit(self.create_frame)
-        self.create_cook_time = QLabel("Cooking Time", self.create_frame)
+        self.create_cook_time = QLabel("Cooking Time (min)", self.create_frame)
         self.create_cook_time_input = QLineEdit(self.create_frame)
-        self.create_prep_time = QLabel("Servings", self.create_frame)
-        self.create_prep_time_input = QLineEdit(self.create_frame)
+        self.create_serving = QLabel("Servings", self.create_frame)
+        self.create_serving_input = QLineEdit(self.create_frame)
         self.create_category = QLabel("Category", self.create_frame)
-        self.create_category_input = QTextEdit(self.create_frame)
+        self.create_category_input = QLineEdit(self.create_frame)
         self.create_ing = QLabel("Ingredients", self.create_frame)
         self.create_ing_input = QTextEdit(self.create_frame)
         self.create_dir = QLabel("Directions", self.create_frame)
@@ -66,42 +69,59 @@ class CreateView(NavigationBar):
         self.create_menu_name_input.setPlaceholderText("Menu name")
         self.create_menu_name_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_menu_name_input.setGeometry(QRect(33, 56, 227, 33))
+        self.create_menu_name_input.setMaxLength(50)
+        self.create_menu_name_input.setClearButtonEnabled(True)
         
         self.create_cal.setObjectName("default_label")
         self.create_cal.setFont(Theme.CHILLAX_REGULAR_20)
         self.create_cal.setGeometry(QRect(33, 105, 78, 31))
-        
+        self.create_cal.setWordWrap(True)
+
+
         self.create_cal_input.setObjectName("create_bar")
         self.create_cal_input.setPlaceholderText("Calories")
         self.create_cal_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_cal_input.setGeometry(QRect(33, 136, 227, 33))
+        self.create_cal_input.setMaxLength(50)
+        self.create_cal_input.setClearButtonEnabled(True)
         
         self.create_cook_time.setObjectName("default_label")
         self.create_cook_time.setFont(Theme.CHILLAX_REGULAR_20)
-        self.create_cook_time.setGeometry(QRect(33, 185, 134, 31))
-        
+        self.create_cook_time.setGeometry(QRect(33, 185, 200, 31))
+
+
         self.create_cook_time_input.setObjectName("create_bar")
         self.create_cook_time_input.setPlaceholderText("hrs. or mins.")
         self.create_cook_time_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_cook_time_input.setGeometry(QRect(33, 216, 227, 33))
+        self.create_cook_time_input.setMaxLength(50)
+        self.create_cook_time_input.setClearButtonEnabled(True)
+        self.create_cook_time_input.setValidator(QIntValidator(0, 1000, self))
 
-        self.create_prep_time.setObjectName("default_label")
-        self.create_prep_time.setFont(Theme.CHILLAX_REGULAR_20)
-        self.create_prep_time.setGeometry(QRect(33, 265, 170, 33))
+
+        self.create_serving.setObjectName("default_label")
+        self.create_serving.setFont(Theme.CHILLAX_REGULAR_20)
+        self.create_serving.setGeometry(QRect(33, 265, 170, 33))
         
-        self.create_prep_time_input.setObjectName("create_bar")
-        self.create_prep_time_input.setPlaceholderText("hrs. or mins.")
-        self.create_prep_time_input.setFont(Theme.CHILLAX_REGULAR_16)
-        self.create_prep_time_input.setGeometry(QRect(33, 296, 227, 33))
+        self.create_serving_input.setObjectName("create_bar")
+        self.create_serving_input.setPlaceholderText("hrs. or mins.")
+        self.create_serving_input.setFont(Theme.CHILLAX_REGULAR_16)
+        self.create_serving_input.setGeometry(QRect(33, 296, 227, 33))
+        self.create_serving_input.setMaxLength(50)
+        self.create_serving_input.setClearButtonEnabled(True)
+        self.create_serving_input.setValidator(QIntValidator(0, 1000, self))
+
         
         self.create_category.setObjectName("default_label")
         self.create_category.setFont(Theme.CHILLAX_REGULAR_20)
         self.create_category.setGeometry(QRect(33, 345, 134, 31))
+
         
         self.create_category_input.setObjectName("create_bar")
         self.create_category_input.setPlaceholderText("ie. Breakfast,Lunch, ...")
         self.create_category_input.setFont(Theme.CHILLAX_REGULAR_16)
         self.create_category_input.setGeometry(QRect(33, 376, 227, 33))
+        self.create_category_input.setClearButtonEnabled(True)
         
         self.create_ing.setObjectName("default_label")
         self.create_ing.setFont(Theme.CHILLAX_REGULAR_20)
@@ -130,30 +150,88 @@ class CreateView(NavigationBar):
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
         self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.submit_btn.clicked.connect(self.submit)
+        self.submit_btn.clicked.connect(self.recipeSubmitted)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-    def submit(self):
-        self.getRecipeName()
-        self.getIngredients()
-        self.getDirections()
+    def recipeSubmitted(self):
+        try:
+            data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
+                  "ingredients": self.getIngredients(), "directions": self.getDirections()}
+            print(data)
 
-    def getRecipeDetail(self):
-        detail = {}
-        detail["name"] = self.create_menu_name_input.text()
+        except Exception as e:
+            print(e)
+
+        finally:
+            return data
+
+    def getRecipeDetail(self) -> Exception | dict[str, str]:
+        if self.validateInput(self.create_menu_name_input, "Please enter a name"):
+            raise Exception("Validation error occurred.")
+
+        if self.validateInput(self.create_cal_input, "Please enter a calorie amount"):
+            return Exception("Validation error occurred.")
+
+        if self.validateInput(self.create_cook_time_input, "Please enter a cooking time", int):
+            return Exception("Validation error occurred.")
+
+        if self.validateInput(self.create_serving_input, "Please enter a serving amount", int):
+            return Exception("Validation error occurred.")
+
+        detail = {"name": self.create_menu_name_input.text(), "calories": self.create_cal_input.text(),
+                  "cook_time": self.create_cook_time_input.text(), "serving": self.create_serving_input.text()}
+
+        return detail
 
 
-    def getIngredients(self):
+    @staticmethod
+    def validateInput(inputField, error_message, input_type=str):
+        if type(inputField) == QTextEdit:
+            if inputField.toPlainText() == "":
+                qm = QMessageBox()
+                qm.setWindowTitle("Error")
+                qm.setText(error_message)
+                qm.setIcon(QMessageBox.Critical)
+                qm.exec_()
+                inputField.setFocus()
+                return True
+        else:
+            if inputField.text() == "":
+                qm = QMessageBox()
+                qm.setWindowTitle("Error")
+                qm.setText(error_message)
+                qm.setIcon(QMessageBox.Critical)
+                qm.exec_()
+                inputField.setFocus()
+                return True
+        return False
+
+    def getCategories(self) -> list[str] | None:
+
+        if self.validateInput(self.create_category_input, "Please enter a category"):
+            return
+
+        categories = self.create_category_input.toPlainText().split(",")
+        print(categories)
+        return categories
+
+    def getIngredients(self) -> list:
+
+        if self.validateInput(self.create_ing_input, "Please enter a ingredient"):
+            return
+
         ingredients = []
-        if self.create_ing_input.toPlainText() != "":
-            each = self.create_ing_input.toPlainText().split("\n")
-            for e in each:
-                if e != "":
-                    ingredients.append(e.split(" "))
+        # if self.create_ing_input.toPlainText() != "":
+        each = self.create_ing_input.toPlainText().split("\n")
+        for e in each:
+            if e != "":
+                ingredients.append(e.split(" "))
+
+        print(ingredients)
         return ingredients
 
-    def getDirections(self):
+    def getDirections(self) -> list:
         directions = []
         if self.create_dir_input.toPlainText() != "":
             each = self.create_dir_input.toPlainText().split("\n")
@@ -161,3 +239,9 @@ class CreateView(NavigationBar):
                 if e != "" and "." in e and e[0] in "1234567890":
                     directions.append(e.split(".",1))
         return directions
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = CreateView()
+    window.show()
+    sys.exit(app.exec_())
