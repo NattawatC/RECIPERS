@@ -86,6 +86,7 @@ class NavigationBar(QWidget):
         self.user_btn.setIconSize(self.icon_size)
         self.user_btn.setCursor(Qt.PointingHandCursor)
         self.user_btn.clicked.connect(self.showMessageBox)
+
         
         self.user_message_box.setWindowTitle("User")
         self.user_message_box.setText("Test message")
