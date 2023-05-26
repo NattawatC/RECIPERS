@@ -97,6 +97,10 @@ QLabel#filter_label{
     background-color:transparent;
 }
 
+QLabel#error_label{
+    color: #FF0000;
+}
+
 /* LineEdit */
 QLineEdit#logIn_bar {
     padding-left: 30px;
