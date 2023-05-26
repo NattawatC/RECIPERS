@@ -12,6 +12,7 @@ class AuthController:
         self.mainWindow = MainWindow
         self.__currentUser = None
         self.isLoginSuccess = False
+        self.isRegisterValid = False
         self.__currentUserLog = None
 
     def authenticate(self,username, password):
@@ -22,9 +23,12 @@ class AuthController:
             self.isLoginSuccess = False
         return self.isLoginSuccess
 
-    def checkpassword(self, password):
-        pass
-
+    def registerAuthenticate(self, userInformation):
+        for i in range(self.AuthView):
+            if userInformation[i] == "":
+                self.RegisterView.showError("Please fill in all the blanks")
+                return False
+            
     def handleLogin(self):
         self.authenticate(self.AuthView.lineEdit_username.text(), self.AuthView.lineEdit_password.text())
         if self.isLoginSuccess:
@@ -34,6 +38,24 @@ class AuthController:
 
     def handleRegister(self):
         pass
+
+    def checkPassword(self, password):
+        if len(password) < 8:
+            self.isRegisterValid = False
+            self.RegisterView.showError("Please fill in a password with at least 8 characters.")
+        elif not any(char.isdigit() for char in password):
+            self.isRegisterValid = False
+            self.RegisterView.showError("Please fill in a password with at least 1 number.")
+        elif not any(char.isupper() for char in password):
+            self.isRegisterValid = False
+            self.RegisterView.showError("Please fill in a password with at least 1 uppercase letter.")
+        elif not any(char.islower() for char in password):
+            self.isRegisterValid = False
+            self.RegisterView.showError("Please fill in a password with at least 1 lowercase letter.")
+        else:
+            self.isRegisterValid = True
+            self.RegisterView.showError("Password is valid.")
+
 
     def handleLogout(self, user=None):
         self.model.logout(self.getCurrentUser())
