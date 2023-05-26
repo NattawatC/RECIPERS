@@ -2,13 +2,12 @@ import io
 import requests
 from PIL import Image
 from PIL.ImageQt import ImageQt
-from PySide6.QtCore import Signal, QRect, Qt, QSize
-from PySide6.QtGui import QCursor, QPixmap, QIcon
+from PySide6.QtCore import Signal, QRect, Qt, QPoint, QMimeData, QSize
+from PySide6.QtGui import QCursor, QPixmap, QIcon, QPainter, QDrag, QMouseEvent
 from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QLabel
 import random
 
 from static.theme import Theme
-
 
 class RecipeCard(QWidget):
     cardStarred = Signal(int)
@@ -87,6 +86,7 @@ class RecipeCard(QWidget):
         deleteSize = QSize(15, 15)
         self.delete_btn.setIconSize(deleteSize)
         self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.delete_btn.hide()
         
         self.unStarred.setObjectName("unstared")
         self.unStarred.setGeometry(QRect(372, 13, 17, 17))
@@ -95,7 +95,27 @@ class RecipeCard(QWidget):
         self.unStarred.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.setStyleSheet(Theme.get_stylesheet())
-        
+
+    # def mousePressEvent(self, event: QMouseEvent):
+    #     if event.button() == Qt.LeftButton:
+    #         self.startDrag()
+
+    # def startDrag(self):
+    #     self.deleteLater()
+    #     # Create a custom mime data object to hold the pixmap data
+    #     mime_data = QMimeData()
+    #     mime_data.setData(self.recipe.name, str(self.recipe.id).encode())
+    #
+    #     # Create a drag object and set the custom mime data
+    #     drag = QDrag(self)
+    #     drag.setMimeData(mime_data)
+    #
+    #
+    #     # Execute the drag operation and track the result
+    #     result = drag.exec_(Qt.MoveAction)
+    #     if result == Qt.MoveAction:  # Widget was moved within the program
+    #         self.show()  # Show the widget again
+
     def getRecipeId(self):
         return self.recipe.id
 
