@@ -53,7 +53,7 @@ class DetailView(NavigationBar):
         self.detail_img.setPixmap(QPixmap("../static/asset/img/BBQ.png"))
 
         self.detail_name.setObjectName("default_label")
-        self.detail_name.setGeometry(QRect(212, 13, 300, 50))
+        self.detail_name.setGeometry(QRect(212, 13, 633, 50))
         self.detail_name.setFont(Theme.CHILLAX_BOLD_36)
         
         self.detail_cal.setObjectName("default_label")

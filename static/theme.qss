@@ -215,6 +215,12 @@ QPushButton#submit_button{
     padding: 5px;
 }
 
+QPushButton#user_button{
+    background-color: #D9A32B;
+    border: none;
+    border-radius: 10px;
+}
+
 QPushButton#delete_button{
     background-color: #95424E;
     border: none;

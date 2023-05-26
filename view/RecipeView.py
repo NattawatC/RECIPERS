@@ -30,8 +30,6 @@ class RecipeView(NavigationBar):
         self.save_label = QLabel("Total Saved", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
-        # self.filterBar = QPushButton("Filter",self)
-        # self.filterListFrame = QFrame(self)
         self.filter_Button = QToolButton(self)
         self.filter_menubox = QMenu(self.filter_Button)
         self.breakfast_checkbox = QCheckBox("Breakfast")
@@ -118,14 +116,6 @@ class RecipeView(NavigationBar):
         self.save_label.setObjectName("default_label")
         self.save_label.setFont(Theme.CHILLAX_REGULAR_20)
         self.save_label.setGeometry(QRect(92, 49, 130, 15))
-        
-        # self.filterBar.setObjectName("Filter_button")
-        # self.filterBar.setGeometry(QRect(55, 343, 164, 34))
-        # self.filterBar.setFont(Theme.CHILLAX_REGULAR_20)
-        # self.filterBar.setCursor(QCursor(Qt.PointingHandCursor))
-        
-        # self.filterListFrame.setObjectName("filter_list_frame")
-        # self.filterListFrame.setGeometry(QRect(55, 377, 164, 247))
         
         self.filter_Button.setText("Filter")
         self.filter_Button.setGeometry(QRect(55, 339, 164, 34))

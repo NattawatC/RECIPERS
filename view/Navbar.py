@@ -19,6 +19,8 @@ class NavigationBar(QWidget):
         self.nav_create = QPushButton("Create", self.nav_bar)
         self.nav_favorite_logo = QLabel(self.nav_bar)
         self.nav_favorite = QPushButton("Favorite", self.nav_bar)
+        self.user_btn = QPushButton(self)
+        self.user_message_box = QMessageBox(self)
       
         self.decorateNavbar()
     def onClickedNavToRecipe(self):
@@ -29,6 +31,9 @@ class NavigationBar(QWidget):
     
     def onClickedNavToFavorite(self):
         self.RecipeController.handleNavigateToFavorite()
+    
+    def showMessageBox(self):
+        self.user_message_box.exec()
     
     def decorateNavbar(self):
         self.bg_favorite.setObjectName("default_label")
@@ -72,5 +77,18 @@ class NavigationBar(QWidget):
         self.nav_favorite.setFont(Theme.CHILLAX_REGULAR_24)
         self.nav_favorite.setGeometry(QRect(123, 283, 101, 21))
         self.nav_favorite.clicked.connect(self.onClickedNavToFavorite)
+        
+        self.user_btn.setObjectName("user_button")
+        self.user_btn.setGeometry(QRect(1166, 17, 50, 50))
+        self.user_icon = QIcon("static/asset/img/user.png")
+        self.icon_size = QSize(28, 28)
+        self.user_btn.setIcon(self.user_icon)
+        self.user_btn.setIconSize(self.icon_size)
+        self.user_btn.setCursor(Qt.PointingHandCursor)
+        self.user_btn.clicked.connect(self.showMessageBox)
+
+        
+        self.user_message_box.setWindowTitle("User")
+        self.user_message_box.setText("Test message")
         
         self.setStyleSheet(Theme.get_stylesheet())
