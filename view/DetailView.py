@@ -18,7 +18,7 @@ from view.Navbar import NavigationBar
 class DetailView(NavigationBar):
     def __init__(self, Controller):
         super().__init__(Controller)
-#--------------------------------------------------------------
+
         self.detail_frame = QFrame(self)
         self.detail_img = QLabel(self.detail_frame)
         self.detail_name = QLabel("Pork BBQ Stick", self.detail_frame)
@@ -33,41 +33,14 @@ class DetailView(NavigationBar):
 
         self.detail_ingredients = QLabel("Ingredients", self.detail_frame)
         self.ingredients_scrollArea = QScrollArea(self.detail_frame)
-        self.ingredients_scrollAreaContents = QWidget(self.ingredients_scrollArea)
-        
-        self.vBox = QVBoxLayout()
-        self.vBox.setAlignment(Qt.AlignTop)
-        
-        self.ingredients_scrollAreaContents.setLayout(self.vBox)
-        self.ingredients_scrollArea.setWidget(self.ingredients_scrollAreaContents)
-
-        for i in range(1, 50):
-            detail_ingredients = QLabel("Ingredients")
-            detail_ingredients.setFont(Theme.CHILLAX_REGULAR_14)
-            detail_ingredients.setObjectName("default_label")
-            self.vBox.addWidget(detail_ingredients)
-
-        self.ingredients_scrollAreaContents.setLayout(self.vBox)
 
         # Directions Scroll Area #
 
         self.detail_directions = QLabel("Directions", self.detail_frame)
         self.directions_scrollArea = QScrollArea(self.detail_frame)
-        self.directions_scrollAreaContents = QWidget(self.directions_scrollArea)
-       
 
-        self.vBox = QVBoxLayout()
-        self.vBox.setAlignment(Qt.AlignTop)
-        self.directions_scrollAreaContents.setLayout(self.vBox)
-        self.directions_scrollArea.setWidget(self.directions_scrollAreaContents)
 
-        for i in range(1, 50):
-            detail_directions = QLabel("Directions")
-            detail_directions.setFont(Theme.CHILLAX_REGULAR_14)
-            detail_directions.setObjectName("default_label")
-            self.vBox.addWidget(detail_directions)
 
-        self.directions_scrollAreaContents.setLayout(self.vBox)
 
         self.decorateDetailView()
         
@@ -117,9 +90,6 @@ class DetailView(NavigationBar):
         self.ingredients_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.ingredients_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.ingredients_scrollAreaContents.setObjectName("default_scrollAreaContents")
-        self.ingredients_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
-        
         self.detail_directions.setObjectName("default_label")
         self.detail_directions.setGeometry(QRect(461, 205, 100, 28))
         self.detail_directions.setFont(Theme.CHILLAX_REGULAR_20)
@@ -130,8 +100,7 @@ class DetailView(NavigationBar):
         self.directions_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.directions_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.directions_scrollAreaContents.setObjectName("default_scrollAreaContents")
-        self.directions_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
+
         
         self.setStyleSheet(Theme.get_stylesheet())
 
@@ -144,19 +113,34 @@ class DetailView(NavigationBar):
         # self.set_ingredients(recipe.ingredients)
         # self.set_directions(recipe.directions)
 
-    def set_ingredients(self, ingredients):
+    def setIngredients(self, ingredients):
+        ingredients_scrollAreaContents = QWidget(self.ingredients_scrollArea)
+        ingredients_scrollAreaContents.setObjectName("default_scrollAreaContents")
+        ingredients_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
+        ingredientsVBox = QVBoxLayout()
+        ingredientsVBox.setAlignment(Qt.AlignTop)
         for ingredient in ingredients:
-            detail_ingredients = QLabel(ingredient.name)
+            print(ingredient.name)
+            detail_ingredients = QLabel(ingredient.name + " " + str(ingredient.amount) + " " + ingredient.unit)
             detail_ingredients.setFont(Theme.CHILLAX_REGULAR_14)
             detail_ingredients.setObjectName("default_label")
-            self.vBox.addWidget(detail_ingredients)
+            ingredientsVBox.addWidget(detail_ingredients)
+        ingredients_scrollAreaContents.setLayout(ingredientsVBox)
+        self.ingredients_scrollArea.setWidget(ingredients_scrollAreaContents)
 
-    def set_directions(self, directions):
+    def setDirections(self, directions):
+        directions_scrollAreaContents = QWidget(self.directions_scrollArea)
+        directions_scrollAreaContents.setObjectName("default_scrollAreaContents")
+        directions_scrollAreaContents.setGeometry(QRect(409, 258, 31, 0))
+        directionsVBox = QVBoxLayout()
+        directionsVBox.setAlignment(Qt.AlignTop)
         for direction in directions:
-            detail_directions = QLabel(direction)
+            detail_directions = QLabel(str(direction.step) + "." + direction.detail, wordWrap=True)
             detail_directions.setFont(Theme.CHILLAX_REGULAR_14)
             detail_directions.setObjectName("default_label")
-            self.vBox.addWidget(detail_directions)
+            directionsVBox.addWidget(detail_directions)
+        directions_scrollAreaContents.setLayout(directionsVBox)
+        self.directions_scrollArea.setWidget(directions_scrollAreaContents)
 
     @staticmethod
     def loadImageFromUrl(url):

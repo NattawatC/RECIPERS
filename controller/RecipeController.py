@@ -165,6 +165,9 @@ class RecipeController:
 
     def handleNavigateToDetail(self, recipeId):
         self.DetailView.setRecipe(self.RecipeModel.getRecipeById(recipeId))
+        self.DetailView.setIngredients(self.RecipeModel.getIngredients(recipeId))
+        self.DetailView.setDirections(self.RecipeModel.getInstructions(recipeId))
+        self.DetailView.update()
         self.mainWindow.NavigateToDetail()
 
     #----------------------------------------------------

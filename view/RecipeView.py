@@ -46,7 +46,7 @@ class RecipeView(NavigationBar):
         self.typeLabel=QLabel("Type")
         self.ingredientsLabel=QLabel("Ingredients")
         self.servingLabel=QLabel("Serving")
-        
+
 
 
         self.decorateRecipeView()

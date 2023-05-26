@@ -22,6 +22,7 @@ class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    serving = Column(Integer)
     duration_minute = Column(Integer)
     image = Column(String)
     # type_id = Column(Integer, ForeignKey('recipe_types.id'))
@@ -114,6 +115,14 @@ class RecipeModel:
     def getRecipeByName(self, name):
         recipe = self.session.query(Recipe).filter_by(name=name).first()
         return recipe
+
+    def getIngredients(self, recipe_id):
+        ingredients = self.session.query(Ingredient).filter_by(recipe_id=recipe_id).all()
+        return ingredients
+
+    def getInstructions(self, recipe_id):
+        instructions = self.session.query(Instruction).filter_by(recipe_id=recipe_id).all()
+        return instructions
 
     def makeFavorite(self, user_id , recipe_id):
         favorite = FavoriteRecipes(user_id=user_id, recipe_id=recipe_id)

@@ -5,6 +5,7 @@ from PIL.ImageQt import ImageQt
 from PySide6.QtCore import Signal, QRect, Qt
 from PySide6.QtGui import QCursor, QPixmap, QIcon
 from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QLabel
+import random
 
 from static.theme import Theme
 
@@ -12,23 +13,22 @@ from static.theme import Theme
 class RecipeCard(QWidget):
     cardStarred = Signal(int)
 
-    def __init__(self, recipe = None, image_cache = None):
+    def __init__(self, recipe = None, imageCache = None):
         super().__init__()
         self.setFixedSize(402, 194)
         self.isStarred = False
         self.recipe = recipe
-        self.recipeId = recipe.id
-        self.image_cache = image_cache
+        self.imageCache = imageCache
 
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
-        # self.loadImageFromUrl(recipe.image.strip())
+        # self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
         self.card_name = QLabel(self.card_frame)
-        self.card_prep_time = QLabel("Prep. Time:", self.card_frame)
-        self.card_prep_time_num = QLabel("30 mins", self.card_frame)
+        self.card_serving = QLabel("Serving:", self.card_frame)
+        self.card_serving_num = QLabel(str(self.recipe.serving), self.card_frame)
         self.card_cooking_time = QLabel("Cooking Time:", self.card_frame)
         self.card_cooking_time_num = QLabel("30 mins", self.card_frame)
-        self.cal_time = QLabel("125 Kcal", self.card_frame)
+        self.cal_time = QLabel(f"{random.randint(100,1000)} Kcal", self.card_frame)
         self.card_detail_btn = QPushButton("Detail", self.card_frame)
         # card_detail_btn.clicked.connect(self.RecipeController.handleMakeFavorite)
         self.arrow = QLabel(self.card_frame)
@@ -52,13 +52,13 @@ class RecipeCard(QWidget):
         self.card_name.setText(self.recipe.name)
         self.card_name.setWordWrap(True)
     
-        self.card_prep_time.setObjectName("default_label")
-        self.card_prep_time.setGeometry(QRect(204, 87, 141, 22))
-        self.card_prep_time.setFont(Theme.CHILLAX_REGULAR_16)
+        self.card_serving.setObjectName("default_label")
+        self.card_serving.setGeometry(QRect(204, 87, 141, 22))
+        self.card_serving.setFont(Theme.CHILLAX_REGULAR_16)
         
-        self.card_prep_time_num.setObjectName("default_label")
-        self.card_prep_time_num.setGeometry(QRect(293, 87, 141, 22))
-        self.card_prep_time_num.setFont(Theme.CHILLAX_REGULAR_16)
+        self.card_serving_num.setObjectName("default_label")
+        self.card_serving_num.setGeometry(QRect(293, 87, 141, 22))
+        self.card_serving_num.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.card_cooking_time.setObjectName("default_label")
         self.card_cooking_time.setGeometry(QRect(204, 119, 141, 22))
@@ -92,14 +92,14 @@ class RecipeCard(QWidget):
         self.setStyleSheet(Theme.get_stylesheet())
         
     def getRecipeId(self):
-        return self.recipeId
+        return self.recipe.id
 
     def setFavorite(self, isFavorite):
         self.isStarred = isFavorite
 
-    def loadImageFromUrl(self, url):
-        if self.image_cache is not None and url in self.image_cache:
-            pixmap = self.image_cache[url]
+    def loadImageFromUrl(self, url, recipe_id = None):
+        if self.imageCache is not None and url in self.imageCache:
+            pixmap = self.imageCache[url]
             self.card_img.setPixmap(pixmap)
 
         else:
@@ -111,10 +111,10 @@ class RecipeCard(QWidget):
                     pixmap = QPixmap.fromImage(ImageQt(image))
 
                     # Cache the image for future use
-                    self.image_cache[url] = pixmap
+                    self.imageCache[url] = pixmap
                     self.card_img.setPixmap(pixmap)
             except Exception as e:
-                print(id, "is not an image file")
+                print(recipe_id, "is not an image file")
 
     def toggleStar(self):
         self.isStarred = not self.isStarred
