@@ -18,7 +18,6 @@ class RecipeCard(QWidget):
         self.isStarred = False
         self.recipe = recipe
         self.imageCache = imageCache
-
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
         self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
@@ -27,7 +26,7 @@ class RecipeCard(QWidget):
         self.card_serving_num = QLabel(str(self.recipe.serving), self.card_frame)
         self.card_cooking_time = QLabel("Cooking Time:", self.card_frame)
         self.card_cooking_time_num = QLabel("30 mins", self.card_frame)
-        self.cal_time = QLabel(f"{random.randint(100,1000)} Kcal", self.card_frame)
+        self.cal_time = QLabel(f"{self.recipe.calories} Kcal", self.card_frame)
         self.card_detail_btn = QPushButton("Detail", self.card_frame)
         self.arrow = QLabel(self.card_frame)
         self.unStarred = QPushButton(self.card_frame)

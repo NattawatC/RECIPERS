@@ -1,37 +1,54 @@
-import sys
-import requests
-from PySide6.QtGui     import QPixmap, QScreen
-from PySide6.QtWidgets import QApplication, QWidget, QLabel
-
-URL = 'https://bojongourmet.com/wp-content/uploads/2018/07/Green-Goddess-Potato-Salad-13.jpg#'
+from PySide6.QtCore import Qt, QMimeData, QPoint
+from PySide6.QtGui import QDrag, QMouseEvent, QPainter, QPixmap
+from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 
 
-class App(QWidget):
+class DraggableWidget(QLabel):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setMinimumSize(100, 50)
+        self.setStyleSheet("background-color: red;")
 
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() == Qt.LeftButton:
+            self.startDrag()
 
-    def initUI(self):
-        self.setWindowTitle('getAndSetImageFromURL()')
-        self.label = QLabel(self)
-        self.pixmap = QPixmap()
-        self.getAndSetImageFromURL(URL)
-        self.resize(self.pixmap.width(), self.pixmap.height())
-        screenSize = QScreen.availableGeometry(QApplication.primaryScreen())
-        frmX = (screenSize.width() - self.width()) / 2
-        frmY = (screenSize.height() - self.height()) / 2
-        self.move(frmX, frmY)
-        self.show()
+    def startDrag(self):
+        self.hide()  # Hide the widget before starting the drag operation
 
-    def getAndSetImageFromURL(self, imageURL):
-        request = requests.get(imageURL)
-        self.pixmap.loadFromData(request.content)
-        self.label.setPixmap(self.pixmap)
-        # QApplication.processEvents() # uncoment if executed on loop
+        drag = QDrag(self)
+        mime_data = QMimeData()
+        mime_data.setData("application/x-widget", b"")
+        drag.setMimeData(mime_data)
+
+        # Set a pixmap representation of the widget for dragging
+        pixmap = self.grab()
+        pixmap.fill(Qt.transparent)
+        painter = QPainter(pixmap)
+        self.render(painter, QPoint(), self.rect())
+        painter.end()
+        drag.setPixmap(pixmap)
+
+        result = drag.exec_(Qt.MoveAction)
+        if result == Qt.IgnoreAction:  # Widget was dragged out of the program
+            self.deleteLater()  # Delete the widget
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    gui = App()
-    sys.exit(app.exec())
+if __name__ == "__main__":
+    app = QApplication([])
+
+    # Create the main window
+    main_window = QWidget()
+    main_window.setWindowTitle("Draggable Widget")
+    main_window.resize(500, 500)
+
+    # Create a layout for the main window
+    layout = QVBoxLayout(main_window)
+    layout.setAlignment(Qt.AlignTop)
+
+    # Create a draggable widget
+    widget = DraggableWidget(main_window)
+    layout.addWidget(widget)
+
+    main_window.show()
+    app.exec()

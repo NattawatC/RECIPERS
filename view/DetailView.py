@@ -112,7 +112,7 @@ class DetailView(NavigationBar):
         self.detail_cooking_time_num.setText(str(recipe.duration_minute) + " mins")
         # if self.loadImageFromUrl(recipe.image) is not None:
         #     self.detail_img.setPixmap(self.loadImageFromUrl(recipe.image))
-        # self.detial_cal_num.setText(str(recipe.calories) + " Kcal")
+        self.detail_cal_num.setText(str(recipe.calories) + " Kcal")
         # self.detail_prep_time_num.setText(str(recipe.prep_time) + " mins")
         # self.set_ingredients(recipe.ingredients)
         # self.set_directions(recipe.directions)

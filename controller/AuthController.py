@@ -28,6 +28,7 @@ class AuthController:
             if userInformation[i] == "":
                 self.RegisterView.showError("Please fill in all the blanks")
                 return False
+
             
     def handleLogin(self):
         self.authenticate(self.AuthView.lineEdit_username.text(), self.AuthView.lineEdit_password.text())

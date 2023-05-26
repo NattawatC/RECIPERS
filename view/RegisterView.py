@@ -20,7 +20,8 @@ class RegisterView(QWidget):
 
 
         self.decorateRegView()
-        self.lineEdit_regUsername.textChanged.connect(self.AuthController.checkUsername)
+        # self.lineEdit_regUsername.textChanged.connect(self.AuthController.checkUsername)
+        # self.lineEdit_regPassword.textChanged.connect(self.AuthController.checkPassword)
 
     def decorateRegView(self):
         self.userError = QLabel(self)

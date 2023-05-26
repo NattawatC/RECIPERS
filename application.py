@@ -17,7 +17,6 @@ class Application(QMainWindow):
         self.imageCache = {}
         self.setWindowTitle("RECIPER")
         self.showAuthView()
-        
         self.setStyleSheet(Theme.get_stylesheet())
 
 
