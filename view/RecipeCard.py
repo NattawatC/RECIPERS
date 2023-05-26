@@ -33,6 +33,7 @@ class RecipeCard(QWidget):
         self.arrow = QLabel(self.card_frame)
         self.unStarred = QPushButton(self.card_frame)
         self.starIcon = QIcon("static/asset/img/unstared.png")
+        self.delete_btn = QPushButton(self.card_frame)
         self.deleteIcon = QIcon("static/asset/img/delete.png")
         self.decorateRecipeCard()
 
@@ -80,7 +81,6 @@ class RecipeCard(QWidget):
         self.arrow.setPixmap(QPixmap("static/asset/img/right_arrow.png"))
         self.arrow.setScaledContents(True)
 
-        self.delete_btn = QPushButton(self.card_frame)
         self.delete_btn.setObjectName("delete_button")
         self.delete_btn.setGeometry(QRect(372, 153, 22, 22))
         self.delete_btn.setIcon(self.deleteIcon)
