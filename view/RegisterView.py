@@ -13,8 +13,6 @@ class RegisterView(QWidget):
 
         self.setFixedSize(1280, 720)
         self.setObjectName("reg_view")
-
-        self.errorLabel = QLabel(self)
         self.label_logo = QLabel(self)
         self.pic_login = QLabel(self)
         self.text_label2 = QLabel("Be a Part of Our Team!", self)
@@ -22,13 +20,34 @@ class RegisterView(QWidget):
 
 
         self.decorateRegView()
+        self.lineEdit_regUsername.textChanged.connect(self.AuthController.checkUsername)
 
     def decorateRegView(self):
-        self.errorLabel.setObjectName("error_label")
-        self.errorLabel.setGeometry(QRect(59, 420, 249, 22))
-        self.errorLabel.setFont(Theme.CHILLAX_REGULAR_16)
-        self.errorLabel.setStyleSheet("color: #FF0000")
-        
+        self.userError = QLabel(self)
+        self.userError.setObjectName("error_label")
+        self.userError.setGeometry(QRect(701, 195, 218, 20))
+        self.userError.setFont(Theme.CHILLAX_REGULAR_14)
+
+        self.fnameError = QLabel(self)
+        self.fnameError.setObjectName("error_label")
+        self.fnameError.setGeometry(QRect(701, 306, 218, 20))
+        self.fnameError.setFont(Theme.CHILLAX_REGULAR_14)
+
+        self.lnameError = QLabel(self)
+        self.lnameError.setObjectName("error_label")
+        self.lnameError.setGeometry(QRect(981, 306, 218, 20))
+        self.lnameError.setFont(Theme.CHILLAX_REGULAR_14)
+
+        self.passwordError = QLabel(self)
+        self.passwordError.setObjectName("error_label")
+        self.passwordError.setGeometry(QRect(701, 416, 520, 20))
+        self.passwordError.setFont(Theme.CHILLAX_REGULAR_14)
+
+        self.confirmPasswordError = QLabel(self)
+        self.confirmPasswordError.setObjectName("error_label")
+        self.confirmPasswordError.setGeometry(QRect(701, 525, 520, 20))
+        self.confirmPasswordError.setFont(Theme.CHILLAX_REGULAR_14)
+
         self.text_lable1 = QLabel("Let's Cook!", self)
         self.text_lable1.setObjectName("default_label")
         self.text_lable1.setFont(Theme.CHILLAX_REGULAR_36)
@@ -188,11 +207,23 @@ class RegisterView(QWidget):
         return self.lineEdit_regConPassword.text()
 
     def showError(self, message: str) -> None:
-        self.errorLabel.setText(message)
-        self.errorLabel.show()
+        # self.userError.setText(message)
+        # self.userError.show()
+
+        # self.fnameError.setText(message)
+        # self.fnameError.show()
+
+        # self.lnameError.setText(message)
+        # self.lnameError.show()
+
+        # self.confirmPasswordError.setText(message)
+        # self.confirmPasswordError.show()
+
+        self.passwordError.setText(message)
+        self.passwordError.show()
 
     def reset(self) -> None:
-        self.errorLabel.hide()
+        self.userError.hide()
         self.lineEdit_regUsername.clear()
         self.lineEdit_regPassword.clear()
         self.lineEdit_regConPassword.clear()
