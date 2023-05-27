@@ -55,11 +55,10 @@ class RecipeController:
 
     def handleLogout(self):
         self.AuthController.handleLogout()
-        self.mainWindow.showAuthView()
         self.mainWindow.stack = None
+        self.mainWindow.showAuthView()
         self.mainWindow.imageCache = self.imageCache
         self.views.clear()
-
     #-------------------------------------------------
 
     #RecipeView
@@ -89,7 +88,6 @@ class RecipeController:
             card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
 
     def initializeCard(self) -> list:
-        # recipes = self.RecipeModel.getAllRecipes()
         recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
