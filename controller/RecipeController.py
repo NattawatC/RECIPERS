@@ -30,7 +30,7 @@ class RecipeController:
         if len(items) == 1:
             recipe_card = RecipeCard(items[0], self.imageCache)
 
-            if items[0].id in [addedRecipe.id for addedRecipe in self.handleAddedRecipe()]:
+            if items[0].id in [addedRecipe.id for addedRecipe in self.handleGetAddedRecipe()]:
                 recipe_card.delete_btn.clicked.connect(partial(self.handleDeleteRecipe, items[0].id))
                 recipe_card.delete_btn.show()
 
@@ -47,7 +47,7 @@ class RecipeController:
 
                 recipe_card = RecipeCard(item, self.imageCache)
 
-                if item.id in [addedRecipe.id for addedRecipe in self.handleAddedRecipe()]:
+                if item.id in [addedRecipe.id for addedRecipe in self.handleGetAddedRecipe()]:
                     recipe_card.delete_btn.clicked.connect(partial(self.handleDeleteRecipe, item.id))
                     recipe_card.delete_btn.show()
 
@@ -72,7 +72,7 @@ class RecipeController:
         self.mainWindow.imageCache = self.imageCache
         self.views.clear()
 
-    def handleAddedRecipe(self):
+    def handleGetAddedRecipe(self):
         addedRecipes = []
         addedRecipe = self.RecipeModel.getAddedRecipes(self.User.id)
         for recipe in addedRecipe:
@@ -276,14 +276,16 @@ class RecipeController:
 
     def handleCreateRecipe(self):
         recipeInfo = self.CreateView.recipeSubmitted()
+        print(recipeInfo)
 
         if self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
             self.CreateView.showWarningMessage("Recipe name already exists")
 
         else:
-            self.RecipeModel.createRecipe(recipeInfo, self.User.id)
+            # self.RecipeModel.createRecipe(recipeInfo, self.User.id)
             self.CreateView.showMessageBox("Recipe created successfully")
-            # self.CreateView.clearForm()
+            self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+            self.CreateView.clearForm()
 
 
     def handleDeleteRecipe(self, recipeId):
@@ -292,7 +294,7 @@ class RecipeController:
             if self.RecipeModel.deleteRecipe(recipeId):
                 self.RecipeView.setCards(self.initializeCard())
                 self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-                self.RecipeView.showMessageBox("Recipe deleted successfully")
+                self.RecipeView.createMessageBox("inform", "Recipe deleted successfully", QMessageBox.Information)
                 self.RecipeView.setCards(self.initializeCard())
                 self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
 

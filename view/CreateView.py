@@ -168,25 +168,32 @@ class CreateView(NavigationBar):
     def recipeSubmitted(self):
         try:
             data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
-                  "ingredients": self.getIngredients(), "instructions": self.getInstructions()}
+                  "ingredients": self.getIngredients, "instructions": self.getInstructions()}
 
         except Exception as e:
-            print(e)
+            self.showWarningMessage(str(e))
             return
         return data
 
     def getRecipeDetail(self) -> Exception | dict[str, str]:
-        if self.validateInput(self.create_menu_name_input, "Please enter a name"):
-            raise Exception("Validation error occurred.")
+        if self.validateInput(self.create_menu_name_input):
+            self.create_menu_name_input.setFocus()
+            self.create_menu_name_input.bor
+            self.create_menu_name_input.clear()
+            raise Exception("Please enter a name")
 
-        if self.validateInput(self.create_cal_input, "Please enter a calorie amount"):
-            return Exception("Validation error occurred.")
+        for i in range(len(self.create_menu_name_input.text())):
+            if self.create_menu_name_input.text()[i].isdigit():
+                raise Exception("Please enter a valid name")
 
-        if self.validateInput(self.create_cook_time_input, "Please enter a cooking time", int):
-            return Exception("Validation error occurred.")
+        if self.validateInput(self.create_cal_input):
+            raise Exception("Please enter a calorie amount")
 
-        if self.validateInput(self.create_serving_input, "Please enter a serving amount", int):
-            return Exception("Validation error occurred.")
+        if self.validateInput(self.create_cook_time_input):
+            raise Exception("Please enter a cooking time")
+
+        if self.validateInput(self.create_serving_input):
+            raise Exception("Please enter a serving amount")
 
         detail = {"name": self.create_menu_name_input.text(), "calories": self.create_cal_input.text(),
                   "duration_minute": self.create_cook_time_input.text(), "serving": self.create_serving_input.text()}
@@ -195,24 +202,11 @@ class CreateView(NavigationBar):
 
 
     @staticmethod
-    def validateInput(inputField, error_message, input_type=str):
+    def validateInput(inputField):
         if type(inputField) == QTextEdit:
-            if inputField.toPlainText() == "":
-                qm = QMessageBox()
-                qm.setWindowTitle("Error")
-                qm.setText(error_message)
-                qm.setIcon(QMessageBox.Critical)
-                qm.exec_()
-                inputField.setFocus()
-                return True
+            return True
         else:
             if inputField.text() == "":
-                qm = QMessageBox()
-                qm.setWindowTitle("Error")
-                qm.setText(error_message)
-                qm.setIcon(QMessageBox.Critical)
-                qm.exec_()
-                inputField.setFocus()
                 return True
         return False
 
@@ -234,8 +228,8 @@ class CreateView(NavigationBar):
 
     def getCategories(self) -> list[str] | None:
 
-        if self.validateInput(self.create_category_input, "Please enter a category"):
-            return
+        if self.validateInput(self.create_category_input):
+            raise Exception("Please enter a category")
 
         if "," in self.create_category_input.text():
             categories = self.create_category_input.text().split(",")
@@ -243,26 +237,46 @@ class CreateView(NavigationBar):
             categories = [self.create_category_input.text()]
         return categories
 
+    @property
     def getIngredients(self) -> list:
         ingredients = []
 
         input_text = self.create_ing_input.toPlainText()
-        lines = input_text.split("\n") if "\n" in input_text else [input_text]
 
-        for line in lines:
-            if line != "":
-                parts = line.split(" ")
+        if "\n" in input_text:
+            lines = input_text.strip().split("\n") if "\n" in input_text else [input_text]
+            try:
+                for line in lines:
+                    if line != "":
+                        parts = line.split(" ")
 
-                if len(parts) == 3 or (len(parts) == 2 and parts[2] == ""):
-                    ingredients.append(parts)
+                    if len(parts) == 3 or (len(parts) == 2 and parts[2] == ""):
+                        ingredients.append(parts)
 
-                elif parts[1].isnumeric():
-                    self.showWarningMessage("Amount must be a number")
-                    return
+                    elif parts[1].isnumeric():
+                        raise Exception("Amount must be a number")
 
-                else:
-                    self.showWarningMessage("Please enter ingredients in the format: 'name amount unit'")
-                    return
+                    else:
+                        raise Exception("Please enter ingredients in the format: 'name amount unit'")
+
+            except Exception:
+                raise Exception("Please enter ingredients in the format: 'name amount unit'")
+
+        else:
+
+            lines = [input_text.split(" ")]
+            parts = lines[0]
+
+            if len(parts) == 3 or (len(parts) == 2 and parts[2] == ""):
+                ingredients.append(parts)
+
+            elif parts[1].isnumeric():
+                raise Exception("Amount must be a number")
+
+            else:
+                raise Exception("Please enter ingredients in the format: 'name amount unit'")
+
+            return ingredients
 
         return ingredients
 
@@ -275,6 +289,15 @@ class CreateView(NavigationBar):
                     directions.append(e.split(".",1))
         return directions
 
+    def clearForm(self):
+        self.create_menu_name_input.clear()
+        self.create_cal_input.clear()
+        self.create_cook_time_input.clear()
+        self.create_serving_input.clear()
+        self.create_category_input.clear()
+        self.create_ing_input.clear()
+        self.create_dir_input.clear()
+        self.create_URL_input.clear()
 
 
 if __name__ == "__main__":

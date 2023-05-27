@@ -1,7 +1,10 @@
 import io
+
+import cv2
+import numpy as np
 import requests
 from PIL import Image
-from PIL.ImageQt import ImageQt
+from PIL.ImageQt import ImageQt, QImage
 from PySide6.QtCore import Signal, QRect, Qt, QPoint, QMimeData, QSize
 from PySide6.QtGui import QCursor, QPixmap, QIcon, QPainter, QDrag, QMouseEvent
 from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QLabel
@@ -129,14 +132,20 @@ class RecipeCard(QWidget):
         else:
             try:
                 request = requests.get(url)
-                with io.BytesIO(request.content) as img_bytes:
-                    image = Image.open(img_bytes)
-                    image = image.resize((170, 170), Image.ANTIALIAS)
-                    pixmap = QPixmap.fromImage(ImageQt(image))
+                nparr = np.frombuffer(request.content, np.uint8)
+                # with io.BytesIO(request.content) as img_bytes:
+                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                pil = Image.fromarray(image)
+                # image = cv2.resize(image, (170, 170), interpolation=cv2.INTER_AREA)
+                image = pil.resize((170, 170), Image.ANTIALIAS)
+                # image = Image.open(img_bytes)
+                # image = image.resize((170, 170), Image.ANTIALIAS)
+                pixmap = QPixmap.fromImage(ImageQt(image))
 
                     # Cache the image for future use
-                    self.imageCache[url] = pixmap
-                    self.card_img.setPixmap(pixmap)
+                self.imageCache[url] = pixmap
+                self.card_img.setPixmap(pixmap)
             except Exception as e:
                 print(recipe_id, "is not an image file")
 
