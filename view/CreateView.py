@@ -222,7 +222,7 @@ class CreateView(NavigationBar):
 
     @staticmethod
     def isHTML(text):
-        if text is None:
+        if text == "":
             return True
         try:
             parser = etree.HTMLParser()

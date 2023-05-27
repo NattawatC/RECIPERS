@@ -1,7 +1,10 @@
 import time
 from functools import partial
+
+from sqlalchemy.exc import IntegrityError
+
 from controller.AuthController import AuthController
-from model.RecipeModel import RecipeModel, Recipe
+from model.RecipeModel import RecipeModel, AddedRecipes
 from view.RecipeView import *
 from view.FavoriteView import *
 from view.CreateView import *
@@ -21,7 +24,6 @@ class RecipeController:
         self.FavoriteView = self.initFavoriteView()
         self.DetailView = DetailView(self)
         self.CreateView = CreateView(self)
-        # self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.views = [self.RecipeView, self.FavoriteView, self.CreateView, self.DetailView]
 
 
@@ -271,27 +273,23 @@ class RecipeController:
     #----------------------------------------------------
 
     #CreateView
-
     def handleCreateRecipe(self):
         recipeInfo = self.CreateView.recipeSubmitted()
 
-        if recipeInfo is not None:
-            if self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
-                self.CreateView.showWarningMessage("Recipe name already exists")
+        try:
+            if recipeInfo["detail"]["image"] == "":
+                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
+            recipeId = self.RecipeModel.createRecipe(recipeInfo)
+            self.CreateView.showMessageBox("Recipe created successfully")
+            # Add recipe to AddedRecipes
+            addedRecipe = AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
+            self.RecipeModel.session.add(addedRecipe)
+            self.RecipeModel.session.commit()
+            self.CreateView.clearForm()
 
-            else:
-                try:
-                    recipeId = self.RecipeModel.createRecipe(recipeInfo)
-                    self.CreateView.showMessageBox("Recipe created successfully")
-                    self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-
-                    # Add recipe to AddedRecipes
-                    addedRecipe = self.RecipeModel.AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,date_added=time.strftime('%Y-%m-%d %H:%M:%S'))
-                    self.RecipeModel.session.add(addedRecipe)
-                    self.RecipeModel.session.commit()
-                    self.CreateView.clearForm()
-                except:
-                    self.CreateView.showWarningMessage("Error creating recipe")
+            self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+        except Exception as e:
+            self.CreateView.showWarningMessage(e)
 
 
     def handleDeleteRecipe(self, recipeId):
@@ -300,15 +298,17 @@ class RecipeController:
             if self.RecipeModel.deleteRecipe(recipeId):
                 self.RecipeView.setCards(self.initializeCard())
                 self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-                self.RecipeView.createMessageBox("inform", "Recipe deleted successfully", QMessageBox.Information)
+                self.RecipeView.createMessageBox("inform", "Recipe deleted successfully", QMessageBox.Information
+                                                 )
                 self.RecipeView.setCards(self.initializeCard())
-                self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+                self.RecipeView.setCreateCount(self.RriteCount())ecipeModel.getAddedCount(self.User.id))
 
 
 
     #----------------------------------------------------
 
     def handleNavigateToCreate(self):
+        self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.mainWindow.NavigateToCreate()
 
     def handleNavigateToRecipe(self):

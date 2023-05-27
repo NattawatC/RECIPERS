@@ -81,6 +81,13 @@ class Course(Category):
     category_type = Column(String, default='course')
     __mapper_args__ = {'polymorphic_identity': 'course'}
 
+class Others(Category):
+    __tablename__ = 'others'
+
+    category_id = Column(Integer, ForeignKey('categories.category_id'), primary_key=True)
+    category_type = Column(String, default='others')
+    __mapper_args__ = {'polymorphic_identity': 'others'}
+
 class FavoriteRecipes(Base):
     __tablename__ = 'favorite_recipes'
 
@@ -95,6 +102,7 @@ class AddedRecipes(Base):
 
     user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'), primary_key=True)
+    add_timestamp = Column(String)
 
     user = relationship(User , backref=backref('added_recipes'))
     recipe = relationship(Recipe, backref=backref('added_recipes'))
@@ -176,7 +184,7 @@ class RecipeModel:
                 conditions = [Category.name == t for t in tag]
                 recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
         return recipes
-            
+
             
     def getAddedCount(self, userId):
         addedCount = self.session.query(AddedRecipes).filter_by(user_id=userId).count()
@@ -187,10 +195,7 @@ class RecipeModel:
             recipeId = self.session.query(func.max(Recipe.id)).scalar() + 1
 
             #Add new recipe
-            if recipeInfo['detail']['image'] == '':
-                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
-            else:
-                recipe = Recipe(id=recipeId,
+            recipe = Recipe(id=recipeId,
                             name=recipeInfo['detail']['name'],
                             duration_minute=recipeInfo['detail']['duration_minute'],
                             serving=recipeInfo['detail']['serving'],
@@ -209,7 +214,6 @@ class RecipeModel:
                 self.session.add(ingredient)
 
             #Add instructions
-
             for i in range(len(recipeInfo['instructions'])):
                 instructionId = self.session.query(func.max(Instruction.id)).scalar() + 1
                 instruction = Instruction(id=instructionId,
@@ -220,7 +224,8 @@ class RecipeModel:
 
             #Add categories
             for i in range(len(recipeInfo['categories'])):
-                category = self.session.query(Category).filter_by(name=str(recipeInfo['categories'][i]).lower()).first()
+                c = str(recipeInfo['categories'][i]).lower()
+                category = self.session.query(Category).filter_by(name=c).first()
                 category_type = 'other'
                 if category is not None:
                     if category.category_id in [5, 7, 4, 15, 11]:
@@ -247,7 +252,6 @@ class RecipeModel:
 
 
             # self.session.flush()
-            self.session.commit()
             return recipeId
         except Exception as e:
             self.session.rollback()

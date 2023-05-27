@@ -32,7 +32,8 @@ class NavigationBar(QWidget):
     def onClickedNavToFavorite(self):
         self.RecipeController.handleNavigateToFavorite()
 
-    def createMessageBox(self, title, message, icon):
+    @staticmethod
+    def createMessageBoxWithInput(title, message, icon):
         box = QMessageBox()
         box.setIcon(icon)
         box.setText(message)
@@ -42,10 +43,15 @@ class NavigationBar(QWidget):
         if box.exec() == QMessageBox.Ok:
             return True
 
+    @staticmethod
+    def createMessageBox(title, message, icon):
+        box = QMessageBox()
+        box.setIcon(icon)
+        box.setText(message)
+        box.setWindowTitle(title)
+        box.setStandardButtons(QMessageBox.Ok)
+        box.exec()
 
-
-
-    
     def showMessageBox(self):
         self.user_message_box.exec()
     
