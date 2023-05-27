@@ -31,6 +31,9 @@ class AuthModel:
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
+    def getAllUsername(self):
+        return self.session.query(User.username).all()
+
     def getUser(self, username):
         return self.session.query(User).filter(User.username == username).first()
     
@@ -53,9 +56,6 @@ class AuthModel:
             return user
         return None
     
-    
-         
-
     def addUserLog(self, user):
         self.session.add(UserLog(user_id=user.id, logged_in_at=time.strftime('%Y-%m-%d %H:%M:%S')))
 
