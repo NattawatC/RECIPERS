@@ -50,7 +50,6 @@ class AuthController:
         if self.checkUsernameValid == True and self.checkFnameValid == True and self.checkLnameValid == True and self.checkRegPasswordValid == True and self.checkConfirmPasswordValid == True:
             self.RegisterView.start_button.clicked.connect(self.mainWindow.returnToAuth)
         else:
-            print(self.checkUsernameValid, self.checkFnameValid, self.checkLnameValid, self.checkRegPasswordValid, self.checkConfirmPasswordValid)
             self.setFocus()
 
     def setFocus(self):
@@ -113,6 +112,7 @@ class AuthController:
             self.RegisterView.showPasswordError("Please fill in a password with at least 1 lowercase letter.")
             return False
         else:
+            self.RegisterView.showPasswordError("Password is valid.")
             return True
 
     def checkConfirmPassword(self, confirmPassword, password):

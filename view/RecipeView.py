@@ -50,6 +50,8 @@ class RecipeView(NavigationBar):
         self.search_bar.textChanged.connect(self.RecipeController.handleSearchRecipe)
         self.search_bar.returnPressed.connect(self.RecipeController.handleSearchRecipe)
 
+        self.breakfast_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.lunch_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
 
     def setCreateCount(self, num):
         self.create_num.setText(str(num))

@@ -160,15 +160,10 @@ class RecipeModel:
         addedRecipes = self.session.query(AddedRecipes).filter_by(user_id=userId).all()
         return addedRecipes
     
-    # def filterRecipe(self, tag):
-    #     categoryForFilter = self.session.query(Category).filter_by(name=tag).first()
-    #     if categoryForFilter is not None:
-    #         recipes = self.session.query(Recipe).join(Classify).join(Category).all()
-        
-    #     else:
-    #         recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{tag}%")).all()
-    #     return recipes
-    #not finished
+    def filterRecipe(self, tag):
+        recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
+        return recipes
+    
             
             
     def getAddedCount(self, userId):
