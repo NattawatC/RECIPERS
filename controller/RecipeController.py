@@ -1,6 +1,7 @@
 import time
 from functools import partial
 
+import sqlalchemy
 from sqlalchemy.exc import IntegrityError
 
 from controller.AuthController import AuthController
@@ -280,7 +281,7 @@ class RecipeController:
             if recipeInfo["detail"]["image"] == "":
                 recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
             recipeId = self.RecipeModel.createRecipe(recipeInfo)
-            self.CreateView.showMessageBox("Recipe created successfully")
+            self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
             # Add recipe to AddedRecipes
             addedRecipe = AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
             self.RecipeModel.session.add(addedRecipe)
@@ -288,20 +289,19 @@ class RecipeController:
             self.CreateView.clearForm()
 
             self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-        except Exception as e:
-            self.CreateView.showWarningMessage(e)
+        except sqlalchemy.exc.InvalidRequestError:
+            self.CreateView.createMessageBox("inform", "Recipe created failed", QMessageBox.Information)
 
 
     def handleDeleteRecipe(self, recipeId):
-        box = self.RecipeView.createMessageBox("inform", "Are you sure to delete?", QMessageBox.Warning)
+        box = self.RecipeView.createMessageBoxWithInput("inform", "Are you sure to delete?", QMessageBox.Warning)
         if box:
             if self.RecipeModel.deleteRecipe(recipeId):
                 self.RecipeView.setCards(self.initializeCard())
                 self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-                self.RecipeView.createMessageBox("inform", "Recipe deleted successfully", QMessageBox.Information
-                                                 )
+                self.RecipeView.createMessageBox("inform", "Recipe deleted successfully", QMessageBox.Information)
                 self.RecipeView.setCards(self.initializeCard())
-                self.RecipeView.setCreateCount(self.RriteCount())ecipeModel.getAddedCount(self.User.id))
+                self.RecipeView.setFavoriteCount(self.getFavoriteCount())
 
 
 

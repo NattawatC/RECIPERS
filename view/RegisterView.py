@@ -226,6 +226,8 @@ class RegisterView(QWidget):
     def reset(self) -> None:
         self.userError.hide()
         self.lineEdit_regUsername.clear()
+        self.lineEdit_fname.clear()
+        self.lineEdit_lname.clear()
         self.lineEdit_regPassword.clear()
         self.lineEdit_regConPassword.clear()
         self.lineEdit_regUsername.setFocus()

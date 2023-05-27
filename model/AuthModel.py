@@ -11,6 +11,8 @@ class User(Base):
     username = Column(String)
     password = Column(String)
     logged_in = Column(Boolean)
+    first_name = Column(String)
+    last_name = Column(String)
 
     def __repr__(self):
         return f"<User(username={self.username}, password={self.password}, logged_in={self.logged_in})>"
@@ -55,6 +57,14 @@ class AuthModel:
             self.session.commit()
             return user
         return None
+
+    def register(self, username, password, firstName, lastName):
+        userId = self.session.query(func.max(User.id)).scalar() + 1
+        user = User(id = userId, username=username, password=password, first_name=firstName, last_name=lastName ,logged_in=False)
+        self.session.add(user)
+        self.session.commit()
+        return user
+
     
     def addUserLog(self, user):
         self.session.add(UserLog(user_id=user.id, logged_in_at=time.strftime('%Y-%m-%d %H:%M:%S')))

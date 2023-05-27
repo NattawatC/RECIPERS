@@ -173,11 +173,8 @@ class CreateView(NavigationBar):
                   "ingredients": self.getIngredients, "instructions": self.getInstructions()}
             return data
 
-        except AttributeError:
-            self.showWarningMessage("Please fill out all fields")
-
         except Exception as e:
-            self.showWarningMessage(str(e))
+            self.createMessageBox("Warning", str(e), QMessageBox.Critical)
             return
 
 
@@ -239,22 +236,6 @@ class CreateView(NavigationBar):
             if inputField.text() == "":
                 return True
         return False
-
-    @staticmethod
-    def showWarningMessage(message):
-        message_box = QMessageBox()
-        message_box.setIcon(QMessageBox.Warning)
-        message_box.setWindowTitle("Warning")
-        message_box.setText(message)
-        message_box.exec()
-
-    @staticmethod
-    def showMessageBox(message):
-        message_box = QMessageBox()
-        message_box.setIcon(QMessageBox.Information)
-        message_box.setWindowTitle("Success")
-        message_box.setText(message)
-        message_box.exec()
 
     def getCategories(self) -> list[str] | None:
 
