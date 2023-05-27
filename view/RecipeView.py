@@ -50,6 +50,8 @@ class RecipeView(NavigationBar):
         self.search_bar.textChanged.connect(self.RecipeController.handleSearchRecipe)
         self.search_bar.returnPressed.connect(self.RecipeController.handleSearchRecipe)
 
+        self.breakfast_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.lunch_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
 
     def setFavoriteCount(self, num):
         self.save_num.setText(str(num))
