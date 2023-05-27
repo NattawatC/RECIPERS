@@ -110,7 +110,44 @@ class NavigationBar(QWidget):
         
         self.user_message_box.setObjectName("user_message_box")
         self.user_message_box.setWindowTitle("User")
-        self.user_message_box.setText("User_name: "+ self.RecipeController.getUser() + "\n" + "Created recipe at: \n" + "Login at: " + str(self.RecipeController.getUserLoginTime()))
+        self.setUserMessageBox()
         self.user_message_box.setFont(Theme.CHILLAX_REGULAR_16)
         
         self.setStyleSheet(Theme.get_stylesheet())
+
+    def setUserMessageBox(self):
+        create_time = self.RecipeController.getUserCreateTime()
+        recipe_names = []
+        for item in enumerate(create_time):
+            recipe_names.append(self.RecipeController.getRecipeName(item[1].recipe_id))
+
+        create_timestamps = []
+        if create_time is not None:
+            if len(create_time) > 3:
+                create_time = create_time[-3:]
+            for i, item in enumerate(create_time[:3]):
+                if i > 0:
+                    create_timestamps.append(
+                        " " * 23 + "Recipe name: " + recipe_names[i] + " - " + str(item.add_timestamp))
+                else:
+                    create_timestamps.append(str(item.add_timestamp))
+
+        login_time = self.RecipeController.getUserLoginTime()
+        if login_time is not None:
+            login_timestamps = []
+            for i, item in enumerate(login_time[:3]):
+                if i > 0:
+                    login_timestamps.append(" " * 23 + str(item.logged_in_at))
+
+                else:
+                    login_timestamps.append(str(item.logged_in_at))
+
+
+
+        message = f"User_name: {self.RecipeController.getUser()}\n"
+        message += "Created recipe at: " + "\n".join(create_timestamps) + "\n"
+        message += "Logged in at: " + "\n".join(login_timestamps)
+
+        self.user_message_box.setText(message)
+
+

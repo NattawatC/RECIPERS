@@ -266,13 +266,12 @@ class RecipeModel:
                     classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
                     self.session.add(classify)
 
-
             # self.session.flush()
             return recipeId
         except Exception as e:
             self.session.rollback()
             print(e)
-            return False
+            return None
 
     def deleteRecipe(self, RecipeId):
         try:
@@ -306,6 +305,7 @@ class RecipeModel:
             print(e)
             return False
 
-
-
+    def getCreatedRecipeTime(self, userId):
+        addedRecipeTime = self.session.query(AddedRecipes).filter_by(user_id=userId).all()
+        return addedRecipeTime
 

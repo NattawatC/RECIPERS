@@ -39,8 +39,8 @@ class AuthModel:
     def getUser(self, username):
         return self.session.query(User).filter(User.username == username).first()
     
-    def getUserLogTime(self, timestamp):
-        return self.session.query(UserLog).filter(UserLog.logged_in_at == timestamp).first().logged_in_at
+    def getUserLogTime(self, userId):
+        return self.session.query(UserLog.logged_in_at).filter(UserLog.user_id == userId).all()
 
     def validate(self, username, password):
         user = self.getUser(username)

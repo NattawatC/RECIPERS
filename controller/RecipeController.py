@@ -423,3 +423,9 @@ class RecipeController:
     
     def getUserLoginTime(self):
         return self.UserLogIn
+
+    def getUserCreateTime(self):
+        return self.RecipeModel.getCreatedRecipeTime(self.User.id)
+
+    def getRecipeName(self, recipeId):
+        return self.RecipeModel.getRecipeById(recipeId).name
