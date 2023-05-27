@@ -31,6 +31,7 @@ class CreateView(NavigationBar):
         self.create_ing_input = QTextEdit(self.create_frame)
         self.create_dir = QLabel("Directions", self.create_frame)
         self.create_dir_input = QTextEdit(self.create_frame)
+
         self.submit_btn = QPushButton("Submit", self)
         
        
@@ -111,13 +112,11 @@ class CreateView(NavigationBar):
         self.create_serving_input.setMaxLength(50)
         self.create_serving_input.setClearButtonEnabled(True)
         self.create_serving_input.setValidator(QIntValidator(0, 1000, self))
-
         
         self.create_category.setObjectName("default_label")
         self.create_category.setFont(Theme.CHILLAX_REGULAR_20)
         self.create_category.setGeometry(QRect(33, 345, 134, 31))
 
-        
         self.create_category_input.setObjectName("create_bar")
         self.create_category_input.setPlaceholderText("ie. Breakfast,Lunch, ...")
         self.create_category_input.setFont(Theme.CHILLAX_REGULAR_16)
@@ -142,11 +141,22 @@ class CreateView(NavigationBar):
         self.create_dir_input.setObjectName("create_bar")
         self.create_dir_input.setPlaceholderText("How do you make it...")
         self.create_dir_input.setFont(Theme.CHILLAX_REGULAR_16)
-        self.create_dir_input.setGeometry(QRect(564, 56, 278, 354))
+        self.create_dir_input.setGeometry(QRect(564, 56, 278, 284))
         self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        
+        self.create_URL = QLabel("Image / URL", self.create_frame)
+        self.create_URL.setObjectName("default_label")
+        self.create_URL.setFont(Theme.CHILLAX_REGULAR_20)
+        self.create_URL.setGeometry(QRect(564, 345, 164, 35))
+
+        self.create_URL_input = QLineEdit(self.create_frame)
+        self.create_URL_input.setObjectName("create_bar")
+        self.create_URL_input.setPlaceholderText("Image / URL")
+        self.create_URL_input.setFont(Theme.CHILLAX_REGULAR_16)
+        self.create_URL_input.setGeometry(QRect(564, 376, 278, 33))
+
+
         self.submit_btn.setObjectName("submit_button")
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
