@@ -278,7 +278,7 @@ class RecipeController:
         recipeInfo = self.CreateView.recipeSubmitted()
 
         try:
-            if recipeInfo["detail"]["image"] == "":
+            if recipeInfo is not None and recipeInfo["detail"]["image"] == "":
                 recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
             recipeId = self.RecipeModel.createRecipe(recipeInfo)
             self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
