@@ -1,6 +1,5 @@
 import io
 
-import cv2
 import numpy as np
 import requests
 from PIL import Image
@@ -134,8 +133,8 @@ class RecipeCard(QWidget):
                 request = requests.get(url)
                 nparr = np.frombuffer(request.content, np.uint8)
                 # with io.BytesIO(request.content) as img_bytes:
-                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                # image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 pil = Image.fromarray(image)
                 # image = cv2.resize(image, (170, 170), interpolation=cv2.INTER_AREA)
                 image = pil.resize((170, 170), Image.ANTIALIAS)

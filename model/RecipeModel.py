@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum, select, or_
+from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum, select, or_, and_
 from sqlalchemy.orm import declarative_base, sessionmaker, Mapped, mapped_column, relationship, backref
 from config import ENGINE as engine
 from typing import List
@@ -169,36 +169,12 @@ class RecipeModel:
             recipes = self.session.query(Recipe).join(Classify).join(Category).filter(Recipe.serving > tag).all()
     
         elif type(tag) == tuple:
-            if isinstance(tag, tuple):
-                print("tag is tuple with int")
-                conditions = [Recipe.serving == int(t) for t in tag]
-                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
-            
-            # elif type(tag[-1]) == int and type(tag[0]) == str:
-            #     print("tag is tuple with str and int")
-            #     name = tag[0]
-            #     serving = tag[-1]
-            #     conditions = [
-            #         Recipe.name == name,
-            #         Recipe.serving == int(serving)
-            #     ]
-            #     recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
-            #notfinished         
-            
+            if type(tag[-1]) == int and type(tag[0]) == str:
+                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(Recipe.name == tag[0], Recipe.serving > tag[1])).all()
+              
             else:
-                print("tuple")
-                # recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(tag[0] + tag[1]).all()
                 conditions = [Category.name == t for t in tag]
                 recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
-        
-    
-            
-    
-        # elif tag == list(tag):
-        #     recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
-        
-        # recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
-        # return recipes
         return recipes
             
             
