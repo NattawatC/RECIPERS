@@ -314,6 +314,7 @@ class RecipeController:
     def handleNavigateToRecipe(self):
         self.RecipeView.setCards(self.initializeCard())
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
+        self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.mainWindow.NavigateToRecipe()
 
     def handleNavigateToFavorite(self):
