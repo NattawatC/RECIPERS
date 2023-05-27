@@ -237,6 +237,27 @@ class CreateView(NavigationBar):
                 return True
         return False
 
+    @staticmethod
+    def showWarningMessage(message):
+        message_box = QMessageBox()
+        # message_box.setIcon(QMessageBox.Warning)
+        message_box.setObjectName("user_message_box")
+        message_box.setWindowTitle("Warning")
+        message_box.setText(message)
+        message_box.exec()
+        message_box.setStyleSheet(Theme.get_stylesheet())
+
+    @staticmethod
+    def showMessageBox(message):
+        message_box = QMessageBox()
+        # message_box.setIcon(QMessageBox.Information)
+        message_box.setObjectName("user_message_box")
+        message_box.setWindowTitle("Success")
+        message_box.setText(message)
+        message_box.exec()
+        message_box.setStyleSheet(Theme.get_stylesheet())
+        
+
     def getCategories(self) -> list[str] | None:
 
         if self.validateInput(self.create_category_input):
