@@ -1,5 +1,4 @@
 from functools import partial
-
 from controller.AuthController import AuthController
 from model.RecipeModel import RecipeModel, Recipe
 from view.RecipeView import *
@@ -29,16 +28,28 @@ class RecipeController:
 
         if len(items) == 1:
             recipe_card = RecipeCard(items[0], self.imageCache)
+
+            if items[0].id in [addedRecipe.id for addedRecipe in self.handleAddedRecipe()]:
+                recipe_card.delete_btn.clicked.connect(partial(self.handleDeleteRecipe, items[0].id))
+                recipe_card.delete_btn.show()
+
             if self.imageCache is None:
                 self.imageCache = {}
             self.imageCache[items[0].image] = recipe_card.card_img.pixmap()
             recipe_card.setGeometry(QRect(0, 0, 402, 194))
             cards.append(recipe_card)
         else:
+
             for i, item in enumerate(items):
                 if self.imageCache is None:
                     self.imageCache = {}
+
                 recipe_card = RecipeCard(item, self.imageCache)
+
+                if item.id in [addedRecipe.id for addedRecipe in self.handleAddedRecipe()]:
+                    recipe_card.delete_btn.clicked.connect(partial(self.handleDeleteRecipe, item.id))
+                    recipe_card.delete_btn.show()
+
                 self.imageCache[item.image] = recipe_card.card_img.pixmap()
                 x = 0 if i % 2 == 0 else 436
                 y = 230 * newline
@@ -61,15 +72,11 @@ class RecipeController:
         self.views.clear()
 
     def handleAddedRecipe(self):
-        pass
-        # addedRecipe = self.RecipeModel.getAddedRecipe()
-        # for recipe in addedRecipe:
-        #     recipe.
-
-
-    def connectAddedRecipe(self):
-        addedRecipe = self.RecipeModel.getAddedRecipe()
-
+        addedRecipes = []
+        addedRecipe = self.RecipeModel.getAddedRecipes(self.User.id)
+        for recipe in addedRecipe:
+            addedRecipes.append(self.RecipeModel.getRecipeById(recipe.recipe_id))
+        return addedRecipes
 
 
     #-------------------------------------------------
@@ -77,6 +84,7 @@ class RecipeController:
     #RecipeView
     def initRecipeView(self) -> RecipeView:
         self.RecipeView = RecipeView(self, self.initializeCard())
+        self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
         return self.RecipeView
 
@@ -102,6 +110,8 @@ class RecipeController:
 
     def initializeCard(self) -> list:
         recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
+        recipes = self.RecipeModel.getAllRecipes()
+        # recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
         self.connectDetailSignals(cards)
@@ -132,6 +142,7 @@ class RecipeController:
         recipes = self.RecipeModel.searchRecipe(keyword, self.User.id)
         cards = self.createCards(recipes)
         self.connectFavoriteSignals(cards)
+        self.connectDetailSignals(cards)
         self.RecipeView.setCards(cards)
         
     # def handleFilterRecipe(self,tag):
@@ -165,11 +176,7 @@ class RecipeController:
         self.FavoriteView.setCards(self.initFavoriteCards())
 
     def handleGetFavorites(self) -> list:
-        favorites = []
-        for favorite in self.RecipeModel.getFavorites(self.User.id):
-            recipe = self.RecipeModel.getRecipeById(favorite.recipe_id)
-            favorites.append(recipe)
-        return favorites
+        return self.RecipeModel.getFavorites(self.User.id)
 
 
     #----------------------------------------------------
@@ -199,6 +206,17 @@ class RecipeController:
             self.RecipeModel.createRecipe(recipeInfo, self.User.id)
             self.CreateView.showMessageBox("Recipe created successfully")
             # self.CreateView.clearForm()
+
+
+    def handleDeleteRecipe(self, recipeId):
+        box = self.RecipeView.createMessageBox("inform", "Are you sure to delete?", QMessageBox.Warning)
+        if box:
+            if self.RecipeModel.deleteRecipe(recipeId):
+                self.RecipeView.setCards(self.initializeCard())
+                self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+                self.RecipeView.showMessageBox("Recipe deleted successfully")
+                self.RecipeView.setCards(self.initializeCard())
+                self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
 
 
 

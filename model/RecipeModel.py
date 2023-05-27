@@ -136,7 +136,9 @@ class RecipeModel:
         self.session.commit()
 
     def getFavorites(self, user_id):
-        favorites = self.session.query(FavoriteRecipes).filter_by(user_id=user_id).all()
+        favorites = []
+        for id in self.session.query(FavoriteRecipes.recipe_id).filter_by(user_id=user_id).all():
+            favorites.append(self.session.query(Recipe).filter_by(id=id[0]).first())
         return favorites
 
     def searchRecipe(self, keyword, userId):
@@ -144,12 +146,19 @@ class RecipeModel:
         if category is not None:
             recipes = self.session.query(Recipe).join(Classify).join(Category).all()
 
-        elif keyword == 'favorite':
+        elif keyword.lower() == 'added':
+            recipes = self.session.query(Recipe).join(AddedRecipes).filter_by(user_id=userId).all()
+
+        elif keyword.lower() == 'favorite':
             recipes = self.session.query(Recipe).join(FavoriteRecipes).filter_by(user_id=userId).all()
 
         else:
             recipes = self.session.query(Recipe).filter(Recipe.name.like(f"%{keyword}%")).all()
         return recipes
+
+    def getAddedRecipes(self, userId):
+        addedRecipes = self.session.query(AddedRecipes).filter_by(user_id=userId).all()
+        return addedRecipes
     
     # def filterRecipe(self, tag):
     #     categoryForFilter = self.session.query(Category).filter_by(name=tag).first()
@@ -162,7 +171,9 @@ class RecipeModel:
     #not finished
             
             
-        
+    def getAddedCount(self, userId):
+        addedCount = self.session.query(AddedRecipes).filter_by(user_id=userId).count()
+        return addedCount
 
     def createRecipe(self, recipeInfo, userId):
         try:
@@ -230,6 +241,39 @@ class RecipeModel:
 
             # self.session.flush()
             self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            print(e)
+            return False
+
+    def deleteRecipe(self, RecipeId):
+        try:
+            classify = self.session.query(Classify).filter_by(recipe_id=RecipeId).all()
+            for c in classify:
+                self.session.delete(c)
+
+            ingredient = self.session.query(Ingredient).filter_by(recipe_id=RecipeId).all()
+            for i in ingredient:
+                self.session.delete(i)
+
+
+            instruction = self.session.query(Instruction).filter_by(recipe_id=RecipeId).all()
+            for i in instruction:
+                self.session.delete(i)
+
+            addedRecipe = self.session.query(AddedRecipes).filter_by(recipe_id=RecipeId).first()
+            self.session.delete(addedRecipe)
+
+            favorite = self.session.query(FavoriteRecipes).filter_by(recipe_id=RecipeId).first()
+            if favorite is not None:
+                self.session.delete(favorite)
+
+            recipe = self.session.query(Recipe).filter_by(id=RecipeId).first()
+            self.session.delete(recipe)
+
+            self.session.commit()
+            return True
+
         except Exception as e:
             self.session.rollback()
             print(e)

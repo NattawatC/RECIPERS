@@ -20,7 +20,7 @@ class RecipeCard(QWidget):
         self.imageCache = imageCache
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
-        self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
+        # self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
         self.card_name = QLabel(self.card_frame)
         self.card_serving = QLabel("Serving:", self.card_frame)
         self.card_serving_num = QLabel(str(self.recipe.serving), self.card_frame)

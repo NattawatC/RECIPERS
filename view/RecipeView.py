@@ -51,6 +51,9 @@ class RecipeView(NavigationBar):
         self.search_bar.returnPressed.connect(self.RecipeController.handleSearchRecipe)
 
 
+    def setCreateCount(self, num):
+        self.create_num.setText(str(num))
+
     def setFavoriteCount(self, num):
         self.save_num.setText(str(num))
 
