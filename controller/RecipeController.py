@@ -59,6 +59,19 @@ class RecipeController:
         self.mainWindow.showAuthView()
         self.mainWindow.imageCache = self.imageCache
         self.views.clear()
+
+    def handleAddedRecipe(self):
+        pass
+        # addedRecipe = self.RecipeModel.getAddedRecipe()
+        # for recipe in addedRecipe:
+        #     recipe.
+
+
+    def connectAddedRecipe(self):
+        addedRecipe = self.RecipeModel.getAddedRecipe()
+
+
+
     #-------------------------------------------------
 
     #RecipeView
@@ -202,7 +215,6 @@ class RecipeController:
     def handleNavigateToFavorite(self):
         self.refreshFavoriteView()
         self.mainWindow.NavigateToFavorite()
-
 
     def __repr__(self) -> str:
         return self.user.username
