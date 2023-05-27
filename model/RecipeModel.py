@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum, select
+from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum, select, or_
 from sqlalchemy.orm import declarative_base, sessionmaker, Mapped, mapped_column, relationship, backref
 from config import ENGINE as engine
 from typing import List
@@ -161,9 +161,33 @@ class RecipeModel:
         return addedRecipes
     
     def filterRecipe(self, tag):
-        recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
-        return recipes
+        if type(tag) == str:
+            recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
+        
+        elif type(tag) == int:
+            print("int")
+            recipes = self.session.query(Recipe).join(Classify).join(Category).filter(Recipe.serving > tag).all()
     
+        elif type(tag) == tuple:
+            if isinstance(tag, tuple):
+                print("tag is tuple with int")
+                conditions = [Recipe.serving == int(t) for t in tag]
+                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
+            else:
+                print("tuple")
+                # recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(tag[0] + tag[1]).all()
+                conditions = [Category.name == t for t in tag]
+                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
+        
+    
+            
+    
+        # elif tag == list(tag):
+        #     recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
+        
+        # recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(name=tag).all()
+        # return recipes
+        return recipes
             
             
     def getAddedCount(self, userId):

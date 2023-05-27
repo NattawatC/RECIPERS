@@ -52,6 +52,12 @@ class RecipeView(NavigationBar):
 
         self.breakfast_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
         self.lunch_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.dinner_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.meat_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.seafood_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.vegetable_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.lessthan5_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
+        self.morethan5_checkbox.stateChanged.connect(self.RecipeController.handleFilterRecipe)
 
     def setCreateCount(self, num):
         self.create_num.setText(str(num))
