@@ -173,6 +173,18 @@ class RecipeModel:
                 print("tag is tuple with int")
                 conditions = [Recipe.serving == int(t) for t in tag]
                 recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
+            
+            # elif type(tag[-1]) == int and type(tag[0]) == str:
+            #     print("tag is tuple with str and int")
+            #     name = tag[0]
+            #     serving = tag[-1]
+            #     conditions = [
+            #         Recipe.name == name,
+            #         Recipe.serving == int(serving)
+            #     ]
+            #     recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
+            #notfinished         
+            
             else:
                 print("tuple")
                 # recipes = self.session.query(Recipe).join(Classify).join(Category).filter_by(tag[0] + tag[1]).all()
