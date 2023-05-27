@@ -152,18 +152,52 @@ class RecipeController:
         self.RecipeView.setCards(cards)
         
     def handleFilterRecipe(self):
-        
         tag = None
+        type = ("breakfast", "lunch", "dinner")
+        ingredient = ("meat", "seafood", "vegetable")
+        serving = ("1", "2", "3", "4", 5)
         if self.RecipeView.breakfast_checkbox.isChecked() == True:
-            tag = "breakfast"
+            tag = type[0]
             if self.RecipeView.lunch_checkbox.isChecked() == True:
-                tag = ("breakfast", "lunch")
+                tag = type[:2]
+                if self.RecipeView.dinner_checkbox.isChecked() == True:
+                    tag = type[:3]
+                elif self.RecipeView.meat_checkbox.isChecked() == True:
+                    tag = type[:2], ingredient[0]
+                elif self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = type[:2], ingredient[1]
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = type[:2], ingredient[2]
             elif self.RecipeView.dinner_checkbox.isChecked() == True:
                 tag = ("breakfast", "dinner")
+                if self.RecipeView.meat_checkbox.isChecked() == True:
+                    tag = ("breakfast", "dinner", "meat")
+                elif self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = ("breakfast", "dinner", "seafood")
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("breakfast", "dinner", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "dinner", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "dinner", "5")
             elif self.RecipeView.meat_checkbox.isChecked() == True:
                 tag = ("breakfast", "meat")
+                if self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = ("breakfast", "meat", "seafood")
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("breakfast", "meat", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "meat", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "meat", "5")
             elif self.RecipeView.seafood_checkbox.isChecked() == True:
                 tag = ("breakfast", "seafood")
+                if self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("breakfast", "seafood", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "seafood", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("breakfast", "seafood", "5")
             elif self.RecipeView.vegetable_checkbox.isChecked() == True:
                 tag = ("breakfast", "vegetable")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
@@ -174,12 +208,40 @@ class RecipeController:
             tag = "lunch"
             if self.RecipeView.dinner_checkbox.isChecked() == True:
                 tag = ("lunch", "dinner")
+                if self.RecipeView.meat_checkbox.isChecked() == True:
+                    tag = ("lunch", "dinner", "meat")
+                elif self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = ("lunch", "dinner", "seafood")
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("lunch", "dinner", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "dinner", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "dinner", "5")
             elif self.RecipeView.meat_checkbox.isChecked() == True:
                 tag = ("lunch", "meat")
+                if self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = ("lunch", "meat", "seafood")
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("lunch", "meat", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "meat", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "meat", "5")
             elif self.RecipeView.seafood_checkbox.isChecked() == True:
                 tag = ("lunch", "seafood")
+                if self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("lunch", "seafood", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "seafood", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "seafood", "5")
             elif self.RecipeView.vegetable_checkbox.isChecked() == True:
                 tag = ("lunch", "vegetable")
+                if self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "vegetable", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("lunch", "vegetable", "5")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
                 tag = ("lunch", "1","2","3","4")
             elif self.RecipeView.morethan5_checkbox.isChecked() == True:
@@ -188,10 +250,28 @@ class RecipeController:
             tag = "dinner"
             if self.RecipeView.meat_checkbox.isChecked() == True:
                 tag = ("dinner", "meat")
+                if self.RecipeView.seafood_checkbox.isChecked() == True:
+                    tag = ("dinner", "meat", "seafood")
+                elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("dinner", "meat", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "meat", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "meat", "5")
             elif self.RecipeView.seafood_checkbox.isChecked() == True:
                 tag = ("dinner", "seafood")
+                if self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("dinner", "seafood", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "seafood", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "seafood", "5")
             elif self.RecipeView.vegetable_checkbox.isChecked() == True:
                 tag = ("dinner", "vegetable")
+                if self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "vegetable", "1","2","3","4")
+                if self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("dinner", "vegetable", "5")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
                 tag = ("dinner", "1","2","3","4")
             elif self.RecipeView.morethan5_checkbox.isChecked() == True:
@@ -200,8 +280,18 @@ class RecipeController:
             tag = "meat"
             if self.RecipeView.seafood_checkbox.isChecked() == True:
                 tag = ("meat", "seafood")
+                if self.RecipeView.vegetable_checkbox.isChecked() == True:
+                    tag = ("meat", "seafood", "vegetable")
+                elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("meat", "seafood", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("meat", "seafood", "5")
             elif self.RecipeView.vegetable_checkbox.isChecked() == True:
                 tag = ("meat", "vegetable")
+                if self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("meat", "vegetable", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("meat", "vegetable", "5")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
                 tag = ("meat", "1","2","3","4")
             elif self.RecipeView.morethan5_checkbox.isChecked() == True:
@@ -210,6 +300,10 @@ class RecipeController:
             tag = "seafood"
             if self.RecipeView.vegetable_checkbox.isChecked() == True:
                 tag = ("seafood", "vegetable")
+                if self.RecipeView.lessthan5_checkbox.isChecked() == True:
+                    tag = ("seafood", "vegetable", "1","2","3","4")
+                elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+                    tag = ("seafood", "vegetable", "5")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
                 tag = ("seafood", "1","2","3","4")
             elif self.RecipeView.morethan5_checkbox.isChecked() == True:

@@ -175,14 +175,30 @@ class RecipeModel:
         elif type(tag) == int:
             print("int")
             recipes = self.session.query(Recipe).join(Classify).join(Category).filter(Recipe.serving > tag).all()
+        
+        
     
         elif type(tag) == tuple:
-            if type(tag[-1]) == int and type(tag[0]) == str:
-                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(Recipe.name == tag[0], Recipe.serving > tag[1])).all()
-              
+            if len(tag) == 2:
+                if type(tag[-1]) == int and type(tag[0]) == str:
+                    recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(Recipe.name == tag[0], Recipe.serving > tag[1])).all()
+                
+            #condition not ok, when tuple = str,str,int
+            elif len(tag) == 3 and isinstance(tag[0],str) and isinstance(tag[1],str) and isinstance(tag[-1],int):
+                print("test")
+                recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(Recipe.name == tag[0], Recipe.name == tag[1], Recipe.serving > tag[-1])).all()
+            # elif type(tag[-1]) == int and type(tag[0]) == str and type(tag[1]) == str:
+            #     print("test")
+            #     recipes = self.seesion.query(Recipe).join(Classify).join(Category).filter(or_(Recipe.serving > tag[2], Recipe.name == tag[0], Recipe.name == tag[1])).all()
+            
             else:
-                conditions = [Category.name == t for t in tag]
+                print("stst")
+                conditions = [Recipe.name == t for t in tag]
                 recipes = self.session.query(Recipe).join(Classify).join(Category).filter(or_(*conditions)).all()
+                
+        else:
+            print("else")
+            recipes = self.session.query(Recipe).join(Classify).join(Category).all()
         return recipes
 
             
