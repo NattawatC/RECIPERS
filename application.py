@@ -41,16 +41,19 @@ class Application(QMainWindow):
 
         #Vega------------------------------------
     def passwordIsValid(self):
-        if self.AuthController.isRegisterValid: 
+        if self.AuthController.isRegisterValid == True: 
             self.AuthController.RegisterView.start_button.clicked.connect(self.handleRegister)
         #Vega------------------------------------
 
-    def handleRegister(self):
+    def returnToAuth(self):
         self.AuthController.handleRegister()
         self.stack.setCurrentIndex(0)
 
     def NavigateToRegister(self):
         self.stack.setCurrentIndex(1)
+    
+    def NavigateToAuth(self):
+        self.stack.setCurrentIndex(0)
 
     def closeEvent(self, event):
         if self.AuthController.getCurrentUser() is not None:
@@ -68,7 +71,6 @@ class Application(QMainWindow):
 
     def NavigateToDetail(self):
         self.stack.setCurrentIndex(3)
-
 
     # def initialize_page(self) -> None:
     #     "set up method for user."
