@@ -1,3 +1,5 @@
+import time
+
 from sqlalchemy import Column, Integer, String, ForeignKey, func, Boolean, Enum, select, or_, and_
 from sqlalchemy.orm import declarative_base, sessionmaker, Mapped, mapped_column, relationship, backref
 from config import ENGINE as engine
@@ -206,73 +208,71 @@ class RecipeModel:
         addedCount = self.session.query(AddedRecipes).filter_by(user_id=userId).count()
         return addedCount
 
-    def createRecipe(self, recipeInfo):
-        try:
-            recipeId = self.session.query(func.max(Recipe.id)).scalar() + 1
+    def createRecipe(self, recipeInfo, userId):
+        recipeId = self.session.query(func.max(Recipe.id)).scalar() + 1
 
-            #Add new recipe
-            recipe = Recipe(id=recipeId,
-                            name=recipeInfo['detail']['name'],
-                            duration_minute=recipeInfo['detail']['duration_minute'],
-                            serving=recipeInfo['detail']['serving'],
-                            image=recipeInfo['detail']['image'])
+        addedRecipe = AddedRecipes(user_id= userId , recipe_id = recipeId ,add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
+        self.session.add(addedRecipe)
 
-            self.session.add(recipe)
+        #Add new recipe
+        recipe = Recipe(id=recipeId,
+                        name=recipeInfo['detail']['name'],
+                        duration_minute=recipeInfo['detail']['duration_minute'],
+                        serving=recipeInfo['detail']['serving'],
+                        calories=recipeInfo['detail']['calories'],
+                        image=recipeInfo['detail']['image'])
 
-            #Add ingredients
-            for i in range(len(recipeInfo['ingredients'])):
-                ingredientId = self.session.query(func.max(Ingredient.id)).scalar() + 1
-                ingredient = Ingredient(id= ingredientId,
-                                        recipe_id=recipeId,
-                                        name=recipeInfo['ingredients'][i][0],
-                                        amount=recipeInfo['ingredients'][i][1],
-                                        unit=recipeInfo['ingredients'][i][2])
-                self.session.add(ingredient)
+        self.session.add(recipe)
 
-            #Add instructions
-            for i in range(len(recipeInfo['instructions'])):
-                instructionId = self.session.query(func.max(Instruction.id)).scalar() + 1
-                instruction = Instruction(id=instructionId,
-                                          recipe_id=recipeId,
-                                          step=recipeInfo['instructions'][i][0],
-                                          detail=recipeInfo['instructions'][i][1])
-                self.session.add(instruction)
+        #Add ingredients
+        for i in range(len(recipeInfo['ingredients'])):
+            ingredientId = self.session.query(func.max(Ingredient.id)).scalar() + 1
+            ingredient = Ingredient(id= ingredientId,
+                                    recipe_id=recipeId,
+                                    name=recipeInfo['ingredients'][i][0],
+                                    amount=recipeInfo['ingredients'][i][1],
+                                    unit=recipeInfo['ingredients'][i][2])
+            self.session.add(ingredient)
 
-            #Add categories
-            for i in range(len(recipeInfo['categories'])):
-                c = str(recipeInfo['categories'][i]).lower()
-                category = self.session.query(Category).filter_by(name=c).first()
-                category_type = 'other'
-                if category is not None:
-                    if category.category_id in [5, 7, 4, 15, 11]:
-                        category_type = 'meal'
-                    elif category.category_id  in [1, 2, 9, 10, 14, 16, 18, 20, 21]:
-                        category_type = 'cuisine'
-                    elif category.category_id in [3, 12, 13, 19, 22, 23]:
-                        category_type = 'course'
-                    elif category.category_id in [6, 8, 17]:
-                        category_type = 'condiment'
-                    elif category.category_id in [24, 25]:
-                        category_type = 'beverage'
-                    elif category.category_id in [26]:
-                        category_type = 'dessert'
-                    classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
-                    self.session.add(classify)
+        #Add instructions
+        for i in range(len(recipeInfo['instructions'])):
+            instructionId = self.session.query(func.max(Instruction.id)).scalar() + 1
+            instruction = Instruction(id=instructionId,
+                                      recipe_id=recipeId,
+                                      step=recipeInfo['instructions'][i][0],
+                                      detail=recipeInfo['instructions'][i][1])
+            self.session.add(instruction)
 
-                else:
-                    categoryId = self.session.query(Category).count() + 1
-                    category = Category(name=recipeInfo['categories'][i], category_id=categoryId)
-                    self.session.add(category)
-                    classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
-                    self.session.add(classify)
+        #Add categories
+        for i in range(len(recipeInfo['categories'])):
+            c = str(recipeInfo['categories'][i]).lower()
+            category = self.session.query(Category).filter_by(name=c).first()
+            category_type = 'other'
+            if category is not None:
+                if category.category_id in [5, 7, 4, 15, 11]:
+                    category_type = 'meal'
+                elif category.category_id  in [1, 2, 9, 10, 14, 16, 18, 20, 21]:
+                    category_type = 'cuisine'
+                elif category.category_id in [3, 12, 13, 19, 22, 23]:
+                    category_type = 'course'
+                elif category.category_id in [6, 8, 17]:
+                    category_type = 'condiment'
+                elif category.category_id in [U24, 25]:
+                    category_type = 'beverage'
+                elif category.category_id in [26]:
+                    category_type = 'dessert'
+                classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
+                self.session.add(classify)
 
+            else:
+                categoryId = self.session.query(Category).count() + 1
+                category = Category(name=recipeInfo['categories'][i], category_id=categoryId)
+                self.session.add(category)
+                classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
+                self.session.add(classify)
+        self.session.commit()
 
-            # self.session.flush()
-            return recipeId
-        except Exception as e:
-            self.session.rollback()
-            print(e)
-            return None
+        return recipeId
 
     def deleteRecipe(self, RecipeId):
         try:
@@ -299,12 +299,12 @@ class RecipeModel:
             self.session.delete(recipe)
 
             self.session.commit()
-            return True
+            return RecipeId
 
         except Exception as e:
             self.session.rollback()
             print(e)
-            return False
+            return None
 
     def getCreatedRecipeTime(self, userId):
         addedRecipeTime = self.session.query(AddedRecipes).filter_by(user_id=userId).all()

@@ -370,21 +370,21 @@ class RecipeController:
     #CreateView
     def handleCreateRecipe(self):
         recipeInfo = self.CreateView.recipeSubmitted()
-
         try:
+            print(recipeInfo)
             if recipeInfo is not None and recipeInfo["detail"]["image"] == "":
-                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
-            recipeId = self.RecipeModel.createRecipe(recipeInfo)
-            self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
-            # Add recipe to AddedRecipes
-            addedRecipe = AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
-            self.RecipeModel.session.add(addedRecipe)
-            self.RecipeModel.session.commit()
-            self.CreateView.clearForm()
+                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/' \
+                                                'id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-' \
+                                                'เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-' \
+                                                'ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efw' \
+                                                'wnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
 
+            self.RecipeModel.createRecipe(recipeInfo, self.User.id)
+            self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
             self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-        except sqlalchemy.exc.InvalidRequestError:
-            self.CreateView.createMessageBox("inform", "Recipe created failed", QMessageBox.Information)
+            self.CreateView.clearForm()
+        except Exception as e:
+            raise e
 
 
     def handleDeleteRecipe(self, recipeId):

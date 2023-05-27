@@ -166,30 +166,21 @@ class CreateView(NavigationBar):
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
         self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.submit_btn.clicked.connect(self.recipeSubmitted)
+        self.submit_btn.clicked.connect(self.RecipeController.handleCreateRecipe)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
     def recipeSubmitted(self):
         try:
-
             data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
               "ingredients": self.getIngredients()
                 , "instructions": self.getInstructions()}
-            if data['detail']['image'] == '':
-                data['detail'][
-                'image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
-
-            try:
-                self.RecipeController.handleRecipeCreation(data)
-
-            except Exception as e:
-                self.RecipeController.handleRecipeCreationError(e)
-
-        except AttributeError as e:
-            self.RecipeController.handleRecipeCreationError("Please fill out all fields")
+            return data
         except Exception as e:
-           self.RecipeController.handleRecipeCreationError(e)
+            self.createMessageBox("Error",str(e), QMessageBox.Critical)
+
+
+
 
 
     def getRecipeDetail(self) -> Exception | dict[str, str]:
@@ -284,7 +275,6 @@ class CreateView(NavigationBar):
             categories = [self.create_category_input.text()]
         return categories
 
-    @property
     def getIngredients(self) -> list:
         ingredients = []
 
@@ -313,10 +303,7 @@ class CreateView(NavigationBar):
                 raise Exception("Please enter ingredients in the format: 'name amount unit'")
 
         else:
-
-            lines = [input_text.split(" ")]
-            parts = lines[0]
-
+            parts = input_text.split(" ")
             if len(parts) == 3 or (len(parts) == 2 and parts[2] == ""):
                 ingredients.append(parts)
 
