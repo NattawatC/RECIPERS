@@ -1,3 +1,4 @@
+import time
 from functools import partial
 from controller.AuthController import AuthController
 from model.RecipeModel import RecipeModel, Recipe
@@ -20,6 +21,7 @@ class RecipeController:
         self.FavoriteView = self.initFavoriteView()
         self.DetailView = DetailView(self)
         self.CreateView = CreateView(self)
+        # self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.views = [self.RecipeView, self.FavoriteView, self.CreateView, self.DetailView]
 
 
@@ -110,7 +112,7 @@ class RecipeController:
             card.card_detail_btn.clicked.connect(partial(self.handleNavigateToDetail, card.recipe.id))
 
     def initializeCard(self) -> list:
-        recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
+        # recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
         recipes = self.RecipeModel.getAllRecipes()
         # recipes = [self.RecipeModel.getRecipeById(16), self.RecipeModel.getRecipeById(716342), self.RecipeModel.getRecipeById(662744), self.RecipeModel.getRecipeById(19), self.RecipeModel.getRecipeById(48)]
         cards = self.createCards(recipes)
@@ -163,7 +165,7 @@ class RecipeController:
                 tag = ("breakfast", "vegetable")
             elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
                 tag = ("breakfast", "1","2","3","4")
-            elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+            elif self.RecipeView.morethan5_checkbox.isChecked():
                 tag = ("breakfast", 5)
         elif self.RecipeView.lunch_checkbox.isChecked() == True:
             tag = "lunch"
@@ -225,10 +227,6 @@ class RecipeController:
         recipes = self.RecipeModel.filterRecipe(tag)
         cards = self.createCards(recipes)
         self.RecipeView.setCards(cards)
-        
-        
-        
-        
 
     #----------------------------------------------------
 
@@ -276,16 +274,24 @@ class RecipeController:
 
     def handleCreateRecipe(self):
         recipeInfo = self.CreateView.recipeSubmitted()
-        print(recipeInfo)
 
-        if self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
-            self.CreateView.showWarningMessage("Recipe name already exists")
+        if recipeInfo is not None:
+            if self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
+                self.CreateView.showWarningMessage("Recipe name already exists")
 
-        else:
-            # self.RecipeModel.createRecipe(recipeInfo, self.User.id)
-            self.CreateView.showMessageBox("Recipe created successfully")
-            self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-            self.CreateView.clearForm()
+            else:
+                try:
+                    recipeId = self.RecipeModel.createRecipe(recipeInfo)
+                    self.CreateView.showMessageBox("Recipe created successfully")
+                    self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+
+                    # Add recipe to AddedRecipes
+                    addedRecipe = self.RecipeModel.AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,date_added=time.strftime('%Y-%m-%d %H:%M:%S'))
+                    self.RecipeModel.session.add(addedRecipe)
+                    self.RecipeModel.session.commit()
+                    self.CreateView.clearForm()
+                except:
+                    self.CreateView.showWarningMessage("Error creating recipe")
 
 
     def handleDeleteRecipe(self, recipeId):

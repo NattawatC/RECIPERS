@@ -182,20 +182,19 @@ class RecipeModel:
         addedCount = self.session.query(AddedRecipes).filter_by(user_id=userId).count()
         return addedCount
 
-    def createRecipe(self, recipeInfo, userId):
+    def createRecipe(self, recipeInfo):
         try:
             recipeId = self.session.query(func.max(Recipe.id)).scalar() + 1
 
-            #Add recipe to AddedRecipes
-            addedRecipe = AddedRecipes(user_id=userId, recipe_id=recipeId)
-            self.session.add(addedRecipe)
-
             #Add new recipe
-            recipe = Recipe(id=recipeId,
+            if recipeInfo['detail']['image'] == '':
+                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
+            else:
+                recipe = Recipe(id=recipeId,
                             name=recipeInfo['detail']['name'],
                             duration_minute=recipeInfo['detail']['duration_minute'],
                             serving=recipeInfo['detail']['serving'],
-                            image='null')
+                            image=recipeInfo['detail']['image'])
 
             self.session.add(recipe)
 
@@ -246,8 +245,10 @@ class RecipeModel:
                     classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
                     self.session.add(classify)
 
+
             # self.session.flush()
             self.session.commit()
+            return recipeId
         except Exception as e:
             self.session.rollback()
             print(e)
@@ -262,7 +263,6 @@ class RecipeModel:
             ingredient = self.session.query(Ingredient).filter_by(recipe_id=RecipeId).all()
             for i in ingredient:
                 self.session.delete(i)
-
 
             instruction = self.session.query(Instruction).filter_by(recipe_id=RecipeId).all()
             for i in instruction:

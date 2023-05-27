@@ -12,7 +12,6 @@ class AuthController:
         self.AuthView = AuthView(self)
         self.RegisterView = RegisterView(self)
         self.RegisterView.start_button.clicked.connect(self.handleRegister)
-        # self.handleRegister()
         self.__currentUser = None
         self.isLoginSuccess = False
         self.isRegisterValid = False
@@ -42,39 +41,34 @@ class AuthController:
             self.AuthView.showError("Invalid username or password")
 
     def handleRegister(self):
-        self.checkUsernameValid = self.checkUsername(self.RegisterView.lineEdit_regUsername.text())
-        self.checkFnameValid = self.checkFname(self.RegisterView.lineEdit_fname.text())
-        self.checkLnameValid = self.checkLname(self.RegisterView.lineEdit_lname.text())
-        self.checkRegPasswordValid = self.checkPassword(self.RegisterView.lineEdit_regPassword.text())
-        self.checkConfirmPasswordValid = self.checkConfirmPassword(self.RegisterView.lineEdit_regConPassword.text(), self.RegisterView.lineEdit_regPassword.text())
-        if self.checkUsernameValid == True and self.checkFnameValid == True and self.checkLnameValid == True and self.checkRegPasswordValid == True and self.checkConfirmPasswordValid == True:
+        checkUsernameValid = self.checkUsername(self.RegisterView.lineEdit_regUsername.text())
+        checkFirstnameValid = self.checkFname(self.RegisterView.lineEdit_fname.text())
+        checkLastnameValid = self.checkLname(self.RegisterView.lineEdit_lname.text())
+        checkRegPasswordValid = self.checkPassword(self.RegisterView.lineEdit_regPassword.text())
+        checkConfirmPasswordValid = self.checkConfirmPassword(self.RegisterView.lineEdit_regConPassword.text(), self.RegisterView.lineEdit_regPassword.text())
+        if checkUsernameValid == True and checkFirstnameValid == True and checkLastnameValid == True and checkRegPasswordValid == True and checkConfirmPasswordValid == True:
             self.RegisterView.start_button.clicked.connect(self.mainWindow.returnToAuth)
         else:
-            self.setFocus()
+            self.setFocus(checkUsernameValid, checkFirstnameValid, checkLastnameValid, checkRegPasswordValid, checkConfirmPasswordValid)
 
-    def setFocus(self):
-        if self.checkUsernameValid == False:
+    def setFocus(self, checkUsernameValid, checkFirstnameValid, checkLastnameValid, checkRegPasswordValid, checkConfirmPasswordValid):
+        if not checkUsernameValid:
             self.RegisterView.lineEdit_regUsername.setFocus()
             self.RegisterView.lineEdit_regUsername.clear()
             self.RegisterView.showUserError("Username is already have.")
-            self.checkUsernameValid = True
-        if self.checkFnameValid == False:
-            self.checkFnameValid = True
+        if not checkFirstnameValid:
             self.RegisterView.lineEdit_fname.setFocus()
             self.RegisterView.lineEdit_fname.clear()
             self.RegisterView.showFnameError("Invalid First name.")
-        if self.checkLnameValid == False:
-            self.checkLnameValid = True
+        if not checkLastnameValid:
             self.RegisterView.lineEdit_lname.setFocus()
             self.RegisterView.lineEdit_lname.clear()
             self.RegisterView.showLnameError("Invalid Last name.")
-        if self.checkRegPasswordValid == False:
-            self.checkRegPasswordValid = True
+        if not checkRegPasswordValid:
             self.checkPassword(self.RegisterView.lineEdit_regPassword.text())
             self.RegisterView.lineEdit_regPassword.setFocus()
             self.RegisterView.lineEdit_regPassword.clear()
-        if self.checkConfirmPasswordValid == False:
-            self.checkConfirmPasswordValid = True
+        if not checkConfirmPasswordValid:
             self.RegisterView.lineEdit_regConPassword.setFocus()
             self.RegisterView.lineEdit_regConPassword.clear()
             self.RegisterView.showConPasswordError("Password is not match.")

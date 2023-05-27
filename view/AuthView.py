@@ -1,8 +1,6 @@
-import sys
-
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QHBoxLayout, QStackedWidget
 from PySide6.QtGui import QPixmap
-from PySide6.QtCore import QRect, Signal, QEvent, Qt
+from PySide6.QtCore import QRect, QEvent, Qt
 from static.theme import Theme
 
 

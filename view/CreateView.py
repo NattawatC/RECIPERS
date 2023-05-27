@@ -1,8 +1,8 @@
 import sys
-from typing import Dict, List
+from xml import etree
 
-from PySide6.QtCore import QRect, QCoreApplication
-from PySide6.QtGui import QPixmap, QFont, Qt, QCursor, QTextOption, QIntValidator
+from PySide6.QtCore import QRect
+from PySide6.QtGui import QPixmap, Qt, QCursor, QIntValidator
 from PySide6.QtWidgets import *
 
 from static.theme import Theme
@@ -31,8 +31,11 @@ class CreateView(NavigationBar):
         self.create_ing_input = QTextEdit(self.create_frame)
         self.create_dir = QLabel("Directions", self.create_frame)
         self.create_dir_input = QTextEdit(self.create_frame)
+        self.create_URL = QLabel("Image / URL", self.create_frame)
+        self.create_URL_input = QLineEdit(self.create_frame)
 
         self.submit_btn = QPushButton("Submit", self)
+
         
        
         self.decorateCreateView()
@@ -145,12 +148,11 @@ class CreateView(NavigationBar):
         self.create_dir_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.create_dir_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.create_URL = QLabel("Image / URL", self.create_frame)
+
         self.create_URL.setObjectName("default_label")
         self.create_URL.setFont(Theme.CHILLAX_REGULAR_20)
         self.create_URL.setGeometry(QRect(564, 345, 164, 35))
 
-        self.create_URL_input = QLineEdit(self.create_frame)
         self.create_URL_input.setObjectName("create_bar")
         self.create_URL_input.setPlaceholderText("Image / URL")
         self.create_URL_input.setFont(Theme.CHILLAX_REGULAR_16)
@@ -169,37 +171,65 @@ class CreateView(NavigationBar):
         try:
             data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
                   "ingredients": self.getIngredients, "instructions": self.getInstructions()}
+            return data
+
+        except AttributeError:
+            self.showWarningMessage("Please fill out all fields")
 
         except Exception as e:
             self.showWarningMessage(str(e))
             return
-        return data
+
 
     def getRecipeDetail(self) -> Exception | dict[str, str]:
         if self.validateInput(self.create_menu_name_input):
             self.create_menu_name_input.setFocus()
-            self.create_menu_name_input.bor
             self.create_menu_name_input.clear()
             raise Exception("Please enter a name")
 
         for i in range(len(self.create_menu_name_input.text())):
             if self.create_menu_name_input.text()[i].isdigit():
+                self.create_menu_name_input.setFocus()
+                self.create_menu_name_input.clear()
                 raise Exception("Please enter a valid name")
 
         if self.validateInput(self.create_cal_input):
+            self.create_menu_name_input.setFocus()
+            self.create_menu_name_input.clear()
             raise Exception("Please enter a calorie amount")
 
         if self.validateInput(self.create_cook_time_input):
+            self.create_menu_name_input.setFocus()
+            self.create_menu_name_input.clear()
             raise Exception("Please enter a cooking time")
 
         if self.validateInput(self.create_serving_input):
+            self.create_menu_name_input.setFocus()
+            self.create_menu_name_input.clear()
             raise Exception("Please enter a serving amount")
 
+        if not self.isHTML(self.create_URL_input.text()):
+            self.create_URL_input.setFocus()
+            self.create_URL_input.clear()
+            raise Exception("Please enter a valid URL")
+
+
         detail = {"name": self.create_menu_name_input.text(), "calories": self.create_cal_input.text(),
-                  "duration_minute": self.create_cook_time_input.text(), "serving": self.create_serving_input.text()}
+                  "duration_minute": self.create_cook_time_input.text(), "serving": self.create_serving_input.text(),
+                  "image": self.create_URL_input.text().strip()}
 
         return detail
 
+    @staticmethod
+    def isHTML(text):
+        if text is None:
+            return True
+        try:
+            parser = etree.HTMLParser()
+            etree.HTML(text, parser)
+            return True
+        except Exception:
+            return False
 
     @staticmethod
     def validateInput(inputField):
@@ -229,6 +259,7 @@ class CreateView(NavigationBar):
     def getCategories(self) -> list[str] | None:
 
         if self.validateInput(self.create_category_input):
+            self.create_category_input.setFocus()
             raise Exception("Please enter a category")
 
         if "," in self.create_category_input.text():
@@ -254,12 +285,15 @@ class CreateView(NavigationBar):
                         ingredients.append(parts)
 
                     elif parts[1].isnumeric():
+                        self.create_ing_input.setFocus()
                         raise Exception("Amount must be a number")
 
                     else:
+                        self.create_ing_input.setFocus()
                         raise Exception("Please enter ingredients in the format: 'name amount unit'")
 
             except Exception:
+                self.create_ing_input.setFocus()
                 raise Exception("Please enter ingredients in the format: 'name amount unit'")
 
         else:
@@ -271,9 +305,11 @@ class CreateView(NavigationBar):
                 ingredients.append(parts)
 
             elif parts[1].isnumeric():
+                self.create_ing_input.setFocus()
                 raise Exception("Amount must be a number")
 
             else:
+                self.create_ing_input.setFocus()
                 raise Exception("Please enter ingredients in the format: 'name amount unit'")
 
             return ingredients
@@ -282,11 +318,20 @@ class CreateView(NavigationBar):
 
     def getInstructions(self) -> list:
         directions = []
-        if self.create_dir_input.toPlainText() != "":
-            each = self.create_dir_input.toPlainText().split("\n")
-            for e in each:
-                if e != "" and "." in e and e[0] in "1234567890":
-                    directions.append(e.split(".",1))
+        try:
+            if self.create_dir_input.toPlainText() != "":
+                if "\n" not in self.create_dir_input.toPlainText():
+                    each = [self.create_dir_input.toPlainText()]
+                    directions.append(each[0].split(".",1))
+                else:
+                    each = self.create_dir_input.toPlainText().split("\n")
+                    for e in each:
+                        if e != "" and "." in e and e[0] in "1234567890":
+                            directions.append(e.split(".",1))
+        except Exception:
+            self.create_dir_input.setFocus()
+            raise Exception("Please enter directions in the format: 'number. direction'")
+
         return directions
 
     def clearForm(self):
@@ -299,6 +344,8 @@ class CreateView(NavigationBar):
         self.create_dir_input.clear()
         self.create_URL_input.clear()
 
+    def setCreateCount(self, count):
+        self.create_num.setText(str(count))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
