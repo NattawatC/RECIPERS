@@ -8,6 +8,7 @@ from view.CreateView import *
 from view.RecipeCard import *
 from view.DetailView import *
 
+
 class RecipeController:
     def __init__(self, MainWindow,  imageCache, Controller = None,):
         self.imageCache = imageCache
@@ -134,11 +135,38 @@ class RecipeController:
         self.connectFavoriteSignals(cards)
         self.RecipeView.setCards(cards)
         
-    # def handleFilterRecipe(self,tag):
-    #     recipes = self.RecipeModel.filterRecipe(tag)
-    #     cards = self.createCards(recipes)
-    #     self.RecipeView.setCards(cards)
-        #not finished
+    def handleFilterRecipe(self):
+        
+        tag = None
+        if self.RecipeView.breakfast_checkbox.isChecked() == True:
+            tag = "breakfast"
+        elif self.RecipeView.lunch_checkbox.isChecked() == True:
+            tag = "lunch"
+        # elif self.RecipeView.dinner_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.meat_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.seafood_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.vegetable_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.lessthan5_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.morethan5_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.breakfast_checkbox.isChecked() and self.RecipeView.lunch_checkbox.isChecked() == True:
+        #     tag = ["breakfast", "lunch"]
+        # elif self.RecipeView.breakfast_checkbox.isChecked() and self.RecipeView.dinner_checkbox.isChecked() == True:
+        #     pass
+        # elif self.RecipeView.lunch_checkbox.isChecked() and self.RecipeView.dinner_checkbox.isChecked() == True:
+        #     pass
+        
+        recipes = self.RecipeModel.filterRecipe(tag)
+        cards = self.createCards(recipes)
+        self.RecipeView.setCards(cards)
+        
+        
+        
         
 
     #----------------------------------------------------
