@@ -18,9 +18,7 @@ class RegisterView(QWidget):
         self.text_label2 = QLabel("Be a Part of Our Team!", self)
         self.start_button = QPushButton("Start!", self)
 
-
         self.decorateRegView()
-        self.lineEdit_regUsername.textChanged.connect(self.AuthController.checkUsername)
 
     def decorateRegView(self):
         self.userError = QLabel(self)
@@ -132,7 +130,6 @@ class RegisterView(QWidget):
 
         self.setStyleSheet(Theme.get_stylesheet())
 
-
     def eventFilter(self, obj, event):
         if obj == self.lineEdit_regUsername and event.type() == QEvent.FocusIn:
             self.lineEdit_regUsername.setStyleSheet("border: 2px solid #D9A32B;")
@@ -206,21 +203,25 @@ class RegisterView(QWidget):
     def get_regConPassword(self) -> str:
         return self.lineEdit_regConPassword.text()
 
-    def showError(self, message: str) -> None:
-        # self.userError.setText(message)
-        # self.userError.show()
+    def showUserError(self, message: str) -> None:
+        self.userError.setText(message)
+        self.userError.show()
 
-        # self.fnameError.setText(message)
-        # self.fnameError.show()
+    def showFnameError(self, message: str) -> None:
+        self.fnameError.setText(message)
+        self.fnameError.show()
 
-        # self.lnameError.setText(message)
-        # self.lnameError.show()
+    def showLnameError(self, message: str) -> None:
+        self.lnameError.setText(message)
+        self.lnameError.show()
 
-        # self.confirmPasswordError.setText(message)
-        # self.confirmPasswordError.show()
-
+    def showPasswordError(self, message: str) -> None:
         self.passwordError.setText(message)
         self.passwordError.show()
+
+    def showConPasswordError(self, message: str) -> None:
+        self.confirmPasswordError.setText(message)
+        self.confirmPasswordError.show()
 
     def reset(self) -> None:
         self.userError.hide()
@@ -228,7 +229,6 @@ class RegisterView(QWidget):
         self.lineEdit_regPassword.clear()
         self.lineEdit_regConPassword.clear()
         self.lineEdit_regUsername.setFocus()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
