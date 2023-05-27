@@ -266,6 +266,7 @@ class RecipeModel:
                     classify = Classify(recipe_id=recipeId, category_id=category.category_id, category_type=category_type)
                     self.session.add(classify)
 
+
             # self.session.flush()
             return recipeId
         except Exception as e:

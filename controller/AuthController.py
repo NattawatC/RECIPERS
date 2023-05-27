@@ -128,7 +128,7 @@ class AuthController:
         self.__currentUser = user
 
     def getCurrentUserLog(self):
-        self.__currentUserLog = self.AuthModel.getUserLogTime(self.__currentUser.id)
+        self.__currentUserLog = self.AuthModel.getUserLogTime(time.strftime('%Y-%m-%d %H:%M:%S'))
         return self.__currentUserLog
 
     def handleNavigateToRegister(self):
