@@ -17,6 +17,7 @@ class RecipeController:
     def __init__(self, MainWindow,  imageCache, Controller = None,):
         self.imageCache = imageCache
         self.AuthController = Controller
+        self.UserLogIn = self.AuthController.getCurrentUserLog()
         self.User = self.AuthController.getCurrentUser()
         self.RecipeModel = RecipeModel()
         self.mainWindow = MainWindow
@@ -368,16 +369,23 @@ class RecipeController:
 
     #CreateView
     def handleCreateRecipe(self):
-        addedRecipe = AddedRecipes(user_id=self.User.id, recipe_id=recipeId,
-                                   add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
-        self.RecipeModel.session.add(addedRecipe)
-        self.RecipeModel.session.commit()
-        self.CreateView.clearForm()
-        self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-        self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
+        recipeInfo = self.CreateView.recipeSubmitted()
 
-    def handleRecipeCreationError(self, error):
-        self.CreateView.createMessageBox("inform", f"Recipe creation error: {error}", QMessageBox.Information)
+        try:
+            if recipeInfo is not None and recipeInfo["detail"]["image"] == "":
+                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
+            recipeId = self.RecipeModel.createRecipe(recipeInfo)
+            self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
+            # Add recipe to AddedRecipes
+            addedRecipe = AddedRecipes(user_id=self.User.id, recipe_id = recipeId ,add_timestamp=time.strftime('%Y-%m-%d %H:%M:%S'))
+            self.RecipeModel.session.add(addedRecipe)
+            self.RecipeModel.session.commit()
+            self.CreateView.clearForm()
+
+            self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
+        except sqlalchemy.exc.InvalidRequestError:
+            self.CreateView.createMessageBox("inform", "Recipe created failed", QMessageBox.Information)
+
 
     def handleDeleteRecipe(self, recipeId):
         box = self.RecipeView.createMessageBoxWithInput("inform", "Are you sure to delete?", QMessageBox.Warning)
@@ -400,6 +408,7 @@ class RecipeController:
     def handleNavigateToRecipe(self):
         self.RecipeView.setCards(self.initializeCard())
         self.RecipeView.setFavoriteCount(self.getFavoriteCount())
+        self.RecipeView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
         self.mainWindow.NavigateToRecipe()
 
     def handleNavigateToFavorite(self):
@@ -413,7 +422,7 @@ class RecipeController:
         return self.User.username
     
     def getUserLoginTime(self):
-        return self.AuthController.AuthModel.getUserLogTime(self.User.id)
+        return self.UserLogIn
 
     def getUserCreateTime(self):
         return self.RecipeModel.getCreatedRecipeTime(self.User.id)
