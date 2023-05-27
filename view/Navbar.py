@@ -117,20 +117,20 @@ class NavigationBar(QWidget):
 
     def setUserMessageBox(self):
         create_time = self.RecipeController.getUserCreateTime()
+        create_time = create_time[-3:]
         recipe_names = []
-        for item in enumerate(create_time):
-            recipe_names.append(self.RecipeController.getRecipeName(item[1].recipe_id))
-
+        for item in create_time:
+            recipe_names.append(self.RecipeController.getRecipeName(item.recipe_id))
         create_timestamps = []
         if create_time is not None:
             if len(create_time) > 3:
                 create_time = create_time[-3:]
-            for i, item in enumerate(create_time[:3]):
+            for i, item in enumerate(create_time):
                 if i > 0:
                     create_timestamps.append(
-                        " " * 23 + "Recipe name: " + recipe_names[i] + " - " + str(item.add_timestamp))
+                        " " * 31  + recipe_names[i] + " - " + str(item.add_timestamp))
                 else:
-                    create_timestamps.append(str(item.add_timestamp))
+                    create_timestamps.append(recipe_names[i] + " - " + str(item.add_timestamp))
 
         login_time = self.RecipeController.getUserLoginTime()
         if login_time is not None:
