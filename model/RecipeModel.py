@@ -272,7 +272,7 @@ class RecipeModel:
         except Exception as e:
             self.session.rollback()
             print(e)
-            return False
+            return None
 
     def deleteRecipe(self, RecipeId):
         try:
@@ -306,6 +306,7 @@ class RecipeModel:
             print(e)
             return False
 
-
-
+    def getCreatedRecipeTime(self, userId):
+        addedRecipeTime = self.session.query(AddedRecipes).filter_by(user_id=userId).all()
+        return addedRecipeTime
 

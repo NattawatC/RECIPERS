@@ -7,6 +7,9 @@ from PySide6.QtWidgets import *
 
 from static.theme import Theme
 from view.Navbar import NavigationBar
+
+
+
 class CreateView(NavigationBar):
     def __init__(self, Controller = None):
         super().__init__(Controller)
@@ -163,19 +166,30 @@ class CreateView(NavigationBar):
         self.submit_btn.setGeometry(QRect(1118, 647, 98, 27))
         self.submit_btn.setFont(Theme.CHILLAX_REGULAR_20)
         self.submit_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.submit_btn.clicked.connect(self.RecipeController.handleCreateRecipe)
+        self.submit_btn.clicked.connect(self.recipeSubmitted)
 
         self.setStyleSheet(Theme.get_stylesheet())
 
     def recipeSubmitted(self):
         try:
-            data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
-                  "ingredients": self.getIngredients, "instructions": self.getInstructions()}
-            return data
 
+            data = {"detail": self.getRecipeDetail(), "categories": self.getCategories(),
+              "ingredients": self.getIngredients()
+                , "instructions": self.getInstructions()}
+            if data['detail']['image'] == '':
+                data['detail'][
+                'image'] = 'https://media.istockphoto.com/id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efwwnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
+
+            try:
+                self.RecipeController.handleRecipeCreation(data)
+
+            except Exception as e:
+                self.RecipeController.handleRecipeCreationError(e)
+
+        except AttributeError as e:
+            self.RecipeController.handleRecipeCreationError("Please fill out all fields")
         except Exception as e:
-            self.createMessageBox("Warning", str(e), QMessageBox.Critical)
-            return
+           self.RecipeController.handleRecipeCreationError(e)
 
 
     def getRecipeDetail(self) -> Exception | dict[str, str]:
@@ -191,18 +205,18 @@ class CreateView(NavigationBar):
                 raise Exception("Please enter a valid name")
 
         if self.validateInput(self.create_cal_input):
-            self.create_menu_name_input.setFocus()
-            self.create_menu_name_input.clear()
+            self.create_cal_input.setFocus()
+            self.create_cal_input.clear()
             raise Exception("Please enter a calorie amount")
 
         if self.validateInput(self.create_cook_time_input):
-            self.create_menu_name_input.setFocus()
-            self.create_menu_name_input.clear()
+            self.create_cook_time_input.setFocus()
+            self.create_cooke_time_input.clear()
             raise Exception("Please enter a cooking time")
 
         if self.validateInput(self.create_serving_input):
-            self.create_menu_name_input.setFocus()
-            self.create_menu_name_input.clear()
+            self.create_serving_input.setFocus()
+            self.create_serving_input.clear()
             raise Exception("Please enter a serving amount")
 
         if not self.isHTML(self.create_URL_input.text()):
@@ -348,6 +362,7 @@ class CreateView(NavigationBar):
 
     def setCreateCount(self, count):
         self.create_num.setText(str(count))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
