@@ -375,11 +375,7 @@ class RecipeController:
                 self.CreateView.showAlert("Recipe already exists")
 
             elif  recipeInfo["detail"]["image"] == "":
-                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/' \
-                                            'id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-' \
-                                            'เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-' \
-                                            'ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efw' \
-                                            'wnwWCfCU9tFvRpfWhCcp9SDRw_z7Pl0='
+                recipeInfo['detail']['image'] = 'https://bit.ly/3oAddoE'
             self.RecipeModel.createRecipe(recipeInfo, self.User.id)
             self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
             self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))

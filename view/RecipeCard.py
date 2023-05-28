@@ -1,13 +1,12 @@
 import io
 
-import numpy as np
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw
 from PIL.ImageQt import ImageQt, QImage
 from PySide6.QtCore import Signal, QRect, Qt, QPoint, QMimeData, QSize
 from PySide6.QtGui import QCursor, QPixmap, QIcon, QPainter, QDrag, QMouseEvent
 from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QLabel
-import random
+from pathlib import Path
 
 from static.theme import Theme
 
@@ -22,7 +21,7 @@ class RecipeCard(QWidget):
         self.imageCache = imageCache
         self.card_frame = QFrame(self)
         self.card_img = QLabel(self.card_frame)
-        # self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
+        self.loadImageFromUrl(recipe.image.strip(), self.recipe.id)
         self.card_name = QLabel(self.card_frame)
         self.card_serving = QLabel("Serving:", self.card_frame)
         self.card_serving_num = QLabel(str(self.recipe.serving), self.card_frame)
@@ -124,29 +123,40 @@ class RecipeCard(QWidget):
         self.isStarred = isFavorite
 
     def loadImageFromUrl(self, url, recipe_id = None):
+        path = Path('/Users/atip/Documents/RECIPERS/static/asset/temp/' + str(recipe_id) + '.jpg')
         if self.imageCache is not None and url in self.imageCache:
             pixmap = self.imageCache[url]
             self.card_img.setPixmap(pixmap)
 
+        elif path.exists():
+            pixmap = QPixmap(path)
+            self.card_img.setPixmap(pixmap)
+
         else:
             try:
-                request = requests.get(url)
-                nparr = np.frombuffer(request.content, np.uint8)
+
+                request = requests.get("https://bit.ly/3oAddoE")
                 # with io.BytesIO(request.content) as img_bytes:
                 # image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
                 # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                pil = Image.fromarray(image)
+                pil = Image.open(io.BytesIO(request.content))
                 # image = cv2.resize(image, (170, 170), interpolation=cv2.INTER_AREA)
                 image = pil.resize((170, 170), Image.ANTIALIAS)
+                # image.save(path, 'JPEG')
                 # image = Image.open(img_bytes)
                 # image = image.resize((170, 170), Image.ANTIALIAS)
+                # mask = Image.new("L", image.size, 0)
+                # draw = ImageDraw.Draw(mask)
+                # draw.rectangle([(0, 0), image.size], 20, fill=255)
+                # result = Image.composite(image, Image.new("RGB", image.size, "white"), mask)
                 pixmap = QPixmap.fromImage(ImageQt(image))
-
-                    # Cache the image for future use
+                # Cache the image for future use
                 self.imageCache[url] = pixmap
                 self.card_img.setPixmap(pixmap)
             except Exception as e:
-                print(recipe_id, "is not an image file")
+                print(e)
+                if 'https://bit.ly/3oAddoE' in self.imageCache:
+                    self.card_img.setPixmap(self.imageCache["https://bit.ly/3oAddoE"])
 
     def toggleStar(self):
         self.isStarred = not self.isStarred
