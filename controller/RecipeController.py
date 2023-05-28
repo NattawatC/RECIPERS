@@ -370,11 +370,12 @@ class RecipeController:
     #CreateView
     def handleCreateRecipe(self):
         recipeInfo = self.CreateView.recipeSubmitted()
-        if recipeInfo["detail"]["name"] == self.RecipeModel.getRecipeById(recipeInfo["detail"]["id"]).name:
-            self.CreateView.showAlert("Recipe already exists")
+        if recipeInfo is not None:
+            if recipeInfo["detail"]["name"] == self.RecipeModel.getRecipeByName(recipeInfo["detail"]["name"]):
+                self.CreateView.showAlert("Recipe already exists")
 
-        elif recipeInfo is not None and recipeInfo["detail"]["image"] == "":
-            recipeInfo['detail']['image'] = 'https://media.istockphoto.com/' \
+            elif  recipeInfo["detail"]["image"] == "":
+                recipeInfo['detail']['image'] = 'https://media.istockphoto.com/' \
                                             'id/1443601388/th/รูปถ่าย/อาหารอินเดียใต้นานาชนิด-' \
                                             'เนื้อแกะสมองมาซาลา-ไก่ตังดี-ไก่-reshmi-tikka-' \
                                             'ไก่คาราฮี-เนื้อเนฮาริ.jpg?s=612x612&w=0&k=20&c=jJsdVGAk5efw' \
@@ -384,11 +385,6 @@ class RecipeController:
             self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
             self.CreateView.clearForm()
 
-        elif recipeInfo is not None:
-            self.RecipeModel.createRecipe(recipeInfo, self.User.id)
-            self.CreateView.createMessageBox("inform", "Recipe created successfully", QMessageBox.Information)
-            self.CreateView.setCreateCount(self.RecipeModel.getAddedCount(self.User.id))
-            self.CreateView.clearForm()
 
 
     def handleDeleteRecipe(self, recipeId):
