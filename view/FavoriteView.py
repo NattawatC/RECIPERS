@@ -15,7 +15,7 @@ class FavoriteView(NavigationBar):
         self.total_s_frame = QFrame(self)
         self.save_logo = QLabel(self.total_s_frame)
         self.save_num = QLabel("1", self.total_s_frame)
-        self.save_label = QLabel("Total Saved", self.total_s_frame)
+        self.save_label = QLabel("Total Favorites", self.total_s_frame)
 
         self.decorateFavView()
         self.scrollArea = RecipeCardScrollArea(self.cards)

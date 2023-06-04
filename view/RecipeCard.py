@@ -123,10 +123,11 @@ class RecipeCard(QWidget):
         self.isStarred = isFavorite
 
     def loadImageFromUrl(self, url, recipe_id = None):
-        path = Path('/Users/atip/Documents/RECIPERS/static/asset/temp/' + str(recipe_id) + '.jpg')
+        path = Path('/Users/atip/Documents/GitHub/RECIPERS/static/asset/temp/' + str(recipe_id) + '.jpg')
         if self.imageCache is not None and url in self.imageCache:
             pixmap = self.imageCache[url]
             self.card_img.setPixmap(pixmap)
+
 
         elif path.exists():
             pixmap = QPixmap(path)

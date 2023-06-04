@@ -27,7 +27,7 @@ class RecipeView(NavigationBar):
         self.create_label = QLabel("Total Created", self.total_c_frame)
         self.total_s_frame = QFrame(self)
         self.save_logo = QLabel(self.total_s_frame)
-        self.save_label = QLabel("Total Saved", self.total_s_frame)
+        self.save_label = QLabel("Total Favorites", self.total_s_frame)
         self.save_num = QLabel("120", self.total_s_frame)
         self.RecipeCardScrollArea = RecipeCardScrollArea(self.cards)
         self.filter_Button = QToolButton(self)

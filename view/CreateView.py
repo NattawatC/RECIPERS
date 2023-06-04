@@ -1,10 +1,8 @@
 import sys
-from xml import etree
-
 from PySide6.QtCore import QRect
 from PySide6.QtGui import QPixmap, Qt, QCursor, QIntValidator
 from PySide6.QtWidgets import *
-
+import validators
 from static.theme import Theme
 from view.Navbar import NavigationBar
 
@@ -20,7 +18,7 @@ class CreateView(NavigationBar):
         self.create_num = QLabel("120", self.total_c_frame)
         self.create_label = QLabel("Total Created", self.total_c_frame)
         self.create_frame = QFrame(self)
-        self.create_menu_name = QLabel("Menu Name", self.create_frame)
+        self.create_menu_name = QLabel("Recipe Name", self.create_frame)
         self.create_menu_name_input = QLineEdit(self.create_frame)
         self.create_cal = QLabel("Calories", self.create_frame)
         self.create_cal_input = QLineEdit(self.create_frame)
@@ -210,7 +208,7 @@ class CreateView(NavigationBar):
             self.create_serving_input.clear()
             raise Exception("Please enter a serving amount")
 
-        if not self.isHTML(self.create_URL_input.text()):
+        if not self.isUrlValid(self.create_URL_input.text()):
             self.create_URL_input.setFocus()
             self.create_URL_input.clear()
             raise Exception("Please enter a valid URL")
@@ -223,13 +221,11 @@ class CreateView(NavigationBar):
         return detail
 
     @staticmethod
-    def isHTML(text):
+    def isUrlValid(text):
         if text == "":
             return True
         try:
-            parser = etree.HTMLParser()
-            etree.HTML(text, parser)
-            return True
+            return validators.url(text)
         except Exception:
             return False
 
