@@ -34,7 +34,7 @@ The Create Recipe page serves as a platform for users to generate their own uniq
 ![Readme6]()
 
 ## 💻 Technology
-The application is developed using the Qt, Python, and PostgreSQL.
+The application is developed using Qt, Python, and PostgreSQL.
 
 ## 🎓 Group
 64011345 [Atip Kajitamkul](https://github.com/Audio431)\
